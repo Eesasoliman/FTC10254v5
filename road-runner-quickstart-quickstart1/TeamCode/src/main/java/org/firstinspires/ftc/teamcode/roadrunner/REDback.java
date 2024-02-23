@@ -115,8 +115,7 @@ public class REDback extends DriveOpMode {
                 .waitSeconds(1)
 
                 // Park
-                .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
                     resetForTeleOp(liftHeight);
                 })
@@ -125,27 +124,27 @@ public class REDback extends DriveOpMode {
                 .build();
 
         TrajectorySequence path1Purple = drive.trajectorySequenceBuilder(startPose)
-                .UNSTABLE_addTemporalMarkerOffset(2.07, () -> {intake();})
                 .lineToConstantHeading(new Vector2d(17,-34))
                 .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();
 
         TrajectorySequence path2Purple = drive.trajectorySequenceBuilder(startPose)
-                .UNSTABLE_addTemporalMarkerOffset(1.2, () -> {intake();})
                 .lineToConstantHeading(new Vector2d(14, -34))
-                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .waitSeconds(1)
                 .forward(5)
 
                 .build();
 
         TrajectorySequence path3Purple = drive.trajectorySequenceBuilder(startPose)
                 //purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(1.8, () -> {intake();})
                 .lineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .waitSeconds(1)
                 .forward(10)
                 .build();
 
