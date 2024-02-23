@@ -164,13 +164,13 @@ public class DriveOpMode extends LinearOpMode {
         lift(5);
     }
 
-    public void resetForTeleOp(double dist)
-    {
-        // Swivel in
-
+    public void swivelIn() {
         robot.LFS.setPosition(0.95);
         robot.RFS.setPosition(0.05);
-        sleep(300);
+    }
+
+    public void resetForTeleOp(double dist)
+    {
         // Lift upward
         lift(-dist-4);
         sleep(1000);
@@ -201,11 +201,17 @@ public class DriveOpMode extends LinearOpMode {
     }
 
     public void intake() {
-        robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        robot.IN.setTargetPosition(-33);
-        robot.IN.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.IN.setPower(-0.9);
+//        robot.IN.setPower(-.24);
+//        sleep(120);
+//        robot.IN.setPower(0);
 
+        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        while (robot.IN.getCurrentPosition() > -33) {
+            robot.IN.setPower(-0.2);
+        }
+        robot.IN.setPower(0);
     }
 }

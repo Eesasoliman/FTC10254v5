@@ -64,7 +64,9 @@ public class BLUEback extends DriveOpMode {
                 .waitSeconds(1)
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    swivelIn();
+                })
                 // Park
                 .lineToConstantHeading(new Vector2d(parkX,parkY))
                 .forward(5)
@@ -95,6 +97,9 @@ public class BLUEback extends DriveOpMode {
                 .waitSeconds(1)
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    swivelIn();
+                })
 
                 // Park
                 .lineToConstantHeading(new Vector2d(parkX,parkY))
@@ -117,7 +122,7 @@ public class BLUEback extends DriveOpMode {
                 })
                 .lineToSplineHeading( new Pose2d(backboardY-5, 28.5, Math.toRadians(0)))
                 .lineToSplineHeading(
-                        new Pose2d(backboardY+10, 28.5, Math.toRadians(0)),
+                        new Pose2d(backboardY+10, 29.5, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0.2,() -> {
@@ -126,6 +131,9 @@ public class BLUEback extends DriveOpMode {
                 .waitSeconds(1)
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    swivelIn();
+                })
 
                 // Park
                 .lineToConstantHeading(new Vector2d(parkX,parkY))
@@ -134,33 +142,33 @@ public class BLUEback extends DriveOpMode {
 
         TrajectorySequence path1Purple = drive.trajectorySequenceBuilder(startPose)
                 //purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(2.46, () -> {
-                    intake();
-                })
                 .lineToSplineHeading(new Pose2d(30, 45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37,28), Math.toRadians(270))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    intake();
+                })
                 .waitSeconds(1)
                 .forward(5)
                 .build();
 
         TrajectorySequence path2Purple = drive.trajectorySequenceBuilder(startPose)
                 //purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(1.2, () -> {
+                .lineToConstantHeading(new Vector2d(14, 34.5))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake();
                 })
-                .lineToConstantHeading(new Vector2d(14, 34.5))
-                .waitSeconds(0.5)
+                .waitSeconds(1)
                 .forward(5)
                 .build();
 
         TrajectorySequence path3Purple = drive.trajectorySequenceBuilder(startPose)
                 //Purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(2.07, () -> {
-                    intake();
-                })
                 .lineToConstantHeading(new Vector2d(17,38))
                 .lineToSplineHeading( new Pose2d(14.5, 34, Math.toRadians(0)))
-                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    intake();
+                })
+                .waitSeconds(1)
                 .forward(10)
                 .build();
 
