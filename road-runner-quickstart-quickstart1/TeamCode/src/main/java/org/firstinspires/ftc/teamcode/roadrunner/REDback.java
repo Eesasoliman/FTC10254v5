@@ -113,9 +113,13 @@ public class REDback extends DriveOpMode {
                     scorePixelsOnBackboard(liftHeight);
                 })
                 .waitSeconds(1)
+
+                // Park
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
                 .lineToConstantHeading(new Vector2d(52,parkY))
                 .forward(10)
                 .build();
@@ -163,7 +167,6 @@ public class REDback extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path1);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path1Purple);
             }

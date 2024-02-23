@@ -55,7 +55,7 @@ public class BLUEback extends DriveOpMode {
                     prepareScoring(liftHeight);
                 })
                 .lineToLinearHeading(
-                        new Pose2d(backboardY+10, 41.5, Math.toRadians(0)),
+                        new Pose2d(backboardY+10, 43.5, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0,() -> {
@@ -90,7 +90,7 @@ public class BLUEback extends DriveOpMode {
                         new Vector2d(backboardY+10,35.5),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(1)
+                .waitSeconds(.2)
                 .UNSTABLE_addTemporalMarkerOffset(0,() -> {
                     scorePixelsOnBackboard(liftHeight);
                 })

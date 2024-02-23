@@ -64,6 +64,9 @@ public class REDfront extends DriveOpMode {
                 })
                 .waitSeconds(afterdrop)
                 .back(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
                 .lineToConstantHeading(new Vector2d(52,parkY))
                 .forward(10)
                 .build();
@@ -105,6 +108,9 @@ public class REDfront extends DriveOpMode {
                 .waitSeconds(afterdrop)
 
                 .back(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
                 .lineToConstantHeading(new Vector2d(52,parkY))
                 .forward(10)
                 .build();
@@ -140,6 +146,9 @@ public class REDfront extends DriveOpMode {
                 .waitSeconds(afterdrop)
 
                 .back(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
                 .lineToConstantHeading(new Vector2d(52,parkY))
                 .forward(10)
                 .build();
