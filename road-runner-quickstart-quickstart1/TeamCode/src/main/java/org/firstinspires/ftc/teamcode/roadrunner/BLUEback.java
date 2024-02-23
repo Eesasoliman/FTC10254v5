@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous
 public class BLUEback extends DriveOpMode {
     int imageNum;
-    double  liftHeight = 6;
-    double backboardY = 50.5;
+    double  liftHeight = 6.4;
+    double backboardY = 51.5;
 
 
     @Override

@@ -152,8 +152,8 @@ public class DriveOpMode extends LinearOpMode {
         lift(moveLiftByInches);
         sleep(500);
         // Swivel out
-        robot.LFS.setPosition(0.45); //higher
-        robot.RFS.setPosition(0.55); //lower
+        robot.LFS.setPosition(0.55); //higher
+        robot.RFS.setPosition(0.45); //lower
     }
 
     public void scorePixelsOnBackboard(double liftEndPositionInches)
