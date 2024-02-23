@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -92,13 +93,8 @@ public class HardwarePushBot {
         AP = hardwareMap.get(Servo.class, "AP");
 
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
-//        DSRB = hardwareMap.get(DistanceSensor.class, "DSRB");
-//        DSLF = hardwareMap.get(DistanceSensor.class, "DSLF");
-//        DSLB = hardwareMap.get(DistanceSensor.class, "DSLB");
-//        DSCL = hardwareMap.get(DistanceSensor.class, "DSCL");
-//        DSCR = hardwareMap.get(DistanceSensor.class, "DSCR");
-//
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
-//        CSL = hardwareMap.get(ColorSensor.class, "CSL");
+
+
     }
 }

@@ -1,15 +1,13 @@
 package org.firstinspires.ftc.teamcode.roadrunner;
 
-import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
@@ -36,15 +34,7 @@ public class BLUEfront extends DriveOpMode {
         Pose2d startPose = new Pose2d(-37.5, 63, Math.toRadians(90));
         // Build all potential Trajectory Sequences
         TrajectorySequence path1 = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(0, () -> {
-                    sleep(1000);
-                    // Start Intake
-                    intake();
-                    sleep(5000);
-                    prepareScoring(liftHeight);
-                    sleep(3000);
-                    scorePixelsOnBackboard(liftHeight);
-                })
+
                 // Purple Pixel
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(180)))
                 .splineToConstantHeading(new Vector2d(-34, 29), Math.toRadians(0))
@@ -78,17 +68,7 @@ public class BLUEfront extends DriveOpMode {
                 .build();
 
         TrajectorySequence path2 = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(4.5, () -> {
-                    // Start Intake
-                    intake();
-                })
-                .addTemporalMarker(9, () ->
-                {
-                    prepareScoring(liftHeight);
-                })
-                .addTemporalMarker(1, () -> {
-                    scorePixelsOnBackboard(liftHeight);
-                })
+
                 // Purple Pixel
                 .lineToConstantHeading(new Vector2d(-37, 12))
                 .setConstraints(
@@ -130,17 +110,6 @@ public class BLUEfront extends DriveOpMode {
                 .build();
 
         TrajectorySequence path3 = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(3.9, () -> {
-                    // Start Intake
-                    intake();
-                })
-                .addTemporalMarker(9, () ->
-                {
-                    prepareScoring(liftHeight);
-                })
-                .addTemporalMarker(1, () -> {
-                    scorePixelsOnBackboard(liftHeight);
-                })
                 // Purple Pixel
                 .strafeLeft(3)
                 .lineToLinearHeading(new Pose2d(-38, 29, Math.toRadians(0)))
@@ -196,7 +165,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);
@@ -249,7 +218,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);
@@ -297,7 +266,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);
@@ -347,7 +316,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);
@@ -402,7 +371,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);
@@ -451,7 +420,7 @@ public class BLUEfront extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    lift(true, 2);
+//                    lift(true, 2);
                     robot.IN.setPower(-1);
                     sleep(1000);
                     robot.IN.setPower(0);

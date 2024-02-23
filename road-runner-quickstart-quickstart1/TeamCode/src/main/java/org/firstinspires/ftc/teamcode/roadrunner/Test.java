@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.roadrunner;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
@@ -12,7 +10,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 @Disabled
-public class FIRSTRRC extends DriveOpMode {
+public class Test extends DriveOpMode {
     @Override
     public void runOpMode() {
         telemetry.setMsTransmissionInterval(50);
