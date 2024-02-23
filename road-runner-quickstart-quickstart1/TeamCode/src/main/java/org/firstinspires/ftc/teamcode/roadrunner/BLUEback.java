@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous
 public class BLUEback extends DriveOpMode {
     int imageNum;
-    double  liftHeight = 6.4;
+    double  liftHeight = 5.5;
     double backboardY = 51.5;
 
 
@@ -55,7 +55,7 @@ public class BLUEback extends DriveOpMode {
                     prepareScoring(liftHeight);
                 })
                 .lineToLinearHeading(
-                        new Pose2d(backboardY+10, 41.5, Math.toRadians(0)),
+                        new Pose2d(backboardY+10, 43.5, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0,() -> {
@@ -90,7 +90,7 @@ public class BLUEback extends DriveOpMode {
                         new Vector2d(backboardY+10,35.5),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(1)
+                .waitSeconds(.2)
                 .UNSTABLE_addTemporalMarkerOffset(0,() -> {
                     scorePixelsOnBackboard(liftHeight);
                 })
@@ -122,7 +122,7 @@ public class BLUEback extends DriveOpMode {
                 })
                 .lineToSplineHeading( new Pose2d(backboardY-5, 28.5, Math.toRadians(0)))
                 .lineToSplineHeading(
-                        new Pose2d(backboardY+10, 29.5, Math.toRadians(0)),
+                        new Pose2d(backboardY+10, 27.5, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0.2,() -> {

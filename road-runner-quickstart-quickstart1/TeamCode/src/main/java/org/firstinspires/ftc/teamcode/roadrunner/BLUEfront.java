@@ -21,7 +21,7 @@ public class BLUEfront extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        double liftHeight = 5;
+        double liftHeight = 9;
         double parkY=0;
         double backboardY = 50;
         if (driveVariables[1]){
@@ -89,13 +89,13 @@ public class BLUEfront extends DriveOpMode {
 
                 // Yellow Pixel
                 .turn(Math.toRadians(90))
-                .lineToConstantHeading(new Vector2d(30, 12))
+                .lineToConstantHeading(new Vector2d(10, 12))
                 .UNSTABLE_addTemporalMarkerOffset(.2, () -> {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .splineToConstantHeading(new Vector2d(backboardY-5, 35), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+10, 35),
+                .splineToConstantHeading(new Vector2d(backboardY-10, 35), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(backboardY+5, 35),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {

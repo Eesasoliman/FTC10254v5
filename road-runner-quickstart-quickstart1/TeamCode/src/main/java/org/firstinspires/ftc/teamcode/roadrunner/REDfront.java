@@ -21,7 +21,7 @@ public class REDfront extends DriveOpMode {
         drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        double liftHeight = 5;
+        double liftHeight = 8;
         double backboardY = 50;
         double afterdrop = .7;
         double parkY = 0;
@@ -124,7 +124,7 @@ public class REDfront extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(-39, -8))
                 .turn(Math.toRadians(180))
                 .lineToConstantHeading(new Vector2d(30, -8))
-                .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
