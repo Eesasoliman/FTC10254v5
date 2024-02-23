@@ -70,8 +70,7 @@ public class BLUEfront extends DriveOpMode {
                 .build();
 
         TrajectorySequence path2 = drive.trajectorySequenceBuilder(startPose)
-
-                // Purple Pixel
+            // Purple Pixel
                 .lineToConstantHeading(new Vector2d(-37, 12))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL/4, DriveConstants.TRACK_WIDTH),
@@ -94,8 +93,11 @@ public class BLUEfront extends DriveOpMode {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .splineToConstantHeading(new Vector2d(backboardY-10, 35), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+5, 35),
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL/3, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineToConstantHeading(new Vector2d(backboardY-10, 40), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(backboardY, 40),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
