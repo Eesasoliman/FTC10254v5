@@ -164,16 +164,11 @@ public class DriveOpMode extends LinearOpMode {
         lift(5);
     }
 
-    public void swivelIn() {
-        robot.LFS.setPosition(0.95);
-        robot.RFS.setPosition(0.05);
-    }
-
     public void resetForTeleOp(double dist)
     {
-        // Lift upward
+        robot.LFS.setPosition(0.95);
+        robot.RFS.setPosition(0.05);
         lift(-dist-4);
-        sleep(1000);
     }
 
 

@@ -62,11 +62,11 @@ public class BLUEback extends DriveOpMode {
                     scorePixelsOnBackboard(liftHeight);
                 })
                 .waitSeconds(1)
-                .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
-                    swivelIn();
+                    resetForTeleOp(liftHeight);
                 })
+
                 // Park
                 .lineToConstantHeading(new Vector2d(parkX,parkY))
                 .forward(5)
@@ -98,7 +98,7 @@ public class BLUEback extends DriveOpMode {
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
-                    swivelIn();
+                    resetForTeleOp(liftHeight);
                 })
 
                 // Park
@@ -132,7 +132,7 @@ public class BLUEback extends DriveOpMode {
                 .back(12,SampleMecanumDrive.getVelocityConstraint(backVel*4, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
-                    swivelIn();
+                    resetForTeleOp(liftHeight);
                 })
 
                 // Park
@@ -193,7 +193,6 @@ public class BLUEback extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path1);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path1Purple);
             }
@@ -205,7 +204,6 @@ public class BLUEback extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path2);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path2Purple);
             }
@@ -216,7 +214,6 @@ public class BLUEback extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path3);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path3Purple);
             }

@@ -200,7 +200,6 @@ public class REDfront extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path1);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path1Purple);
             }
@@ -213,7 +212,6 @@ public class REDfront extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path2);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path2Purple);
             }
@@ -224,7 +222,6 @@ public class REDfront extends DriveOpMode {
             {
                 //yellow
                 drive.followTrajectorySequence(path3);
-                resetForTeleOp(liftHeight);
             }else{
                 drive.followTrajectorySequence(path3Purple);
             }
