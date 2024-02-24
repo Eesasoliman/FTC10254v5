@@ -49,9 +49,12 @@ public class BLUEfront extends DriveOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
                     prepareScoring(liftHeight);
                 })
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL/3, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToConstantHeading(new Vector2d(30, 8))
-                .splineToConstantHeading(new Vector2d(backboardY-5, 37), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+10, 37),
+                .splineToConstantHeading(new Vector2d(backboardY-10, 37), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(backboardY, 37),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -132,8 +135,11 @@ public class BLUEfront extends DriveOpMode {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .lineToConstantHeading(new Vector2d(backboardY-5, 26))
-                .splineToConstantHeading(new Vector2d(backboardY+7, 28), Math.toRadians(0),
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL/3, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToConstantHeading(new Vector2d(backboardY-10, 26))
+                .splineToConstantHeading(new Vector2d(backboardY, 28), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {

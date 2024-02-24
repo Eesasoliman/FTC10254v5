@@ -21,7 +21,7 @@ public class TRUSSblue extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        double liftHeight = 5;
+        double liftHeight = 8;
         double parkY=0;
         double backboardY = 50;
         if (driveVariables[1]){
@@ -36,23 +36,29 @@ public class TRUSSblue extends DriveOpMode {
         TrajectorySequence path1 = drive.trajectorySequenceBuilder(startPose)
                 // Purple Pixel
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(180)))
-                .splineToConstantHeading(new Vector2d(-34, 29), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-35, 29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake();
                 })
                 .waitSeconds(0.5)
 
                 // Yellow Pixel
-                .forward(7)
+                .forward(10)
                 .splineToLinearHeading(new Pose2d(-37.5, 58, Math.toRadians(0)), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
+                .lineToConstantHeading(
+                        new Vector2d(30, 58),
+                        SampleMecanumDrive.getVelocityConstraint(backVel*2, DriveConstants.MAX_ANG_VEL/2, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .UNSTABLE_addTemporalMarkerOffset(-0.8, () -> {
                     prepareScoring(liftHeight);
                 })
-                .lineToConstantHeading(new Vector2d(30, 58))
-                .splineToConstantHeading(new Vector2d(backboardY-5, 37), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+10, 37),
+
+                .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .splineToConstantHeading(new Vector2d(backboardY-5, 43), Math.toRadians(0))
+                .lineToConstantHeading(
+                        new Vector2d(backboardY+10, 43))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Drop Pixels
                     scorePixelsOnBackboard(liftHeight);
@@ -84,10 +90,11 @@ public class TRUSSblue extends DriveOpMode {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .splineToConstantHeading(new Vector2d(backboardY-5, 35), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+10, 35),
+                .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .splineToConstantHeading(new Vector2d(backboardY-5, 37), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(backboardY+10, 37))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Drop Pixels
                     scorePixelsOnBackboard(liftHeight);
@@ -106,24 +113,23 @@ public class TRUSSblue extends DriveOpMode {
         TrajectorySequence path3 = drive.trajectorySequenceBuilder(startPose)
                 // Purple Pixel
                 .strafeLeft(3)
-                .lineToLinearHeading(new Pose2d(-38, 29, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .splineToConstantHeading(new Vector2d(-48, 26), Math.toRadians(270))
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     intake();
                 })
-                .waitSeconds(0.5)
-                .forward(2)
 
                 // Yellow Pixel
-                .splineToLinearHeading(new Pose2d(-37.5, 58, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-37.5, 58), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(30, 58))
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .lineToConstantHeading(new Vector2d(backboardY-5, 26))
-                .splineToConstantHeading(new Vector2d(backboardY+7, 28), Math.toRadians(0),
+                .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .lineToConstantHeading(new Vector2d(backboardY-5, 26))
+                .splineToConstantHeading(new Vector2d(backboardY+7, 28), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Drop Pixels
                     scorePixelsOnBackboard(liftHeight);
