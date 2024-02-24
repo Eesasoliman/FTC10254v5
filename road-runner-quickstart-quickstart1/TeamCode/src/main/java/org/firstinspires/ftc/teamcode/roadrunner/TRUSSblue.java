@@ -85,7 +85,8 @@ public class TRUSSblue extends DriveOpMode {
                 // Yellow Pixel
 //                .splineToConstantHeading(new Vector2d(-43, 27), 90) use if it hits truss
                 .splineToLinearHeading(new Pose2d(-37.5, 58, Math.toRadians(0)), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(30, 58))
+                .lineToConstantHeading(new Vector2d(24, 58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL/2, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
                 .UNSTABLE_addTemporalMarkerOffset(.2, () -> {
                     // Prepare Lift
                     prepareScoring(liftHeight);
