@@ -96,5 +96,7 @@ public class HardwarePushBot {
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
 
 
+//        RL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        LL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

@@ -19,8 +19,9 @@ public class TestLiftEncoders extends DriveOpMode {
         robot.init(hardwareMap);
 
         waitForStart();
-        lift(-6);
-        sleep(100000000);
+
+        telemetry.addData("LL", robot.LL.getCurrentPosition());
+        telemetry.addData("RL", robot.RL.getCurrentPosition());
 
     }
 }

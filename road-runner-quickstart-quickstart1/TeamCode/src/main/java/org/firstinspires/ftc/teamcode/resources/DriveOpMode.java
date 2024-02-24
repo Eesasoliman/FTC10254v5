@@ -160,7 +160,7 @@ public class DriveOpMode extends LinearOpMode {
     {
         robot.BPS.setPosition(0.40);
         robot.FPS.setPosition(0.40);
-        sleep(250);
+        sleep(750);
         lift(5);
     }
 

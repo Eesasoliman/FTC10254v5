@@ -21,12 +21,12 @@ public class TRUSSred extends DriveOpMode {
         drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        double liftHeight = 5;
+        double liftHeight = 7.8;
         double backboardY = 50;
-        double afterdrop = .7;
+        double afterdrop = 1;
         double parkY = 0;
         if (driveVariables[1]){
-            parkY = -10;
+            parkY = -8;
         }else{
             parkY = -60;
         }
@@ -37,29 +37,31 @@ public class TRUSSred extends DriveOpMode {
         TrajectorySequence path1 = drive.trajectorySequenceBuilder(startPose)
                 // Purple Pixel
                 .strafeRight(3)
-                .lineToLinearHeading(new Pose2d(-38, -29, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                .splineToConstantHeading(new Vector2d(-48, -36), Math.toRadians(90))
+                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
                     intake();
                 })
-                .waitSeconds(0.5)
 
-                // Yellow
-                .forward(2)
-                .splineToLinearHeading(new Pose2d(-37.5, -58, Math.toRadians(0)), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(30, -58))
+                // Yellow Pixel
+                .lineToLinearHeading(new Pose2d(-37.5, -58))
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .lineToConstantHeading(new Vector2d(24, -58))
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     prepareScoring(liftHeight);
                 })
                 .lineToConstantHeading(new Vector2d(backboardY-5, -26))
-                .splineToConstantHeading(new Vector2d(backboardY+7, -28), Math.toRadians(0),
-                        SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineToConstantHeading(new Vector2d(backboardY+7, -28), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     scorePixelsOnBackboard(liftHeight);
                 })
 
                 // Park
                 .waitSeconds(afterdrop)
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
                     resetForTeleOp(liftHeight);
@@ -70,7 +72,7 @@ public class TRUSSred extends DriveOpMode {
 
         TrajectorySequence path2 = drive.trajectorySequenceBuilder(startPose)
                 // Purple Pixel
-                .lineToConstantHeading(new Vector2d(-35, -33.5))
+                .lineToConstantHeading(new Vector2d(-37, -33.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake();
                 })
@@ -79,8 +81,10 @@ public class TRUSSred extends DriveOpMode {
                 // Yellow Pixel
 //                .splineToConstantHeading(new Vector2d(-43, -27), 270) use if it hits truss
                 .splineToLinearHeading(new Pose2d(-37.5, -58, Math.toRadians(0)), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(30, -58), SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL/2, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .lineToConstantHeading(new Vector2d(24, -58))
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     prepareScoring(liftHeight);
                 })
@@ -94,6 +98,9 @@ public class TRUSSred extends DriveOpMode {
                 .waitSeconds(afterdrop)
 
                 // Park
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
                     resetForTeleOp(liftHeight);
@@ -114,14 +121,17 @@ public class TRUSSred extends DriveOpMode {
 
                 // Yellow Pixel
                 .forward(7)
-                .splineToLinearHeading(new Pose2d(-37.5, 58, Math.toRadians(0)), Math.toRadians(270))
-                .lineToConstantHeading(new Vector2d(30, 58))
+                .splineToLinearHeading(new Pose2d(-37.5, -58, Math.toRadians(0)), Math.toRadians(270))
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+                .lineToConstantHeading(new Vector2d(24, -58))
                 .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
                     // Prepare Lift
                     prepareScoring(liftHeight);
                 })
-                .splineToConstantHeading(new Vector2d(backboardY-5, -31.5), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(backboardY+10, -31.5),
+                .splineToConstantHeading(new Vector2d(backboardY-5, -36.5), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(backboardY+5, -36.5),
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -130,11 +140,15 @@ public class TRUSSred extends DriveOpMode {
                 })
                 .waitSeconds(afterdrop)
 
+                // Park
+                .setConstraints(
+                    SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                    SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .back(12)
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
                     resetForTeleOp(liftHeight);
                 })
-                .lineToConstantHeading(new Vector2d(52,parkY))
+                .lineToConstantHeading(new Vector2d(52, parkY))
                 .forward(10)
                 .build();
 
