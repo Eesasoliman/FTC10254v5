@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.resources;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -104,40 +106,62 @@ public class DriveOpMode extends LinearOpMode {
         return pipeline;
     }
 
+    public TrajectorySequence relocalize(Pose2d startPose)
+    {
+        // Write April Tag code that finds the correct position Roadrunner needs to be at.
+        Pose2d endPose = new Pose2d(0, 0, Math.toRadians(0));
+        return drive.trajectorySequenceBuilder(startPose).lineToLinearHeading(endPose).build();
+    }
+
     public boolean[] initWithController(boolean park)
     {
+        long nextTimestamp = 0;
         boolean dropYellowPixel = true;
+        boolean easyWhite = true;
+        boolean riskyWhite = false;
         boolean parkInside = park;
 
         while (!gamepad1.right_bumper)
         {
-            if (gamepad1.x) {
-                dropYellowPixel = true;
+            if (gamepad1.x && gamepad1.timestamp > nextTimestamp) {
+                nextTimestamp = gamepad1.timestamp + 300;
+                dropYellowPixel = !dropYellowPixel;
             }
 
-            if (gamepad1.y) {
-                dropYellowPixel = false;
+            if (gamepad1.a && gamepad1.timestamp > nextTimestamp) {
+                nextTimestamp = gamepad1.timestamp + 300;
+                easyWhite = !easyWhite;
+
+                if (easyWhite)
+                {
+                    dropYellowPixel = false;
+                }
             }
 
-            if (gamepad1.a) {
-                parkInside = true;
+            if (gamepad1.b && gamepad1.timestamp > nextTimestamp) {
+                nextTimestamp = gamepad1.timestamp + 300;
+                riskyWhite = !riskyWhite;
+
+                if (riskyWhite) {
+                    dropYellowPixel = false;
+                    easyWhite = false;
+                }
             }
 
-            if (gamepad1.b) {
-                parkInside = false;
+            if (gamepad1.y && gamepad1.timestamp > nextTimestamp) {
+                nextTimestamp = gamepad1.timestamp + 300;
+                parkInside = !parkInside;
             }
 
             // Press right bumper when you are done initializing.
-            telemetry.addLine("dropYellowPixel: x - > true, y -> false");
-            telemetry.addLine("parkInside: a - > true, b -> false");
-            telemetry.addData("dropYellowPixel", dropYellowPixel);
-            telemetry.addData("parkInside", parkInside);
+            telemetry.addData("2+0 (x)", dropYellowPixel);
+            telemetry.addData("CLOSE 2+1 | TRUSS 2+2 (a)", easyWhite);
+            telemetry.addData("CLOSE 2+3 | TRUSS 2+4 (b)", riskyWhite);
+            telemetry.addData("parkInside (y)", parkInside);
             telemetry.update();
-
-            sleep(50);
         }
 
-        return new boolean[]{dropYellowPixel, parkInside, false, false};
+        return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
     }
 
     public void prepareScoring(double moveLiftByInches)
@@ -146,8 +170,8 @@ public class DriveOpMode extends LinearOpMode {
         robot.LFS.setPosition(0.95);
         robot.RFS.setPosition(0.05);
         // Lock carriage servos
-        robot.BPS.setPosition(.4);
-        robot.FPS.setPosition(0);
+//        robot.BPS.setPosition(.4);
+//        robot.FPS.setPosition(0);
         // Lift upward
         lift(moveLiftByInches);
         sleep(500);
@@ -158,8 +182,8 @@ public class DriveOpMode extends LinearOpMode {
 
     public void scorePixelsOnBackboard(double liftEndPositionInches)
     {
-        robot.BPS.setPosition(0.40);
-        robot.FPS.setPosition(0.40);
+//        robot.BPS.setPosition(0.40);
+//        robot.FPS.setPosition(0.40);
         sleep(750);
         lift(5);
     }
@@ -192,7 +216,6 @@ public class DriveOpMode extends LinearOpMode {
 
         robot.LL.setPower(0.7 * dir);
         robot.RL.setPower(0.7 * dir);
-
     }
 
     public void intake() {

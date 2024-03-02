@@ -9,32 +9,28 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class HardwarePushBot {
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
-    public DcMotorEx FLD   = null;
-    public DcMotorEx FRD  = null;
-    public DcMotorEx BLD   = null;
-    public DcMotorEx BRD  = null;
+    public DcMotorEx FLD = null;
+    public DcMotorEx FRD = null;
+    public DcMotorEx BLD = null;
+    public DcMotorEx BRD = null;
 
-    public DcMotorEx LL  = null;
-    public DcMotorEx RL  = null;
-    public DcMotorEx IN  = null;
+    public DcMotorEx LL = null;
+    public DcMotorEx RL = null;
+    public DcMotorEx IN = null;
 
-    public Servo   RFS = null;
-    public Servo   LFS = null;
+    public Servo RFS = null;
+    public Servo LFS = null;
 
-    public Servo   FPS = null;
-    public Servo   BPS = null;
-
+//    public Servo   FPS = null;
+//    public Servo   BPS = null;
     public Servo AP = null;
 
+    public Servo CLAW = null;
+    public Servo WRIST = null;
+    public Servo DROPDOWN = null;
+
 //    public ColorSensor CS = null;
-//    public ColorSensor CSL = null;
-//
 //    public DistanceSensor DSRF = null;
-//    public DistanceSensor DSRB = null;
-//    public DistanceSensor DSLF = null;
-//    public DistanceSensor DSLB = null;
-//    public DistanceSensor DSCL = null;
-//    public DistanceSensor DSCR = null;
 
     // Deadwheels (Odometry Wheels)
     public DcMotorEx DWR = null;
@@ -86,17 +82,17 @@ public class HardwarePushBot {
         BLD.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         BRD.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
+        CLAW = hardwareMap.get(Servo.class, "CLAW");
+        WRIST = hardwareMap.get(Servo.class, "WRIST");
+        DROPDOWN = hardwareMap.get(Servo.class, "DROPDOWN");
+
         LFS = hardwareMap.get(Servo.class, "LFS");
         RFS = hardwareMap.get(Servo.class, "RFS");
-        FPS = hardwareMap.get(Servo.class, "FPS");
-        BPS = hardwareMap.get(Servo.class, "BPS");
+//        FPS = hardwareMap.get(Servo.class, "FPS");
+//        BPS = hardwareMap.get(Servo.class, "BPS");
         AP = hardwareMap.get(Servo.class, "AP");
 
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
-
-
-//        RL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        LL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }
