@@ -18,10 +18,15 @@ public class TestLiftEncoders extends DriveOpMode {
     public void runOpMode() {
         robot.init(hardwareMap);
 
+        robot.LL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
         waitForStart();
 
-        telemetry.addData("LL", robot.LL.getCurrentPosition());
-        telemetry.addData("RL", robot.RL.getCurrentPosition());
-
+        while (opModeIsActive()) {
+            telemetry.addData("LL", robot.LL.getCurrentPosition());
+            telemetry.addData("RL", robot.RL.getCurrentPosition());
+            telemetry.update();
+        }
     }
 }

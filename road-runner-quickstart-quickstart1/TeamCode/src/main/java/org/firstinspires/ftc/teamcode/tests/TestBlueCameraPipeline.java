@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.opencv.core.Scalar;
 
 @Autonomous
+@Disabled
 public class TestBlueCameraPipeline extends DriveOpMode {
     int imageNum;
 
