@@ -171,7 +171,7 @@ public class DriveOpMode extends LinearOpMode {
         }
     }
 
-    public TrajectorySequence relocalize(Pose2d startPose)
+    public TrajectorySequence relocalize(Pose2d startPose, double lateralOffset)
     {
         boolean targetFound = false;
         desiredTag = null;
@@ -200,15 +200,15 @@ public class DriveOpMode extends LinearOpMode {
             sleep(10);
         }
 
-        // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
-        double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
-        double  headingError    = desiredTag.ftcPose.bearing;
-        double  yawError        = desiredTag.ftcPose.yaw;
+        double  range      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
+        double  bearing    = desiredTag.ftcPose.bearing;
+//        double  yaw        = desiredTag.ftcPose.yaw;
 
         // TODO: CONVERT ABOVE ERROR VALUES INTO COORDINATES ROADRUNNER SHOULD BE AT
+        // The following coords for endpose are prob wrong
 
         // Write April Tag code that finds the correct position Roadrunner needs to be at.
-        Pose2d endPose = new Pose2d(0, 0, Math.toRadians(0));
+        Pose2d endPose = new Pose2d(startPose.getX() + range, startPose.getY() + lateralOffset, startPose.getHeading() + Math.toRadians(bearing));
         return drive.trajectorySequenceBuilder(startPose).lineToLinearHeading(endPose).build();
     }
 
@@ -261,6 +261,21 @@ public class DriveOpMode extends LinearOpMode {
         }
 
         return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
+    }
+
+    public void setDropdownLevel(int level)
+    {
+        if (level == 0) {
+            robot.DROPDOWN.setPosition(0.00);
+        } else if (level == 1) {
+            robot.DROPDOWN.setPosition(0.25);
+        } else if (level == 2) {
+            robot.DROPDOWN.setPosition(0.50);
+        } else if (level == 3) {
+            robot.DROPDOWN.setPosition(0.75);
+        } else if (level == 4) {
+            robot.DROPDOWN.setPosition(1.00);
+        }
     }
 
     public void prepareScoring(double moveLiftByInches)

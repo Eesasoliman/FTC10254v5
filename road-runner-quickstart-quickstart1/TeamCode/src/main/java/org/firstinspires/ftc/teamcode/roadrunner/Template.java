@@ -98,16 +98,17 @@ public class Template extends DriveOpMode {
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
             drive.followTrajectorySequence(yellow);
-            drive.followTrajectorySequence(relocalize(yellow.end()));
+            drive.followTrajectorySequence(relocalize(yellow.end(), 0));
             if (driveVariables[2]) {
                 // Follow White Twice
                 drive.followTrajectorySequence(white);
-                drive.followTrajectorySequence(relocalize(white.end()));
+                drive.followTrajectorySequence(relocalize(white.end(), 0));
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once
                 drive.followTrajectorySequence(white);
             }
         }
+        drive.followTrajectorySequence(park);
     }
 }
