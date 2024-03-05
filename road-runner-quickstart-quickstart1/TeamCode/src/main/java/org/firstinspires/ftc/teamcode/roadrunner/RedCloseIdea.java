@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.roadrunner;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -11,9 +10,8 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous
-@Disabled
-public class Template extends DriveOpMode {
+@Autonomous(name = "Close 2+2", group = "RED")
+public class RedCloseIdea extends DriveOpMode {
     int imageNum;
     double parkY;
     double liftHeight = 7.8;
@@ -37,18 +35,34 @@ public class Template extends DriveOpMode {
 
         // Build all potential Trajectory Sequences
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
+                .lineToConstantHeading(new Vector2d(17,-34))
+                .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    intake();
+                })
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    prepareScoring(liftHeight);
+                })
+                .forward(5)
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
                 .build();
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
+                .lineToLinearHeading(new Pose2d(backboardX, -28.5, Math.toRadians(0)))
                 .build();
         TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
                 .build();
         TrajectorySequence yellow3 = drive.trajectorySequenceBuilder(purple3.end())
                 .build();
         TrajectorySequence white1 = drive.trajectorySequenceBuilder(yellow1.end())
+                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                     scorePixelsOnBackboard(liftHeight);
+                 })
+                .waitSeconds(1)
+                // Add get white pixels
                 .build();
         TrajectorySequence white2 = drive.trajectorySequenceBuilder(yellow2.end())
                 .build();
@@ -98,11 +112,11 @@ public class Template extends DriveOpMode {
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
             drive.followTrajectorySequence(yellow);
-            drive.followTrajectorySequence(relocalize(yellow.end(), 0)); // Start AprilTagCamera 3 seconds before this point
+            drive.followTrajectorySequence(relocalize(yellow.end(), 0));
             if (driveVariables[2]) {
                 // Follow White Twice
                 drive.followTrajectorySequence(white);
-                drive.followTrajectorySequence(relocalize(white.end(), 0)); // Start AprilTagCamera 3 seconds before this point
+                drive.followTrajectorySequence(relocalize(white.end(), 0));
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once

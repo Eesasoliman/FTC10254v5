@@ -131,6 +131,12 @@ public class DriveOpMode extends LinearOpMode {
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
                 .build();
+        visionPortal.stopLiveView(); // Comment out when debugging
+        visionPortal.stopStreaming();
+    }
+
+    public void startAprilTagCamera() {
+        visionPortal.resumeStreaming();
     }
 
     /**
@@ -200,15 +206,16 @@ public class DriveOpMode extends LinearOpMode {
             sleep(10);
         }
 
-        double  range      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
-        double  bearing    = desiredTag.ftcPose.bearing;
-//        double  yaw        = desiredTag.ftcPose.yaw;
+        visionPortal.stopStreaming();
 
-        // TODO: CONVERT ABOVE ERROR VALUES INTO COORDINATES ROADRUNNER SHOULD BE AT
-        // The following coords for endpose are prob wrong
+        double relativeToTagXError = desiredTag.ftcPose.x;
+        double relativeToTagYError = desiredTag.ftcPose.y;
+        double relativeToTagHeadingError = desiredTag.ftcPose.bearing;
 
-        // Write April Tag code that finds the correct position Roadrunner needs to be at.
-        Pose2d endPose = new Pose2d(startPose.getX() + range, startPose.getY() + lateralOffset, startPose.getHeading() + Math.toRadians(bearing));
+        Pose2d endPose = new Pose2d(
+            startPose.getX() + relativeToTagYError - DESIRED_DISTANCE,
+            startPose.getY() + relativeToTagXError + lateralOffset,
+            startPose.getHeading() + Math.toRadians(relativeToTagHeadingError));
         return drive.trajectorySequenceBuilder(startPose).lineToLinearHeading(endPose).build();
     }
 
