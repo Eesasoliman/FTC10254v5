@@ -155,9 +155,9 @@ public class TeleOpPro extends LinearOpMode {
             if (dpadUp && dropdownPos < 4) {
                 dropdownPos++;
             } else if (dpadLeft) {
-                intakeSpeedMultiplier = 0.5;
+                intakeSpeedMultiplier = 0.70;
             } else if (dpadRight) {
-                intakeSpeedMultiplier = 0.8;
+                intakeSpeedMultiplier = 1.0;
             } else if (dpadDown && dropdownPos > 0) {
                 dropdownPos--;
             }
