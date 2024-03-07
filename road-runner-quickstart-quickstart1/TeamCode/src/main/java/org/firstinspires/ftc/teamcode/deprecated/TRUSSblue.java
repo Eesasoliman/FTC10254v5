@@ -39,7 +39,7 @@ public class TRUSSblue extends DriveOpMode {
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(180)))
                 .splineToConstantHeading(new Vector2d(-35, 29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
 
@@ -80,7 +80,7 @@ public class TRUSSblue extends DriveOpMode {
                 // Purple Pixel
                 .lineToConstantHeading(new Vector2d(-37, 33.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
 
@@ -120,7 +120,7 @@ public class TRUSSblue extends DriveOpMode {
                 .strafeLeft(3)
                 .splineToConstantHeading(new Vector2d(-48, 36), Math.toRadians(270))
                 .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
-                    intake();
+                    purpleIntake();
                 })
 
                 // Yellow Pixel
@@ -159,7 +159,7 @@ public class TRUSSblue extends DriveOpMode {
                 .lineToLinearHeading(new Pose2d(-36, 29, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -168,7 +168,8 @@ public class TRUSSblue extends DriveOpMode {
         TrajectorySequence path2Purple = drive.trajectorySequenceBuilder(startPose)
                 //purple pixel
                 .lineToConstantHeading(new Vector2d(-36, 34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();
@@ -177,7 +178,8 @@ public class TRUSSblue extends DriveOpMode {
                 //Purple pixel
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(-38, 29), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();

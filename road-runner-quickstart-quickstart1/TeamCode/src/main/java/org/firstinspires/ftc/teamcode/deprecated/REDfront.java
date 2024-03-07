@@ -40,7 +40,7 @@ public class REDfront extends DriveOpMode {
                 .strafeRight(3)
                 .lineToLinearHeading(new Pose2d(-38, -29, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(2)
@@ -78,7 +78,7 @@ public class REDfront extends DriveOpMode {
                 .turn(Math.toRadians(180))
                 .back(2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -116,7 +116,7 @@ public class REDfront extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-34, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(7)
@@ -154,7 +154,7 @@ public class REDfront extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-38, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -164,7 +164,7 @@ public class REDfront extends DriveOpMode {
                 // Purple Pixel
                 .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .lineToConstantHeading(new Vector2d(-35, -34))
                 .waitSeconds(1)
@@ -177,7 +177,7 @@ public class REDfront extends DriveOpMode {
                 .lineToLinearHeading(new Pose2d(-36, -29, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)

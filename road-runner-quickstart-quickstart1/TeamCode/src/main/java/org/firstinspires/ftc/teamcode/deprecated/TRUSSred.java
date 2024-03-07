@@ -40,7 +40,7 @@ public class TRUSSred extends DriveOpMode {
                 .strafeRight(3)
                 .splineToConstantHeading(new Vector2d(-48, -36), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
-                    intake();
+                    purpleIntake();
                 })
 
                 // Yellow Pixel
@@ -75,7 +75,7 @@ public class TRUSSred extends DriveOpMode {
                 // Purple Pixel
                 .lineToConstantHeading(new Vector2d(-37, -33.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
 
@@ -116,7 +116,7 @@ public class TRUSSred extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-34, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
 
@@ -160,7 +160,7 @@ public class TRUSSred extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-38, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -170,7 +170,7 @@ public class TRUSSred extends DriveOpMode {
                 // Purple Pixel
                 .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .lineToConstantHeading(new Vector2d(-35, -34))
                 .waitSeconds(1)
@@ -183,7 +183,7 @@ public class TRUSSred extends DriveOpMode {
                 .lineToLinearHeading(new Pose2d(-36, -29, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
