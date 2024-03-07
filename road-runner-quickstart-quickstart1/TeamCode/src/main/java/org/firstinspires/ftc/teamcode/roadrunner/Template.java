@@ -37,6 +37,7 @@ public class Template extends DriveOpMode {
 
         // Build all potential Trajectory Sequences
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
+
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .build();
