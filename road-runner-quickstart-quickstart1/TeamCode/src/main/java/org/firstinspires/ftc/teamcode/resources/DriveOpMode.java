@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -22,6 +23,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,12 +38,8 @@ public class DriveOpMode extends LinearOpMode {
     final OpenCvCameraRotation CAMERA_ROTATION = OpenCvCameraRotation.UPSIDE_DOWN;
     public HardwarePushBot robot = new HardwarePushBot();
     public SampleMecanumDrive drive = null;
-
-    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
-    private final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
-    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
     /**
      * LinearOpMode requires a runOpMode function, but this method should be overridden in all other scripts that use DriveOpMode.
@@ -144,23 +142,6 @@ public class DriveOpMode extends LinearOpMode {
      This can only be called AFTER calling initAprilTagProcessor()
     */
     private void setManualExposure(int exposureMS, int gain) {
-        // Wait for the camera to be open, then use the controls
-
-        if (visionPortal == null) {
-            return;
-        }
-
-        // Make sure camera is streaming before we try to set the exposure controls
-        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Waiting");
-            telemetry.update();
-            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
-                sleep(20);
-            }
-            telemetry.addData("Camera", "Ready");
-            telemetry.update();
-        }
-
         // Set camera controls unless we are stopping.
         if (!isStopRequested())
         {
@@ -179,8 +160,10 @@ public class DriveOpMode extends LinearOpMode {
 
     public TrajectorySequence relocalize(Pose2d startPose, double lateralOffset)
     {
+        final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
+        int ID = (startPose.getY() >= 0) ? 2 : 5;
         boolean targetFound = false;
-        desiredTag = null;
+        AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
         while (!targetFound) {
             // Step through the list of detected tags and look for a matching tag
@@ -189,7 +172,7 @@ public class DriveOpMode extends LinearOpMode {
                 // Look to see if we have size info on this tag.
                 if (detection.metadata != null) {
                     //  Check to see if we want to track towards this tag.
-                    if ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID)) {
+                    if (detection.id == ID) {
                         // Yes, we want to use this tag.
                         targetFound = true;
                         desiredTag = detection;
@@ -217,6 +200,41 @@ public class DriveOpMode extends LinearOpMode {
             startPose.getY() + relativeToTagXError + lateralOffset,
             startPose.getHeading() + Math.toRadians(relativeToTagHeadingError));
         return drive.trajectorySequenceBuilder(startPose).lineToLinearHeading(endPose).build();
+    }
+
+    public boolean detectRobot(boolean isBlueSide) {
+        int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};
+        boolean[] targetsFound = new boolean[]{false, false, false};
+
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() < start + 5000 && !targetsFound[0] && !targetsFound[1] && !targetsFound[2]) {
+            // Step through the list of detected tags and look for a matching tag
+            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+            targetsFound = new boolean[]{false, false, false};
+            for (AprilTagDetection detection : currentDetections) {
+                // Look to see if we have size info on this tag.
+                if (detection.metadata != null) {
+                    //  Check to see if we this is one of the target tags.
+                    if (Arrays.asList(idArr).contains(detection.id)) {
+                        // Yes, this is one of the tags we need.
+                        targetsFound[(detection.id - 1) % 3] = true;
+                        break;  // don't look any further.
+                    } else {
+                        // This tag is in the library, but we do not want to track it right now.
+                        telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                    }
+                } else {
+                    // This tag is NOT in the library, so we don't have enough information to track to it.
+                    telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+                }
+            }
+            sleep(10);
+        }
+
+        visionPortal.stopStreaming();
+
+        // Returns true if one of the April Tags was not found, meaning there is a robot there.
+        return (!targetsFound[0] || !targetsFound[1] || !targetsFound[2]);
     }
 
     public boolean[] initWithController(boolean park)
