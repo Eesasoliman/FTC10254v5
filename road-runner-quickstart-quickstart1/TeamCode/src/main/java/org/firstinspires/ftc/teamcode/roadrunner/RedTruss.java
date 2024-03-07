@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
+    double whitepixel = -36;
     double backboardY = 50;
     double afterdrop = 1;
     double liftHeight = 7.8;
@@ -127,10 +128,10 @@ public class RedTruss extends DriveOpMode {
                 })
                 .waitSeconds(afterdrop)
                 .build();
-        TrajectorySequence white1 = drive.trajectorySequenceBuilder(yellow1.end())
+        TrajectorySequence white1 = drive.trajectorySequenceBuilder(purple1.end())
                 // Get
-                .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-48, -12))
+                .splineToConstantHeading(new Vector2d(-12, -48), Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(-48, -48))
                 .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
 
                 // Return
@@ -138,10 +139,10 @@ public class RedTruss extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(24, -52))
                 .splineToConstantHeading(new Vector2d(yellow1.end().getX(), yellow1.end().getY()), Math.toRadians(270))
                 .build();
-        TrajectorySequence white2 = drive.trajectorySequenceBuilder(yellow2.end())
+        TrajectorySequence white2 = drive.trajectorySequenceBuilder(purple2.end())
                 // Get
-                .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-48, -12))
+                .splineToConstantHeading(new Vector2d(-12, -48), Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(-48, -48))
                 .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
 
                 // Return
@@ -149,10 +150,10 @@ public class RedTruss extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(24, -52))
                 .splineToConstantHeading(new Vector2d(yellow2.end().getX(), yellow2.end().getY()), Math.toRadians(270))
                 .build();
-        TrajectorySequence white3 = drive.trajectorySequenceBuilder(yellow3.end())
+        TrajectorySequence white3 = drive.trajectorySequenceBuilder(purple3.end())
                 // Get
-                .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-48, -12))
+                .splineToConstantHeading(new Vector2d(-12, -48), Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(-48, -48))
                 .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
 
                 // Return
@@ -169,8 +170,20 @@ public class RedTruss extends DriveOpMode {
                 .forward(10)
                 .build();
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
+                .back(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
+                .lineToConstantHeading(new Vector2d(52,parkY))
+                .forward(10)
                 .build();
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
+                .back(12)
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
+                    resetForTeleOp(liftHeight);
+                })
+                .lineToConstantHeading(new Vector2d(52,parkY))
+                .forward(10)
                 .build();
 
         initAprilTagProcessor();
