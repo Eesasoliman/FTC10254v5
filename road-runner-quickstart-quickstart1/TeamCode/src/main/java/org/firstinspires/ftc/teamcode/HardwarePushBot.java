@@ -99,7 +99,7 @@ public class HardwarePushBot {
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
 
-        FCR = hardwareMap.get(ColorRangeSensor.class, "FCR");
-        BCR = hardwareMap.get(ColorRangeSensor.class, "BCR");
+//        FCR = hardwareMap.get(ColorRangeSensor.class, "FCR");
+//        BCR = hardwareMap.get(ColorRangeSensor.class, "BCR");
     }
 }

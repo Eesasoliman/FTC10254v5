@@ -19,7 +19,7 @@ public class RedClose extends DriveOpMode {
     double backboardX = 50;
     double backboardVel = DriveConstants.MAX_VEL / 4;
     double backboardAcc = DriveConstants.MAX_ACCEL / 2;
-    Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
+    Pose2d startPose = new Pose2d(12, -63, Math.toRadians(270));
 
     @Override
     public void runOpMode() {
