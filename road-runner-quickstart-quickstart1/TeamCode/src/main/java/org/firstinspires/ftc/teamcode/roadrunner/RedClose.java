@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Close 2+2", group = "RED")
-public class RedCloseIdea extends DriveOpMode {
+@Autonomous(name = "Close", group = "RED")
+public class RedClose extends DriveOpMode {
     int imageNum;
     double parkY;
     double liftHeight = 7.8;
@@ -103,16 +103,19 @@ public class RedCloseIdea extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(yellow3.end().getX(), yellow3.end().getY()), Math.toRadians(270))
                 .build();
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
-                .back(12)
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> {
-                    resetForTeleOp(liftHeight);
-                })
-                .lineToConstantHeading(new Vector2d(52,parkY))
+                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
                 .forward(10)
                 .build();
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
+                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .forward(10)
                 .build();
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
+                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .forward(10)
                 .build();
 
         initAprilTagProcessor();
