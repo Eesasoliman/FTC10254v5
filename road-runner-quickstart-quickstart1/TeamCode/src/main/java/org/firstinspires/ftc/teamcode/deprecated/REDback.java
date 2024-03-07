@@ -41,7 +41,8 @@ public class REDback extends DriveOpMode {
                 // Purple pixel
                 .lineToConstantHeading(new Vector2d(17,-34))
                 .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                     prepareScoring(liftHeight);
@@ -69,7 +70,8 @@ public class REDback extends DriveOpMode {
         TrajectorySequence path2 = drive.trajectorySequenceBuilder(startPose)
                 // Purple
                 .lineToConstantHeading(new Vector2d(14, -34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(0.5)
                 .forward(5)
 
@@ -99,7 +101,8 @@ public class REDback extends DriveOpMode {
                 // Purple
                 .lineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(0.5)
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     prepareScoring(liftHeight);
@@ -129,14 +132,16 @@ public class REDback extends DriveOpMode {
         TrajectorySequence path1Purple = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(17,-34))
                 .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();
 
         TrajectorySequence path2Purple = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(14, -34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
 
@@ -146,7 +151,8 @@ public class REDback extends DriveOpMode {
                 //purple pixel
                 .lineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(10)
                 .build();

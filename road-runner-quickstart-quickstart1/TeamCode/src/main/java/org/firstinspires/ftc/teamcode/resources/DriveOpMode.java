@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -288,20 +287,21 @@ public class DriveOpMode extends LinearOpMode {
         return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
     }
 
-    public void setDropdownLevel(int level)
-    {
-        if (level == 0) {
-            robot.DROPDOWN.setPosition(0.00);
-        } else if (level == 1) {
-            robot.DROPDOWN.setPosition(0.25);
-        } else if (level == 2) {
-            robot.DROPDOWN.setPosition(0.50);
-        } else if (level == 3) {
-            robot.DROPDOWN.setPosition(0.75);
-        } else if (level == 4) {
-            robot.DROPDOWN.setPosition(1.00);
-        }
-    }
+//    public void whiteIntake(int level) {
+//        if (level == 0) {
+//            robot.DROPDOWN.setPosition(0.00);
+//        } else if (level == 1) {
+//            robot.DROPDOWN.setPosition(0.25);
+//        } else if (level == 2) {
+//            robot.DROPDOWN.setPosition(0.50);
+//        } else if (level == 3) {
+//            robot.DROPDOWN.setPosition(0.75);
+//        } else if (level == 4) {
+//            robot.DROPDOWN.setPosition(1.00);
+//        }
+//
+//        robot.IN.setPower();
+//    }
 
     public void prepareScoring(double moveLiftByInches)
     {
@@ -357,7 +357,7 @@ public class DriveOpMode extends LinearOpMode {
         robot.RL.setPower(0.7 * dir);
     }
 
-    public void intake() {
+    public void purpleIntake() {
 //        robot.IN.setPower(-.24);
 //        sleep(120);
 //        robot.IN.setPower(0);

@@ -37,20 +37,20 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(17,-34))
                 .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { intake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .forward(5)
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(14, -34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { intake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .forward(5)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
                 .lineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { intake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .forward(10)
                 .build();

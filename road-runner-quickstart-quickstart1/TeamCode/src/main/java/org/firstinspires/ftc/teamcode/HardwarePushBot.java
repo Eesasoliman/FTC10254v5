@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -28,6 +29,9 @@ public class HardwarePushBot {
     public Servo CLAW = null;
     public Servo WRIST = null;
     public Servo DROPDOWN = null;
+
+    public ColorRangeSensor FCR = null;
+    public ColorRangeSensor BCR = null;
 
 //    public ColorSensor CS = null;
 //    public DistanceSensor DSRF = null;
@@ -94,5 +98,8 @@ public class HardwarePushBot {
 
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
+
+        FCR = hardwareMap.get(ColorRangeSensor.class, "FCR");
+        BCR = hardwareMap.get(ColorRangeSensor.class, "BCR");
     }
 }

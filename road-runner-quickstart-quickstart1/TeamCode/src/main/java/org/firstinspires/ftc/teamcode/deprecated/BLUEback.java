@@ -45,7 +45,7 @@ public class BLUEback extends DriveOpMode {
                 .lineToSplineHeading(new Pose2d(30, 45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37,28), Math.toRadians(270))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -77,7 +77,7 @@ public class BLUEback extends DriveOpMode {
                 //purple pixel
                 .lineToConstantHeading(new Vector2d(14, 33.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(5)
@@ -112,7 +112,7 @@ public class BLUEback extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(17,38))
                 .lineToSplineHeading( new Pose2d(14.5, 34, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(10)
@@ -146,7 +146,7 @@ public class BLUEback extends DriveOpMode {
                 .lineToSplineHeading(new Pose2d(30, 45, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(37,28), Math.toRadians(270))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -156,7 +156,7 @@ public class BLUEback extends DriveOpMode {
                 //purple pixel
                 .lineToConstantHeading(new Vector2d(14, 34.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -167,7 +167,7 @@ public class BLUEback extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(17,38))
                 .lineToSplineHeading( new Pose2d(14.5, 34, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(10)

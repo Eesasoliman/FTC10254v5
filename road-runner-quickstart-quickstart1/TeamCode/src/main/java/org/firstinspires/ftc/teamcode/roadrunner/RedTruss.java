@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Close 2+2", group = "RED")
+@Autonomous(name = "Truss", group = "RED")
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
@@ -42,7 +42,7 @@ public class RedTruss extends DriveOpMode {
                 .strafeRight(3)
                 .lineToLinearHeading(new Pose2d(-38, -29, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(2)
@@ -56,7 +56,7 @@ public class RedTruss extends DriveOpMode {
                 .turn(Math.toRadians(180))
                 .back(2)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -69,7 +69,7 @@ public class RedTruss extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-34, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(7)

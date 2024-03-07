@@ -21,7 +21,7 @@ public class TestTrajectorySequence extends DriveOpMode {
         Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
         TrajectorySequence Test = drive.trajectorySequenceBuilder(startPose)
                 .UNSTABLE_addTemporalMarkerOffset(0,() -> {
-                    intake();
+                    purpleIntake();
                     scorePixelsOnBackboard(12);
                 })
                 .forward(12)

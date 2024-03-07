@@ -39,7 +39,7 @@ public class BLUEfront extends DriveOpMode {
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(180)))
                 .splineToConstantHeading(new Vector2d(-34, 29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(7)
@@ -82,7 +82,7 @@ public class BLUEfront extends DriveOpMode {
                 .turn(Math.toRadians(180))
                 .back(2)
                 .UNSTABLE_addTemporalMarkerOffset(.01, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -124,7 +124,7 @@ public class BLUEfront extends DriveOpMode {
                 .strafeLeft(3)
                 .lineToLinearHeading(new Pose2d(-38, 29, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(2)
@@ -164,7 +164,7 @@ public class BLUEfront extends DriveOpMode {
                 .lineToLinearHeading(new Pose2d(-36, 29, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Start Intake
-                    intake();
+                    purpleIntake();
                 })
                 .waitSeconds(1)
                 .forward(5)
@@ -173,7 +173,8 @@ public class BLUEfront extends DriveOpMode {
         TrajectorySequence path2Purple = drive.trajectorySequenceBuilder(startPose)
                 //purple pixel
                 .lineToConstantHeading(new Vector2d(-36, 34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();
@@ -182,7 +183,8 @@ public class BLUEfront extends DriveOpMode {
                 //Purple pixel
                 .lineToSplineHeading(new Pose2d(-37.5, 40, Math.toRadians(0)))
                 .splineToConstantHeading(new Vector2d(-38, 29), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {intake();})
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    purpleIntake();})
                 .waitSeconds(1)
                 .forward(5)
                 .build();
