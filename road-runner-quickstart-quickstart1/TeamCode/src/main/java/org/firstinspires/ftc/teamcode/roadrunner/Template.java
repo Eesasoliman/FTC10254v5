@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous
+@Autonomous(name = "Close/Truss 2+X", group = "RED/BLUE")
 @Disabled
 public class Template extends DriveOpMode {
     int imageNum;
