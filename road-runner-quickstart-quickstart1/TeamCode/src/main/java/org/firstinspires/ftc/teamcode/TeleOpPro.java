@@ -34,7 +34,9 @@ public class TeleOpPro extends LinearOpMode {
 
         robot.CLAW.setPosition(0);
         robot.WRIST.setPosition(0.4);
-        robot.DROPDOWN.setPosition(0);
+        // Dropdown
+        robot.DROPR.setPosition(0);
+        robot.DROPL.setPosition(1);
 
         double speed = 1.0;
 
@@ -211,15 +213,20 @@ public class TeleOpPro extends LinearOpMode {
             // Gamepad 2
             if (dropdownPos != prevDropdownPos) {
                 if (dropdownPos == 0) {
-                    robot.DROPDOWN.setPosition(0.00);
+                    robot.DROPR.setPosition(0.00);
+                    robot.DROPL.setPosition(1.00);
                 } else if (dropdownPos == 1) {
-                    robot.DROPDOWN.setPosition(0.25);
+                    robot.DROPR.setPosition(0.25);
+                    robot.DROPL.setPosition(0.75);
                 } else if (dropdownPos == 2) {
-                    robot.DROPDOWN.setPosition(0.50);
+                    robot.DROPR.setPosition(0.50);
+                    robot.DROPL.setPosition(0.50);
                 } else if (dropdownPos == 3) {
-                    robot.DROPDOWN.setPosition(0.75);
+                    robot.DROPR.setPosition(0.75);
+                    robot.DROPL.setPosition(0.25);
                 } else if (dropdownPos == 4) {
-                    robot.DROPDOWN.setPosition(1.00);
+                    robot.DROPR.setPosition(1.00);
+                    robot.DROPL.setPosition(0.00);
                 }
                 prevDropdownPos = dropdownPos;
             }

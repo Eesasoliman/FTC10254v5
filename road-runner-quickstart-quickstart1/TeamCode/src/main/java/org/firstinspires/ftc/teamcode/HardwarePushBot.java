@@ -28,7 +28,9 @@ public class HardwarePushBot {
 
     public Servo CLAW = null;
     public Servo WRIST = null;
-    public Servo DROPDOWN = null;
+    public Servo DROPR = null;
+    public Servo DROPL = null;
+
 
     public ColorRangeSensor FCR = null;
     public ColorRangeSensor BCR = null;
@@ -88,12 +90,12 @@ public class HardwarePushBot {
 
         CLAW = hardwareMap.get(Servo.class, "CLAW");
         WRIST = hardwareMap.get(Servo.class, "WRIST");
-        DROPDOWN = hardwareMap.get(Servo.class, "DROPDOWN");
+        // Dropdown
+        DROPR = hardwareMap.get(Servo.class, "DROPR");
+        DROPL = hardwareMap.get(Servo.class, "DROPL");
 
         LFS = hardwareMap.get(Servo.class, "LFS");
         RFS = hardwareMap.get(Servo.class, "RFS");
-//        FPS = hardwareMap.get(Servo.class, "FPS");
-//        BPS = hardwareMap.get(Servo.class, "BPS");
         AP = hardwareMap.get(Servo.class, "AP");
 
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
