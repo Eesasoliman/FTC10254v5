@@ -78,10 +78,9 @@ public class TeleOpPro extends LinearOpMode {
         robot.WRIST.setPosition(0.38);
         robot.LFS.setPosition(0.95);
         robot.RFS.setPosition(0.05);
-        // Set attachment
-        // Set Dropdown to Level 0
-        robot.DROPL.setPosition(0.00 + pixelHeightOffset + dropLOffset);
-        robot.DROPR.setPosition(0.35 - pixelHeightOffset + dropROffset);
+        // Set Dropdown to Level 5
+        robot.DROPL.setPosition(0.35 + dropLOffset);
+        robot.DROPR.setPosition(0.00 + dropROffset);
 
         while (opModeIsActive()) {
             // Gamepad 1
