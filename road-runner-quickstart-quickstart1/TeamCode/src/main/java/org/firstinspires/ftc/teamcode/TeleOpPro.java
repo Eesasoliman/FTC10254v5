@@ -51,9 +51,9 @@ public class TeleOpPro extends LinearOpMode {
         long nextDropdownTimestamp = 0;
         double dropdownPos = 0;
         double prevDropdownPos = 0;
-        double groundOffsetHeight = 0.00;
+        double pixelHeightOffset = 0.027; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
 //        double dropLOffset = 0.04;
-        double dropLOffset = 0;
+        double dropLOffset = 0.02;
         double dropROffset = 0;
 
         boolean dpadUp;
@@ -80,8 +80,8 @@ public class TeleOpPro extends LinearOpMode {
         robot.RFS.setPosition(0.05);
         // Set attachment
         // Set Dropdown to Level 0
-        robot.DROPL.setPosition(0.00 + groundOffsetHeight + dropLOffset);
-        robot.DROPR.setPosition(0.20 - groundOffsetHeight + dropROffset);
+        robot.DROPL.setPosition(0.00 + pixelHeightOffset + dropLOffset);
+        robot.DROPR.setPosition(0.35 - pixelHeightOffset + dropROffset);
 
         while (opModeIsActive()) {
             // Gamepad 1
@@ -152,17 +152,17 @@ public class TeleOpPro extends LinearOpMode {
 
                 if (isWristVertical) {
                     // Set WRIST to horizontal position
-                    robot.WRIST.setPosition(0.38);
+                    robot.WRIST.setPosition(0.73);
                 } else {
                     // Set WRIST to vertical position
-                    robot.WRIST.setPosition(0.74);
+                    robot.WRIST.setPosition(0.38);
                 }
                 isWristVertical = !isWristVertical;
             }
 
             if (triggerL > 0) {
                 // Swivel in
-                robot.WRIST.setPosition(0.74); // Set wrist to vertical
+                robot.WRIST.setPosition(0.38); // Set wrist to vertical
                 robot.LFS.setPosition(0.95); // To swivel in more, increase this
                 robot.RFS.setPosition(0.05);// To swivel in more, decrease this
                 isSwiveledIn = true;
@@ -175,7 +175,7 @@ public class TeleOpPro extends LinearOpMode {
                 isSwiveledIn = false;
             }
 
-            if (dpadUp && dropdownPos < 4 && gamepad2.timestamp > nextDropdownTimestamp) {
+            if (dpadUp && dropdownPos < 5 && gamepad2.timestamp > nextDropdownTimestamp) {
                 nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
                 dropdownPos++;
             } 
@@ -188,7 +188,7 @@ public class TeleOpPro extends LinearOpMode {
                 dropdownPos = 0;
             }
             if (dpadRight) {
-                dropdownPos = 4;
+                dropdownPos = 5;
             }
 
             if (x) {
@@ -201,9 +201,9 @@ public class TeleOpPro extends LinearOpMode {
 
             if (b) {
                 // Set CLAW to open position
-                robot.CLAW.setPosition(.4);
+                robot.CLAW.setPosition(0.5);
                 // Set WRIST to vertical position
-                robot.WRIST.setPosition(.4);
+                robot.WRIST.setPosition(0.38);
                 // Swivel in
                 robot.LFS.setPosition(0.95); // To swivel in more, increase this
                 robot.RFS.setPosition(0.05);// To swivel in more, decrease this
@@ -223,19 +223,22 @@ public class TeleOpPro extends LinearOpMode {
             // Gamepad 2
             if (dropdownPos != prevDropdownPos) {
                 if (dropdownPos == 0) {
-                    robot.DROPL.setPosition(0.00 + groundOffsetHeight + dropLOffset);
-                    robot.DROPR.setPosition(0.20 - groundOffsetHeight + dropROffset);
+                    robot.DROPL.setPosition(0.00 + pixelHeightOffset * 1 + dropLOffset);
+                    robot.DROPR.setPosition(0.35 - pixelHeightOffset * 1 + dropROffset);
                 } else if (dropdownPos == 1) {
-                    robot.DROPL.setPosition(0.05 + groundOffsetHeight + dropLOffset);
-                    robot.DROPR.setPosition(0.15 - groundOffsetHeight + dropROffset);
+                    robot.DROPL.setPosition(0.00 + pixelHeightOffset * 2 + dropLOffset);
+                    robot.DROPR.setPosition(0.35 - pixelHeightOffset * 2 + dropROffset);
                 } else if (dropdownPos == 2) {
-                    robot.DROPL.setPosition(0.10 + groundOffsetHeight + dropLOffset);
-                    robot.DROPR.setPosition(0.10 - groundOffsetHeight + dropROffset);
+                    robot.DROPL.setPosition(0.00 + pixelHeightOffset * 3 + dropLOffset);
+                    robot.DROPR.setPosition(0.35 - pixelHeightOffset * 3 + dropROffset);
                 } else if (dropdownPos == 3) {
-                    robot.DROPL.setPosition(0.15 + groundOffsetHeight + dropLOffset);
-                    robot.DROPR.setPosition(0.05 - groundOffsetHeight + dropROffset);
+                    robot.DROPL.setPosition(0.00 + pixelHeightOffset * 4 + dropLOffset);
+                    robot.DROPR.setPosition(0.35 - pixelHeightOffset * 4 + dropROffset);
                 } else if (dropdownPos == 4) {
-                    robot.DROPL.setPosition(0.20 + dropLOffset);
+                    robot.DROPL.setPosition(0.00 + pixelHeightOffset * 5 + dropLOffset);
+                    robot.DROPR.setPosition(0.35 - pixelHeightOffset * 5 + dropROffset);
+                } else if (dropdownPos == 5) {
+                    robot.DROPL.setPosition(0.35 + dropLOffset);
                     robot.DROPR.setPosition(0.00 + dropROffset);
                 }
                 prevDropdownPos = dropdownPos;
