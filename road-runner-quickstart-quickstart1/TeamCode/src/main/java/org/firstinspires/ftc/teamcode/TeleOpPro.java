@@ -217,20 +217,20 @@ public class TeleOpPro extends LinearOpMode {
             // Gamepad 2
             if (dropdownPos != prevDropdownPos) {
                 if (dropdownPos == 0) {
-                    robot.DROPL.setPosition(0.00 + groundOffsetHeight);
-                    robot.DROPR.setPosition(0.20 - groundOffsetHeight);
+                    robot.DROPL.setPosition(0.00 + groundOffsetHeight + dropLOffset);
+                    robot.DROPR.setPosition(0.20 - groundOffsetHeight + dropROffset);
                 } else if (dropdownPos == 1) {
-                    robot.DROPL.setPosition(0.05 + groundOffsetHeight);
-                    robot.DROPR.setPosition(0.15 - groundOffsetHeight);
+                    robot.DROPL.setPosition(0.05 + groundOffsetHeight + dropLOffset);
+                    robot.DROPR.setPosition(0.15 - groundOffsetHeight + dropROffset);
                 } else if (dropdownPos == 2) {
-                    robot.DROPL.setPosition(0.10 + groundOffsetHeight);
-                    robot.DROPR.setPosition(0.10 - groundOffsetHeight);
+                    robot.DROPL.setPosition(0.10 + groundOffsetHeight + dropLOffset);
+                    robot.DROPR.setPosition(0.10 - groundOffsetHeight + dropROffset);
                 } else if (dropdownPos == 3) {
-                    robot.DROPL.setPosition(0.15 + groundOffsetHeight);
-                    robot.DROPR.setPosition(0.05 - groundOffsetHeight);
+                    robot.DROPL.setPosition(0.15 + groundOffsetHeight + dropLOffset);
+                    robot.DROPR.setPosition(0.05 - groundOffsetHeight + dropROffset);
                 } else if (dropdownPos == 4) {
-                    robot.DROPL.setPosition(0.20 + groundOffsetHeight);
-                    robot.DROPR.setPosition(0.00 - groundOffsetHeight);
+                    robot.DROPL.setPosition(0.20 + groundOffsetHeight + dropLOffset);
+                    robot.DROPR.setPosition(0.00 - groundOffsetHeight + dropROffset);
                 }
                 prevDropdownPos = dropdownPos;
             }
