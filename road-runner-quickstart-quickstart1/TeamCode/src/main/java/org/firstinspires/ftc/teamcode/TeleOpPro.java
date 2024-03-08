@@ -40,6 +40,7 @@ public class TeleOpPro extends LinearOpMode {
 
         double triggerR;
         double triggerL;
+        boolean isSwiveledIn = true;
 
         double intakeSpeed;
         double intakeSpeedMultiplier = 1;
@@ -51,9 +52,9 @@ public class TeleOpPro extends LinearOpMode {
         double dropdownPos = 0;
         double prevDropdownPos = 0;
         double groundOffsetHeight = 0.00;
-        double dropLOffset = 0.04;
+//        double dropLOffset = 0.04;
+        double dropLOffset = 0;
         double dropROffset = 0;
-//        double liftPosition = 0.0;
 
         boolean dpadUp;
         boolean dpadDown;
@@ -73,12 +74,12 @@ public class TeleOpPro extends LinearOpMode {
         long timestampTimeout = 300;
 
         // Initialize Servo Positions
+        robot.CLAW.setPosition(0.1);
+        robot.WRIST.setPosition(0.38);
         robot.LFS.setPosition(0.95);
         robot.RFS.setPosition(0.05);
-
-        robot.CLAW.setPosition(0);
-        robot.WRIST.setPosition(0.39);
-        // Dropdown
+        // Set attachment
+        // Set Dropdown to Level 0
         robot.DROPL.setPosition(0.00 + groundOffsetHeight + dropLOffset);
         robot.DROPR.setPosition(0.20 - groundOffsetHeight + dropROffset);
 
@@ -145,13 +146,13 @@ public class TeleOpPro extends LinearOpMode {
                 isClawOpen = !isClawOpen;
             }
 
-            if (buttonL && gamepad2.timestamp > nextWristTimestamp) {
+            if (!isSwiveledIn && buttonL && gamepad2.timestamp > nextWristTimestamp) {
                 // Rotate WRIST
                 nextWristTimestamp = gamepad2.timestamp + timestampTimeout;
 
                 if (isWristVertical) {
                     // Set WRIST to horizontal position
-                    robot.WRIST.setPosition(0.39);
+                    robot.WRIST.setPosition(0.38);
                 } else {
                     // Set WRIST to vertical position
                     robot.WRIST.setPosition(0.74);
@@ -161,14 +162,17 @@ public class TeleOpPro extends LinearOpMode {
 
             if (triggerL > 0) {
                 // Swivel in
+                robot.WRIST.setPosition(0.74); // Set wrist to vertical
                 robot.LFS.setPosition(0.95); // To swivel in more, increase this
                 robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+                isSwiveledIn = true;
             }
 
             if (triggerR > 0) {
                 // Swivel out
                 robot.LFS.setPosition(0.50); // To swivel out more, decrease this
                 robot.RFS.setPosition(0.50); // To swivel out more, increase this
+                isSwiveledIn = false;
             }
 
             if (dpadUp && dropdownPos < 4 && gamepad2.timestamp > nextDropdownTimestamp) {
