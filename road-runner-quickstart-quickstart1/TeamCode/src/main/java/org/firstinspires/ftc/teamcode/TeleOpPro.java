@@ -25,7 +25,7 @@ public class TeleOpPro extends LinearOpMode {
         robot.LL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         robot.RL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        telemetry.setMsTransmissionInterval(50);
+        telemetry.setMsTransmissionInterval(5);
 
         waitForStart();
         // Initialize Servo Positions
@@ -33,8 +33,8 @@ public class TeleOpPro extends LinearOpMode {
         robot.RFS.setPosition(0.05);
 
         robot.CLAW.setPosition(0);
-//        robot.FPS.setPosition(0);
-//        robot.BPS.setPosition(0);
+        robot.WRIST.setPosition(0.4);
+        robot.DROPDOWN.setPosition(0);
 
         double speed = 1.0;
 
