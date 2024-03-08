@@ -124,7 +124,7 @@ public class TeleOpPro extends LinearOpMode {
                 robot.AP.setPosition(0);
             }
 
-            if (gamepad2.left_bumper) {
+            if (gamepad1.left_bumper) {
                 robot.AP.setPosition(1);
             }
 
