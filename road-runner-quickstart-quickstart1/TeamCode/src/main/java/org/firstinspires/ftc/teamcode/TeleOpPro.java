@@ -35,8 +35,8 @@ public class TeleOpPro extends LinearOpMode {
         robot.CLAW.setPosition(0);
         robot.WRIST.setPosition(0.4);
         // Dropdown
-        robot.DROPR.setPosition(0);
-        robot.DROPL.setPosition(1);
+        robot.DROPL.setPosition(0);
+        robot.DROPR.setPosition(0.2);
 
         double speed = 1.0;
 
@@ -60,6 +60,8 @@ public class TeleOpPro extends LinearOpMode {
         long nextDropdownTimestamp = 0;
         double dropdownPos = 0;
         double prevDropdownPos = 0;
+        double groundOffsetHeight = 0.04;
+        double dropLOffset = 0.02;
 //        double liftPosition = 0.0;
 
         boolean dpadUp;
@@ -117,6 +119,14 @@ public class TeleOpPro extends LinearOpMode {
                 speed = 0.30;
             }
 
+            if (gamepad1.right_bumper) {
+                robot.AP.setPosition(0);
+            }
+
+            if (gamepad2.left_bumper) {
+                robot.AP.setPosition(1);
+            }
+
             // Gamepad 2 Code
             if (buttonR && gamepad2.timestamp > nextClawTimestamp) {
                 // Control CLAW
@@ -127,7 +137,7 @@ public class TeleOpPro extends LinearOpMode {
                     robot.CLAW.setPosition(0);
                 } else {
                     // Set CLAW to open position
-                    robot.CLAW.setPosition(.4);
+                    robot.CLAW.setPosition(0.4);
                 }
                 isClawOpen = !isClawOpen;
             }
@@ -138,10 +148,10 @@ public class TeleOpPro extends LinearOpMode {
 
                 if (isWristVertical) {
                     // Set WRIST to horizontal position
-                    robot.WRIST.setPosition(0);
+                    robot.WRIST.setPosition(0.4);
                 } else {
                     // Set WRIST to vertical position
-                    robot.WRIST.setPosition(.4);
+                    robot.WRIST.setPosition(0.7);
                 }
                 isWristVertical = !isWristVertical;
             }
@@ -158,14 +168,9 @@ public class TeleOpPro extends LinearOpMode {
                 robot.RFS.setPosition(0.50); // To swivel out more, increase this
             }
 
-            if (dpadUp && gamepad2.timestamp > nextDropdownTimestamp) {
-                if (dropdownPos == 4) {
-                    nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
-                    dropdownPos = 0;
-                } else if (dropdownPos < 4) {
-                    nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
-                    dropdownPos++;
-                }
+            if (dpadUp && dropdownPos < 4 && gamepad2.timestamp > nextDropdownTimestamp) {
+                nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
+                dropdownPos++;
             } 
             if (dpadDown && dropdownPos > 0 && gamepad2.timestamp > nextDropdownTimestamp) {
                 nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
@@ -173,23 +178,25 @@ public class TeleOpPro extends LinearOpMode {
             }
             
             if (dpadLeft) {
-                intakeSpeedMultiplier = 0.70;
+                dropdownPos = 0;
+                robot.DROPL.setPosition(0.00 + groundOffsetHeight);
+                robot.DROPR.setPosition(0.20 - groundOffsetHeight);
             }
             if (dpadRight) {
-                intakeSpeedMultiplier = 1.0;
-            }
-
-            if (a) {
-                robot.AP.setDirection(Servo.Direction.REVERSE);
-                robot.AP.setPosition(0);
-            }
-
-            if (b) {
-                robot.AP.setDirection(Servo.Direction.REVERSE);
-                robot.AP.setPosition(1);
+                dropdownPos = 4;
+                robot.DROPL.setPosition(0.20 + groundOffsetHeight);
+                robot.DROPR.setPosition(0.00 - groundOffsetHeight);
             }
 
             if (x) {
+                intakeSpeedMultiplier = 1.0;
+            }
+
+            if (y) {
+                intakeSpeedMultiplier = 0.50;
+            }
+
+            if (b) {
                 // Set CLAW to open position
                 robot.CLAW.setPosition(.4);
                 // Set WRIST to vertical position
@@ -213,20 +220,20 @@ public class TeleOpPro extends LinearOpMode {
             // Gamepad 2
             if (dropdownPos != prevDropdownPos) {
                 if (dropdownPos == 0) {
-                    robot.DROPR.setPosition(0.00);
-                    robot.DROPL.setPosition(1.00);
+                    robot.DROPL.setPosition(0.00 + groundOffsetHeight);
+                    robot.DROPR.setPosition(0.20 - groundOffsetHeight);
                 } else if (dropdownPos == 1) {
-                    robot.DROPR.setPosition(0.25);
-                    robot.DROPL.setPosition(0.75);
+                    robot.DROPL.setPosition(0.05 + groundOffsetHeight);
+                    robot.DROPR.setPosition(0.15 - groundOffsetHeight);
                 } else if (dropdownPos == 2) {
-                    robot.DROPR.setPosition(0.50);
-                    robot.DROPL.setPosition(0.50);
+                    robot.DROPL.setPosition(0.10 + groundOffsetHeight);
+                    robot.DROPR.setPosition(0.10 - groundOffsetHeight);
                 } else if (dropdownPos == 3) {
-                    robot.DROPR.setPosition(0.75);
-                    robot.DROPL.setPosition(0.25);
+                    robot.DROPL.setPosition(0.15 + groundOffsetHeight);
+                    robot.DROPR.setPosition(0.05 - groundOffsetHeight);
                 } else if (dropdownPos == 4) {
-                    robot.DROPR.setPosition(1.00);
-                    robot.DROPL.setPosition(0.00);
+                    robot.DROPL.setPosition(0.20 + groundOffsetHeight);
+                    robot.DROPR.setPosition(0.00 - groundOffsetHeight);
                 }
                 prevDropdownPos = dropdownPos;
             }

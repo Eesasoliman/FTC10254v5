@@ -98,6 +98,8 @@ public class HardwarePushBot {
         RFS = hardwareMap.get(Servo.class, "RFS");
         AP = hardwareMap.get(Servo.class, "AP");
 
+        AP.setDirection(Servo.Direction.REVERSE);
+
 //        DSRF = hardwareMap.get(DistanceSensor.class, "DSRF");
 //        CS = hardwareMap.get(ColorSensor.class, "CS");
 
