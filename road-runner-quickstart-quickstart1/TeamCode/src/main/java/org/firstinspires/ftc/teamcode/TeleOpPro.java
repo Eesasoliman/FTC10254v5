@@ -62,6 +62,7 @@ public class TeleOpPro extends LinearOpMode {
         double prevDropdownPos = 0;
         double groundOffsetHeight = 0.04;
         double dropLOffset = 0.02;
+        double dropROffset = 0;
 //        double liftPosition = 0.0;
 
         boolean dpadUp;
@@ -179,13 +180,9 @@ public class TeleOpPro extends LinearOpMode {
             
             if (dpadLeft) {
                 dropdownPos = 0;
-                robot.DROPL.setPosition(0.00 + groundOffsetHeight);
-                robot.DROPR.setPosition(0.20 - groundOffsetHeight);
             }
             if (dpadRight) {
                 dropdownPos = 4;
-                robot.DROPL.setPosition(0.20 + groundOffsetHeight);
-                robot.DROPR.setPosition(0.00 - groundOffsetHeight);
             }
 
             if (x) {
