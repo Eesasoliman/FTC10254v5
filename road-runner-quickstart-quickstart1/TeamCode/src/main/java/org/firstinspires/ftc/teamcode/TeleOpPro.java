@@ -28,16 +28,6 @@ public class TeleOpPro extends LinearOpMode {
         telemetry.setMsTransmissionInterval(5);
 
         waitForStart();
-        // Initialize Servo Positions
-        robot.LFS.setPosition(0.95);
-        robot.RFS.setPosition(0.05);
-
-        robot.CLAW.setPosition(0);
-        robot.WRIST.setPosition(0.4);
-        // Dropdown
-        robot.DROPL.setPosition(0);
-        robot.DROPR.setPosition(0.2);
-
         double speed = 1.0;
 
         double lefty;
@@ -60,8 +50,8 @@ public class TeleOpPro extends LinearOpMode {
         long nextDropdownTimestamp = 0;
         double dropdownPos = 0;
         double prevDropdownPos = 0;
-        double groundOffsetHeight = 0.04;
-        double dropLOffset = 0.02;
+        double groundOffsetHeight = 0.00;
+        double dropLOffset = 0.04;
         double dropROffset = 0;
 //        double liftPosition = 0.0;
 
@@ -81,6 +71,16 @@ public class TeleOpPro extends LinearOpMode {
         boolean isWristVertical = true;
 
         long timestampTimeout = 300;
+
+        // Initialize Servo Positions
+        robot.LFS.setPosition(0.95);
+        robot.RFS.setPosition(0.05);
+
+        robot.CLAW.setPosition(0);
+        robot.WRIST.setPosition(0.39);
+        // Dropdown
+        robot.DROPL.setPosition(0.00 + groundOffsetHeight + dropLOffset);
+        robot.DROPR.setPosition(0.20 - groundOffsetHeight + dropROffset);
 
         while (opModeIsActive()) {
             // Gamepad 1
@@ -129,16 +129,18 @@ public class TeleOpPro extends LinearOpMode {
             }
 
             // Gamepad 2 Code
+
+            // TODO: Fix CLAW's 0 position since it doesn't hold pixels
             if (buttonR && gamepad2.timestamp > nextClawTimestamp) {
                 // Control CLAW
                 nextClawTimestamp = gamepad2.timestamp + timestampTimeout;
 
                 if (isClawOpen) {
                     // Set CLAW to close position
-                    robot.CLAW.setPosition(0);
+                    robot.CLAW.setPosition(0.1);
                 } else {
                     // Set CLAW to open position
-                    robot.CLAW.setPosition(0.4);
+                    robot.CLAW.setPosition(0.5);
                 }
                 isClawOpen = !isClawOpen;
             }
@@ -149,10 +151,10 @@ public class TeleOpPro extends LinearOpMode {
 
                 if (isWristVertical) {
                     // Set WRIST to horizontal position
-                    robot.WRIST.setPosition(0.4);
+                    robot.WRIST.setPosition(0.39);
                 } else {
                     // Set WRIST to vertical position
-                    robot.WRIST.setPosition(0.7);
+                    robot.WRIST.setPosition(0.74);
                 }
                 isWristVertical = !isWristVertical;
             }
@@ -229,8 +231,8 @@ public class TeleOpPro extends LinearOpMode {
                     robot.DROPL.setPosition(0.15 + groundOffsetHeight + dropLOffset);
                     robot.DROPR.setPosition(0.05 - groundOffsetHeight + dropROffset);
                 } else if (dropdownPos == 4) {
-                    robot.DROPL.setPosition(0.20 + groundOffsetHeight + dropLOffset);
-                    robot.DROPR.setPosition(0.00 - groundOffsetHeight + dropROffset);
+                    robot.DROPL.setPosition(0.20 + dropLOffset);
+                    robot.DROPR.setPosition(0.00 + dropROffset);
                 }
                 prevDropdownPos = dropdownPos;
             }
