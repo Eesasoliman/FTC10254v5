@@ -54,6 +54,8 @@ public class TeleOpPro extends LinearOpMode {
 
         double armPower;
         double armSpeed = 1.0;
+
+        long nextDropdownTimestamp = 0;
         double dropdownPos = 0;
         double prevDropdownPos = 0;
 //        double liftPosition = 0.0;
@@ -72,6 +74,8 @@ public class TeleOpPro extends LinearOpMode {
         long nextClawTimestamp = 0;
         boolean isClawOpen = true;
         boolean isWristVertical = true;
+
+        long timestampTimeout = 300;
 
         while (opModeIsActive()) {
             // Gamepad 1
@@ -114,7 +118,7 @@ public class TeleOpPro extends LinearOpMode {
             // Gamepad 2 Code
             if (buttonR && gamepad2.timestamp > nextClawTimestamp) {
                 // Control CLAW
-                nextClawTimestamp = gamepad2.timestamp + 300;
+                nextClawTimestamp = gamepad2.timestamp + timestampTimeout;
 
                 if (isClawOpen) {
                     // Set CLAW to close position
@@ -128,7 +132,7 @@ public class TeleOpPro extends LinearOpMode {
 
             if (buttonL && gamepad2.timestamp > nextWristTimestamp) {
                 // Rotate WRIST
-                nextWristTimestamp = gamepad2.timestamp + 300;
+                nextWristTimestamp = gamepad2.timestamp + timestampTimeout;
 
                 if (isWristVertical) {
                     // Set WRIST to horizontal position
@@ -152,14 +156,25 @@ public class TeleOpPro extends LinearOpMode {
                 robot.RFS.setPosition(0.50); // To swivel out more, increase this
             }
 
-            if (dpadUp && dropdownPos < 4) {
-                dropdownPos++;
-            } else if (dpadLeft) {
-                intakeSpeedMultiplier = 0.70;
-            } else if (dpadRight) {
-                intakeSpeedMultiplier = 1.0;
-            } else if (dpadDown && dropdownPos > 0) {
+            if (dpadUp && gamepad2.timestamp > nextDropdownTimestamp) {
+                if (dropdownPos == 4) {
+                    nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
+                    dropdownPos = 0;
+                } else if (dropdownPos < 4) {
+                    nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
+                    dropdownPos++;
+                }
+            } 
+            if (dpadDown && dropdownPos > 0 && gamepad2.timestamp > nextDropdownTimestamp) {
+                nextDropdownTimestamp = gamepad2.timestamp + timestampTimeout;
                 dropdownPos--;
+            }
+            
+            if (dpadLeft) {
+                intakeSpeedMultiplier = 0.70;
+            }
+            if (dpadRight) {
+                intakeSpeedMultiplier = 1.0;
             }
 
             if (a) {
