@@ -76,8 +76,8 @@ public class TeleOpPro extends LinearOpMode {
         // Initialize Servo Positions
         robot.CLAW.setPosition(0.1);
         robot.WRIST.setPosition(0.38);
-        robot.LFS.setPosition(0.95);
-        robot.RFS.setPosition(0.05);
+        robot.LFS.setPosition(0.92); // To swivel in more, increase this
+        robot.RFS.setPosition(0.08);// To swivel in more, decrease this
         // Set Dropdown to Level 5
         robot.DROPL.setPosition(0.35 + dropLOffset);
         robot.DROPR.setPosition(0.00 + dropROffset);
@@ -162,8 +162,8 @@ public class TeleOpPro extends LinearOpMode {
             if (triggerL > 0) {
                 // Swivel in
                 robot.WRIST.setPosition(0.38); // Set wrist to vertical
-                robot.LFS.setPosition(0.95); // To swivel in more, increase this
-                robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+                robot.LFS.setPosition(0.92); // To swivel in more, increase this
+                robot.RFS.setPosition(0.08);// To swivel in more, decrease this
                 isSwiveledIn = true;
             }
 
