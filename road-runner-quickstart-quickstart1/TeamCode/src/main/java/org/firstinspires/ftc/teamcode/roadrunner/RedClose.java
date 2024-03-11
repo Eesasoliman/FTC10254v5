@@ -72,12 +72,14 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence white1 = drive.trajectorySequenceBuilder(yellow1.end())
                 // Get
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
-                .lineToConstantHeading(new Vector2d(-48, -7))
-                .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
+                .lineToConstantHeading(new Vector2d(-24,-7),SampleMecanumDrive.getVelocityConstraint(backboardVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineToConstantHeading(new Vector2d(-60, -12), Math.toRadians(270))
 
                 // Return
-                .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
-                .lineToConstantHeading(new Vector2d(24, -7))
+                .splineToConstantHeading(new Vector2d(-24, -12), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(24, -12),SampleMecanumDrive.getVelocityConstraint(backboardVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .splineToConstantHeading(new Vector2d(yellow1.end().getX(), yellow1.end().getY()), Math.toRadians(270))
                 .build();
         TrajectorySequence white2 = drive.trajectorySequenceBuilder(yellow2.end())
