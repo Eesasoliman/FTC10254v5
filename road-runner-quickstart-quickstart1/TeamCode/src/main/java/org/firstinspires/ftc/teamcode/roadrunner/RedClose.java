@@ -118,7 +118,7 @@ public class RedClose extends DriveOpMode {
                 .forward(10)
                 .build();
 
-        initAprilTagProcessor();
+//        initAprilTagProcessor();
         BlueColorPipeline pipeline = startBlueCamera();
         while (opModeInInit()) {
             sleep(1000);
@@ -155,11 +155,11 @@ public class RedClose extends DriveOpMode {
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
             drive.followTrajectorySequence(yellow);
-            drive.followTrajectorySequence(relocalize(yellow.end(), 0));
+ //           drive.followTrajectorySequence(relocalize(yellow.end(), 0));
             if (driveVariables[2]) {
                 // Follow White Twice
                 drive.followTrajectorySequence(white);
-                drive.followTrajectorySequence(relocalize(white.end(), 0));
+//                drive.followTrajectorySequence(relocalize(white.end(), 0));
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once
