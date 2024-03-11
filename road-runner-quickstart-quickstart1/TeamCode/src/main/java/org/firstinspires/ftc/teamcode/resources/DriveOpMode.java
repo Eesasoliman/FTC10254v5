@@ -129,8 +129,8 @@ public class DriveOpMode extends LinearOpMode {
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
                 .build();
-        visionPortal.stopLiveView(); // Comment out when debugging
-        visionPortal.stopStreaming();
+//        visionPortal.stopLiveView(); // Comment out when debugging
+//        visionPortal.stopStreaming();
     }
 
     public void startAprilTagCamera() {
@@ -212,7 +212,7 @@ public class DriveOpMode extends LinearOpMode {
         return new Pose2d(
                 stageX - DESIRED_DISTANCE,
                 stageY + lateralOffset,
-                startPose.getHeading() + Math.toRadians(yaw));
+                Math.toRadians(yaw));
     }
 
     public boolean detectRobot(boolean isBlueSide) {
