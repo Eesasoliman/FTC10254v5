@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.Exposur
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.HardwarePushBot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -34,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 @Disabled
 @Autonomous
 public class DriveOpMode extends LinearOpMode {
+    public static double CENTER_OFFSET = 5;
+    public static double DESIRED_DISTANCE = 6.0; //  this is how close the camera should get to the target (inches)
     final OpenCvCameraRotation CAMERA_ROTATION = OpenCvCameraRotation.UPSIDE_DOWN;
     public HardwarePushBot robot = new HardwarePushBot();
     public SampleMecanumDrive drive = null;
@@ -157,9 +158,8 @@ public class DriveOpMode extends LinearOpMode {
         }
     }
 
-    public TrajectorySequence relocalize(Pose2d startPose, double lateralOffset)
+    public Pose2d relocalize(Pose2d startPose, double lateralOffset)
     {
-        final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
         int ID = (startPose.getY() >= 0) ? 2 : 5;
         boolean targetFound = false;
         AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -190,15 +190,29 @@ public class DriveOpMode extends LinearOpMode {
 
         visionPortal.stopStreaming();
 
-        double relativeToTagXError = desiredTag.ftcPose.x;
-        double relativeToTagYError = desiredTag.ftcPose.y;
-        double relativeToTagHeadingError = desiredTag.ftcPose.bearing;
+        double yaw = desiredTag.ftcPose.yaw;
+        double range = desiredTag.ftcPose.range;
+        double bearing = desiredTag.ftcPose.bearing;
 
-        Pose2d endPose = new Pose2d(
-            startPose.getX() + relativeToTagYError - DESIRED_DISTANCE,
-            startPose.getY() + relativeToTagXError + lateralOffset,
-            startPose.getHeading() + Math.toRadians(relativeToTagHeadingError));
-        return drive.trajectorySequenceBuilder(startPose).lineToLinearHeading(endPose).build();
+        double tagOffsetX = range * Math.sin(Math.toRadians(yaw - bearing));
+        double tagOffsetY = range * Math.cos(Math.toRadians(yaw - bearing));
+
+        double centerOffsetX = CENTER_OFFSET * Math.sin(Math.toRadians(90 - yaw));
+        double centerOffsetY = CENTER_OFFSET * Math.cos(Math.toRadians(90 - yaw));
+
+        double stageX = 60 - tagOffsetY - centerOffsetY;
+        double stageY = 0;
+        if (ID == 2) {
+            stageY = 36 + tagOffsetX + centerOffsetX;
+        }
+        if (ID == 5) {
+            stageY = -36 + tagOffsetX + centerOffsetX;
+        }
+
+        return new Pose2d(
+                stageX - DESIRED_DISTANCE,
+                stageY + lateralOffset,
+                startPose.getHeading() + Math.toRadians(yaw));
     }
 
     public boolean detectRobot(boolean isBlueSide) {

@@ -162,8 +162,8 @@ public class TeleOpPro extends LinearOpMode {
             if (triggerL > 0) {
                 // Swivel in
                 robot.WRIST.setPosition(0.38); // Set wrist to vertical
-                robot.LFS.setPosition(0.92); // To swivel in more, increase this
-                robot.RFS.setPosition(0.08);// To swivel in more, decrease this
+                robot.LFS.setPosition(0.95); // To swivel in more, increase this
+                robot.RFS.setPosition(0.05);// To swivel in more, decrease this
                 isSwiveledIn = true;
             }
 
@@ -198,15 +198,15 @@ public class TeleOpPro extends LinearOpMode {
                 intakeSpeedMultiplier = 0.50;
             }
 
-            if (b) {
-                // Set CLAW to open position
-                robot.CLAW.setPosition(0.5);
-                // Set WRIST to vertical position
-                robot.WRIST.setPosition(0.38);
-                // Swivel in
-                robot.LFS.setPosition(0.95); // To swivel in more, increase this
-                robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-            }
+//            if (b) {
+//                // Set CLAW to open position
+//                robot.CLAW.setPosition(0.5);
+//                // Set WRIST to vertical position
+//                robot.WRIST.setPosition(0.38);
+//                // Swivel in
+//                robot.LFS.setPosition(0.95); // To swivel in more, increase this
+//                robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+//            }
 
             // Gamepad 1
             double FLDp = lefty + leftx;

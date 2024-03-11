@@ -99,11 +99,11 @@ public class Template extends DriveOpMode {
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
             drive.followTrajectorySequence(yellow);
-            drive.followTrajectorySequence(relocalize(yellow.end(), 0)); // Start AprilTagCamera 3 seconds before this point
+//            drive.followTrajectorySequence(relocalize(yellow.end(), 0)); // Start AprilTagCamera 3 seconds before this point
             if (driveVariables[2]) {
                 // Follow White Twice
                 drive.followTrajectorySequence(white);
-                drive.followTrajectorySequence(relocalize(white.end(), 0)); // Start AprilTagCamera 3 seconds before this point
+//                drive.followTrajectorySequence(relocalize(white.end(), 0)); // Start AprilTagCamera 3 seconds before this point
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once

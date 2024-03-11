@@ -18,14 +18,10 @@ public class TestTrajectorySequence extends DriveOpMode {
         robot.init(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(0, 0, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(24, 48, Math.toRadians(0));
+        Pose2d correctPose = relocalize(startPose, 0);
         TrajectorySequence Test = drive.trajectorySequenceBuilder(startPose)
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> {
-                    purpleIntake();
-                    scorePixelsOnBackboard(12);
-                })
-                .forward(12)
-                .back(12)
+                .lineToLinearHeading(correctPose)
                 .build();
 
         waitForStart();
