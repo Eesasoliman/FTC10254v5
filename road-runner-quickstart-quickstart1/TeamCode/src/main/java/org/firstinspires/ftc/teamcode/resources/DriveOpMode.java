@@ -193,38 +193,41 @@ public class DriveOpMode extends LinearOpMode {
         double range = desiredTag.ftcPose.range;
         double bearing = desiredTag.ftcPose.bearing;
 
-        double tagOffsetY = range * Math.sin(Math.toRadians(yaw - bearing));
-        double tagOffsetX = range * Math.cos(Math.toRadians(yaw - bearing));
+        double tagOffsetX = range * Math.sin(Math.toRadians(yaw - bearing));
+        double tagOffsetY = range * Math.cos(Math.toRadians(yaw - bearing));
 
         double centerOffsetX = 8.5 * Math.sin(Math.toRadians(90 - yaw));
         double centerOffsetY = 8.5 * Math.cos(Math.toRadians(90 - yaw));
 
-        double stageX = 60 - tagOffsetY + centerOffsetY;
-        double stageY = tagOffsetX - centerOffsetX;
+        double stageX = 60 - (tagOffsetY + centerOffsetX);
+        double stageY = tagOffsetX - centerOffsetY;
 
         if (ID == 2) {
-            stageY = 36 - (tagOffsetX - centerOffsetX);
+            stageY = 36 - (-tagOffsetX - centerOffsetY);
         }
         if (ID == 5) {
-            stageY = -36 + (tagOffsetX + centerOffsetX);
+            stageY = -36 + (-tagOffsetX + centerOffsetY);
         }
 
-        telemetry.addData("range", range);
-        telemetry.addData("bearing", bearing);
-        telemetry.addData("yaw", yaw);
-        telemetry.addData("rX", desiredTag.ftcPose.x);
-        telemetry.addData("rY", desiredTag.ftcPose.y);
-        telemetry.addData("X", tagOffsetX);
-        telemetry.addData("Y", tagOffsetY);
-        telemetry.addData("cX", centerOffsetX);
-        telemetry.addData("cY", centerOffsetY);
-        telemetry.addData("fX", stageX);
-        telemetry.addData("fY", stageY);
+        double heading = 0 - yaw;
+
+//        telemetry.addData("range", range);
+//        telemetry.addData("bearing", bearing);
+//        telemetry.addData("yaw", yaw);
+//        telemetry.addData("rX", desiredTag.ftcPose.x);
+//        telemetry.addData("rY", desiredTag.ftcPose.y);
+//        telemetry.addData("X", tagOffsetX);
+//        telemetry.addData("Y", tagOffsetY);
+//        telemetry.addData("cX", centerOffsetX);
+//        telemetry.addData("cY", centerOffsetY);
+//        telemetry.addData("fX", stageX);
+//        telemetry.addData("fY", stageY);
+//        telemetry.addData("heading", heading);
 
         return new Pose2d(
             stageX,
             stageY,
-            yaw
+            Math.toRadians(heading)
         );
     }
 

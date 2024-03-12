@@ -19,7 +19,7 @@ public class TestTrajectorySequence extends DriveOpMode {
         sleep(1000);
         Pose2d back = new Pose2d(50, 36, Math.toRadians(0));
         Pose2d currentPose = relocalize(true);
-
+        telemetry.addData("pose",currentPose);
         TrajectorySequence Test = drive.trajectorySequenceBuilder(currentPose)
                 .lineToLinearHeading(back)
                 .build();
