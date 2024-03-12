@@ -16,16 +16,19 @@ public class TestTrajectorySequence extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
         initAprilTagProcessor();
 
-        sleep(2000);
-        Pose2d startPose = new Pose2d(24, 36, Math.toRadians(0));
+        sleep(1000);
         Pose2d back = new Pose2d(50, 36, Math.toRadians(0));
-        Pose2d correctPose = relocalize(startPose, 0);
-        TrajectorySequence Test = drive.trajectorySequenceBuilder(correctPose)
+        Pose2d currentPose = relocalize(true);
+
+        TrajectorySequence Test = drive.trajectorySequenceBuilder(currentPose)
                 .lineToLinearHeading(back)
                 .build();
 
+        telemetry.update();
+
         waitForStart();
-        drive.setPoseEstimate(startPose);
+
+        drive.setPoseEstimate(currentPose);
         drive.followTrajectorySequence(Test);
     }
 }

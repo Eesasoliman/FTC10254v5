@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 @Disabled
 @Autonomous
 public class DriveOpMode extends LinearOpMode {
-    public static double CENTER_OFFSET = 5;
     public static double DESIRED_DISTANCE = 6.0; //  this is how close the camera should get to the target (inches)
     final OpenCvCameraRotation CAMERA_ROTATION = OpenCvCameraRotation.UPSIDE_DOWN;
     public HardwarePushBot robot = new HardwarePushBot();
@@ -123,7 +122,7 @@ public class DriveOpMode extends LinearOpMode {
         // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
         // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
         // Note: Decimation can be changed on-the-fly to adapt during a match.
-        aprilTag.setDecimation(2);
+        aprilTag.setDecimation(1);
 
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
@@ -158,9 +157,9 @@ public class DriveOpMode extends LinearOpMode {
         }
     }
 
-    public Pose2d relocalize(Pose2d startPose, double lateralOffset)
+    public Pose2d relocalize(boolean isBlueSide)
     {
-        int ID = (startPose.getY() >= 0) ? 2 : 5;
+        int ID = (isBlueSide) ? 2 : 5;
         boolean targetFound = false;
         AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
@@ -194,25 +193,39 @@ public class DriveOpMode extends LinearOpMode {
         double range = desiredTag.ftcPose.range;
         double bearing = desiredTag.ftcPose.bearing;
 
-        double tagOffsetX = range * Math.sin(Math.toRadians(yaw - bearing));
-        double tagOffsetY = range * Math.cos(Math.toRadians(yaw - bearing));
+        double tagOffsetY = range * Math.sin(Math.toRadians(yaw - bearing));
+        double tagOffsetX = range * Math.cos(Math.toRadians(yaw - bearing));
 
-        double centerOffsetX = CENTER_OFFSET * Math.sin(Math.toRadians(90 - yaw));
-        double centerOffsetY = CENTER_OFFSET * Math.cos(Math.toRadians(90 - yaw));
+        double centerOffsetX = 8.5 * Math.sin(Math.toRadians(90 - yaw));
+        double centerOffsetY = 8.5 * Math.cos(Math.toRadians(90 - yaw));
 
-        double stageX = 60 - tagOffsetY - centerOffsetY;
-        double stageY = 0;
+        double stageX = 60 - tagOffsetY + centerOffsetY;
+        double stageY = tagOffsetX - centerOffsetX;
+
         if (ID == 2) {
-            stageY = 36 + tagOffsetX + centerOffsetX;
+            stageY = 36 - (tagOffsetX - centerOffsetX);
         }
         if (ID == 5) {
-            stageY = -36 + tagOffsetX + centerOffsetX;
+            stageY = -36 + (tagOffsetX + centerOffsetX);
         }
 
+        telemetry.addData("range", range);
+        telemetry.addData("bearing", bearing);
+        telemetry.addData("yaw", yaw);
+        telemetry.addData("rX", desiredTag.ftcPose.x);
+        telemetry.addData("rY", desiredTag.ftcPose.y);
+        telemetry.addData("X", tagOffsetX);
+        telemetry.addData("Y", tagOffsetY);
+        telemetry.addData("cX", centerOffsetX);
+        telemetry.addData("cY", centerOffsetY);
+        telemetry.addData("fX", stageX);
+        telemetry.addData("fY", stageY);
+
         return new Pose2d(
-                stageX - DESIRED_DISTANCE,
-                stageY + lateralOffset,
-                Math.toRadians(yaw));
+            stageX,
+            stageY,
+            yaw
+        );
     }
 
     public boolean detectRobot(boolean isBlueSide) {
