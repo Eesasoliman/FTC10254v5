@@ -188,8 +188,8 @@ public class RedTruss extends DriveOpMode {
 
 //        initAprilTagProcessor();
         BlueColorPipeline pipeline = startBlueCamera();
-        while (opModeInInit()) {
-            sleep(1000);
+        while (!isStopRequested() && opModeInInit()) {
+            sleep(500);
             imageNum = pipeline.getImageNum();
             telemetry.addData("imageNum", imageNum);
             telemetry.update();

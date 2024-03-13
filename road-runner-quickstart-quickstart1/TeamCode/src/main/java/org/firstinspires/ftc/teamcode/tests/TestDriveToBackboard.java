@@ -8,19 +8,26 @@ import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-public class TestTrajectorySequence extends DriveOpMode {
+public class TestDriveToBackboard extends DriveOpMode {
     @Override
     public void runOpMode() {
         telemetry.setMsTransmissionInterval(50);
         SampleMecanumDrive drive = initDriveOpMode();
+        initAprilTagProcessor();
 
-        Pose2d start = new Pose2d(0, 0, Math.toRadians(0));
-        TrajectorySequence Test = drive.trajectorySequenceBuilder(start)
-                .turn(90)
+        sleep(1000);
+        Pose2d back = new Pose2d(50, -36, Math.toRadians(0));
+        Pose2d currentPose = relocalize(false);
+        telemetry.addData("pose",currentPose);
+        TrajectorySequence Test = drive.trajectorySequenceBuilder(currentPose)
+                .lineToLinearHeading(back)
                 .build();
 
+        telemetry.update();
+
         waitForStart();
-        drive.setPoseEstimate(start);
+
+        drive.setPoseEstimate(currentPose);
         drive.followTrajectorySequence(Test);
     }
 }

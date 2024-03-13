@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
+
 @TeleOp(name = "TeleOpPro", group = "Drive")
 public class TeleOpPro extends LinearOpMode {
 
@@ -51,10 +53,9 @@ public class TeleOpPro extends LinearOpMode {
         long nextDropdownTimestamp = 0;
         double dropdownPos = 0;
         double prevDropdownPos = 0;
-        double pixelHeightOffset = 0.027; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
-//        double dropLOffset = 0.04;
-        double dropLOffset = 0.02;
-        double dropROffset = 0;
+        double pixelHeightOffset = DriveOpMode.pixelHeightOffset;
+        double dropLOffset = DriveOpMode.dropLOffset;
+        double dropROffset = DriveOpMode.dropROffset;
 
         boolean dpadUp;
         boolean dpadDown;
@@ -68,13 +69,13 @@ public class TeleOpPro extends LinearOpMode {
 
         long nextWristTimestamp = 0;
         long nextClawTimestamp = 0;
-        boolean isClawOpen = true;
+        boolean isClawClosed = true;
         boolean isWristVertical = true;
 
         long timestampTimeout = 300;
 
         // Initialize Servo Positions
-        robot.CLAW.setPosition(0.1);
+        robot.CLAW.setPosition(0);
         robot.WRIST.setPosition(0.38);
         robot.LFS.setPosition(0.92); // To swivel in more, increase this
         robot.RFS.setPosition(0.08);// To swivel in more, decrease this
@@ -130,19 +131,18 @@ public class TeleOpPro extends LinearOpMode {
 
             // Gamepad 2 Code
 
-            // TODO: Fix CLAW's 0 position since it doesn't hold pixels
             if (buttonR && gamepad2.timestamp > nextClawTimestamp) {
                 // Control CLAW
                 nextClawTimestamp = gamepad2.timestamp + timestampTimeout;
 
-                if (isClawOpen) {
-                    // Set CLAW to close position
-                    robot.CLAW.setPosition(0.1);
-                } else {
+                if (isClawClosed) {
                     // Set CLAW to open position
+                    robot.CLAW.setPosition(0);
+                } else {
+                    // Set CLAW to close position
                     robot.CLAW.setPosition(0.5);
                 }
-                isClawOpen = !isClawOpen;
+                isClawClosed = !isClawClosed;
             }
 
             if (!isSwiveledIn && buttonL && gamepad2.timestamp > nextWristTimestamp) {
@@ -161,9 +161,12 @@ public class TeleOpPro extends LinearOpMode {
 
             if (triggerL > 0) {
                 // Swivel in
-                robot.WRIST.setPosition(0.38); // Set wrist to vertical
+                robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
+                robot.CLAW.setPosition(0); // Set CLAW to open position
                 robot.LFS.setPosition(0.95); // To swivel in more, increase this
                 robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+                isWristVertical = true;
+                isClawClosed = false;
                 isSwiveledIn = true;
             }
 
@@ -195,18 +198,8 @@ public class TeleOpPro extends LinearOpMode {
             }
 
             if (y) {
-                intakeSpeedMultiplier = 0.50;
+                intakeSpeedMultiplier = 0.70;
             }
-
-//            if (b) {
-//                // Set CLAW to open position
-//                robot.CLAW.setPosition(0.5);
-//                // Set WRIST to vertical position
-//                robot.WRIST.setPosition(0.38);
-//                // Swivel in
-//                robot.LFS.setPosition(0.95); // To swivel in more, increase this
-//                robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-//            }
 
             // Gamepad 1
             double FLDp = lefty + leftx;

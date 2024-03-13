@@ -21,7 +21,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +38,9 @@ public class DriveOpMode extends LinearOpMode {
     public SampleMecanumDrive drive = null;
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    public static final double pixelHeightOffset = 0.027; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
+    public static final double dropLOffset = 0.02;
+    public static final double dropROffset = 0;
 
     /**
      * LinearOpMode requires a runOpMode function, but this method should be overridden in all other scripts that use DriveOpMode.
@@ -200,16 +202,8 @@ public class DriveOpMode extends LinearOpMode {
         double centerOffsetY = 8.5 * Math.cos(Math.toRadians(90 - yaw));
 
         double stageX = 60 - (tagOffsetY + centerOffsetX);
-        double stageY = tagOffsetX - centerOffsetY;
-
-        if (ID == 2) {
-            stageY = 36 - (-tagOffsetX - centerOffsetY);
-        }
-        if (ID == 5) {
-            stageY = -36 + (-tagOffsetX + centerOffsetY);
-        }
-
-        double heading = 0 - yaw;
+        double stageY = (isBlueSide) ? (36 + tagOffsetX + centerOffsetY) : (-36 + tagOffsetX + centerOffsetY);
+        double stageHeading = 0 - yaw;
 
 //        telemetry.addData("range", range);
 //        telemetry.addData("bearing", bearing);
@@ -222,12 +216,12 @@ public class DriveOpMode extends LinearOpMode {
 //        telemetry.addData("cY", centerOffsetY);
 //        telemetry.addData("fX", stageX);
 //        telemetry.addData("fY", stageY);
-//        telemetry.addData("heading", heading);
+//        telemetry.addData("heading", stageHeading);
 
         return new Pose2d(
             stageX,
             stageY,
-            Math.toRadians(heading)
+            Math.toRadians(stageHeading)
         );
     }
 
@@ -244,7 +238,7 @@ public class DriveOpMode extends LinearOpMode {
                 // Look to see if we have size info on this tag.
                 if (detection.metadata != null) {
                     //  Check to see if we this is one of the target tags.
-                    if (Arrays.asList(idArr).contains(detection.id)) {
+                    if (detection.id == idArr[0] || detection.id == idArr[1] || detection.id == idArr[2]) {
                         // Yes, this is one of the tags we need.
                         targetsFound[(detection.id - 1) % 3] = true;
                         break;  // don't look any further.
@@ -287,7 +281,8 @@ public class DriveOpMode extends LinearOpMode {
 
                 if (easyWhite)
                 {
-                    dropYellowPixel = false;
+                    dropYellowPixel = true;
+                    riskyWhite = false;
                 }
             }
 
@@ -296,7 +291,7 @@ public class DriveOpMode extends LinearOpMode {
                 riskyWhite = !riskyWhite;
 
                 if (riskyWhite) {
-                    dropYellowPixel = false;
+                    dropYellowPixel = true;
                     easyWhite = false;
                 }
             }
@@ -317,21 +312,27 @@ public class DriveOpMode extends LinearOpMode {
         return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
     }
 
-//    public void whiteIntake(int level) {
-//        if (level == 0) {
-//            robot.DROPDOWN.setPosition(0.00);
-//        } else if (level == 1) {
-//            robot.DROPDOWN.setPosition(0.25);
-//        } else if (level == 2) {
-//            robot.DROPDOWN.setPosition(0.50);
-//        } else if (level == 3) {
-//            robot.DROPDOWN.setPosition(0.75);
-//        } else if (level == 4) {
-//            robot.DROPDOWN.setPosition(1.00);
-//        }
-//
-//        robot.IN.setPower();
-//    }
+    public void setDropdown(int dropdownPos) {
+        if (dropdownPos == 0) {
+            robot.DROPL.setPosition(0.00 + pixelHeightOffset * 1 + dropLOffset);
+            robot.DROPR.setPosition(0.35 - pixelHeightOffset * 1 + dropROffset);
+        } else if (dropdownPos == 1) {
+            robot.DROPL.setPosition(0.00 + pixelHeightOffset * 2 + dropLOffset);
+            robot.DROPR.setPosition(0.35 - pixelHeightOffset * 2 + dropROffset);
+        } else if (dropdownPos == 2) {
+            robot.DROPL.setPosition(0.00 + pixelHeightOffset * 3 + dropLOffset);
+            robot.DROPR.setPosition(0.35 - pixelHeightOffset * 3 + dropROffset);
+        } else if (dropdownPos == 3) {
+            robot.DROPL.setPosition(0.00 + pixelHeightOffset * 4 + dropLOffset);
+            robot.DROPR.setPosition(0.35 - pixelHeightOffset * 4 + dropROffset);
+        } else if (dropdownPos == 4) {
+            robot.DROPL.setPosition(0.00 + pixelHeightOffset * 5 + dropLOffset);
+            robot.DROPR.setPosition(0.35 - pixelHeightOffset * 5 + dropROffset);
+        } else if (dropdownPos == 5) {
+            robot.DROPL.setPosition(0.35 + dropLOffset);
+            robot.DROPR.setPosition(0.00 + dropROffset);
+        }
+    }
 
     public void prepareScoring(double moveLiftByInches)
     {
