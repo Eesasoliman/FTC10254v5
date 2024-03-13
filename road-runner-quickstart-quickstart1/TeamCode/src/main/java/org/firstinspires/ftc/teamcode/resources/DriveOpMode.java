@@ -307,8 +307,11 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addData("CLOSE 2+3 | TRUSS 2+4 (b)", riskyWhite);
             telemetry.addData("parkInside (y)", parkInside);
             telemetry.update();
+            sleep(10);
         }
 
+        telemetry.addLine("Initialization Complete");
+        telemetry.update();
         return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
     }
 
