@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Truss", group = "RED")
+@Autonomous
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
@@ -40,7 +40,7 @@ public class RedTruss extends DriveOpMode {
 
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .strafeRight(3)
-                .lineToLinearHeading(new Pose2d(-36, -36, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-48, -36, Math.toRadians(270)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     purpleIntake();
                 })
@@ -75,10 +75,11 @@ public class RedTruss extends DriveOpMode {
                 .forward(7)
                 .build();
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
+                .lineToLinearHeading(new Pose2d(-55, -36,Math.toRadians(0)))
                 .lineToLinearHeading(new Pose2d(-37.5, -58))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
                 .lineToConstantHeading(new Vector2d(24, -58))
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     prepareScoring(liftHeight);
