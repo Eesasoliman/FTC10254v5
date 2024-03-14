@@ -45,22 +45,15 @@ public class RedTruss extends DriveOpMode {
                     purpleIntake();
                 })
                 .waitSeconds(0.5)
-                .forward(2)
+                .forward(12)
 //                .lineToConstantHeading(new Vector2d(-38, -8))
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-35, -12))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL/4, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .turn(Math.toRadians(180))
-                .back(2)
+                .strafeRight(4)
+                .lineToConstantHeading(new Vector2d(-36, -34.5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     purpleIntake();
                 })
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(1)
                 .forward(8)
                 .build();
@@ -76,11 +69,12 @@ public class RedTruss extends DriveOpMode {
                 .build();
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
                 .lineToLinearHeading(new Pose2d(-55, -36,Math.toRadians(0)))
-                .lineToLinearHeading(new Pose2d(-37.5, -58))
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(-37.5, -59))
 //                .setConstraints(
 //                        SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
 //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL/2))
-                .lineToConstantHeading(new Vector2d(24, -58))
+                .lineToConstantHeading(new Vector2d(24, -59))
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     prepareScoring(liftHeight);
                 })
@@ -91,6 +85,8 @@ public class RedTruss extends DriveOpMode {
                 })
                 .build();
         TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
+                .lineToLinearHeading(new Pose2d(-60, -37,Math.toRadians(0)))
+                .waitSeconds(1)
                 .splineToLinearHeading(new Pose2d(-37.5, -58, Math.toRadians(0)), Math.toRadians(0))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -203,7 +199,7 @@ public class RedTruss extends DriveOpMode {
         TrajectorySequence yellow = null;
         TrajectorySequence white = null;
         TrajectorySequence park = null;
-        imageNum = 1;
+        imageNum = 3;
 
         if (imageNum == 1) {
             purple = purple1;
