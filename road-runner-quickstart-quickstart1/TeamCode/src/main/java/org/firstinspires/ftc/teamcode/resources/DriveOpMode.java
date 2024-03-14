@@ -229,8 +229,8 @@ public class DriveOpMode extends LinearOpMode {
         int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};
         boolean[] targetsFound = new boolean[]{false, false, false};
 
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() < start + 5000 && !targetsFound[0] && !targetsFound[1] && !targetsFound[2]) {
+        double start = getRuntime();
+        while (getRuntime() < start + 5 && !targetsFound[0] && !targetsFound[1] && !targetsFound[2]) {
             // Step through the list of detected tags and look for a matching tag
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
             targetsFound = new boolean[]{false, false, false};
@@ -257,7 +257,7 @@ public class DriveOpMode extends LinearOpMode {
         visionPortal.stopStreaming();
 
         // Returns true if one of the April Tags was not found, meaning there is a robot there.
-        return (!targetsFound[0] || !targetsFound[1] || !targetsFound[2]);
+         return (!targetsFound[0] || !targetsFound[1] || !targetsFound[2]);
     }
 
     public boolean[] initWithController(boolean park)
@@ -340,31 +340,36 @@ public class DriveOpMode extends LinearOpMode {
     public void prepareScoring(double moveLiftByInches)
     {
         // Swivel in
-        robot.LFS.setPosition(0.95);
-        robot.RFS.setPosition(0.05);
-        // Lock carriage servos
-//        robot.BPS.setPosition(.4);
-//        robot.FPS.setPosition(0);
+        robot.LFS.setPosition(0.95); // To swivel in more, increase this
+        robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+        // Set CLAW to close position
+        robot.CLAW.setPosition(0.5);
         // Lift upward
         lift(moveLiftByInches);
-        sleep(500);
+        // Keep lifting until desired height is reached or 500 milliseconds have passed
+        double start = getRuntime();
+        while (getRuntime() < start + 0.5 && robot.RL.isBusy()) {
+            sleep(1);
+        }
         // Swivel out
-        robot.LFS.setPosition(0.45); //lower to make it go more out
-        robot.RFS.setPosition(0.55); //higher to make it go more out
+        robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+        robot.RFS.setPosition(0.40); // To swivel out more, increase this
     }
 
     public void scorePixelsOnBackboard(double liftEndPositionInches)
     {
-//        robot.BPS.setPosition(0.40);
-//        robot.FPS.setPosition(0.40);
+        // Set CLAW to open position
+        robot.CLAW.setPosition(0);
         sleep(750);
         lift(5);
     }
 
     public void resetForTeleOp(double dist)
     {
-        robot.LFS.setPosition(0.95);
-        robot.RFS.setPosition(0.05);
+        robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
+        robot.CLAW.setPosition(0); // Set CLAW to open position
+        robot.LFS.setPosition(0.95); // To swivel in more, increase this
+        robot.RFS.setPosition(0.05);// To swivel in more, decrease this
         lift(-dist-4);
     }
 
@@ -392,12 +397,15 @@ public class DriveOpMode extends LinearOpMode {
     }
 
     public void purpleIntake() {
+        // Old function based on power
 //        robot.IN.setPower(-.24);
 //        sleep(120);
 //        robot.IN.setPower(0);
 
-        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
+        // New function based on encoder
+        setDropdown(5);
+        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         while (robot.IN.getCurrentPosition() > -33) {

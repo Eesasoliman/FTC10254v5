@@ -83,6 +83,11 @@ public class TeleOpPro extends LinearOpMode {
         robot.DROPL.setPosition(0.35 + dropLOffset);
         robot.DROPR.setPosition(0.00 + dropROffset);
 
+        robot.LL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robot.LL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
         while (opModeIsActive()) {
             // Gamepad 1
             lefty = -gamepad1.left_stick_y;
@@ -159,7 +164,7 @@ public class TeleOpPro extends LinearOpMode {
                 isWristVertical = !isWristVertical;
             }
 
-            if (triggerL > 0) {
+            if (triggerL > 0 && robot.RL.getCurrentPosition() > -1000) {
                 // Swivel in
                 robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
                 robot.CLAW.setPosition(0); // Set CLAW to open position
@@ -170,10 +175,10 @@ public class TeleOpPro extends LinearOpMode {
                 isSwiveledIn = true;
             }
 
-            if (triggerR > 0) {
+            if (triggerR > 0 && robot.RL.getCurrentPosition() > -1000) {
                 // Swivel out
-                robot.LFS.setPosition(0.50); // To swivel out more, decrease this
-                robot.RFS.setPosition(0.50); // To swivel out more, increase this
+                robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                robot.RFS.setPosition(0.40); // To swivel out more, increase this
                 isSwiveledIn = false;
             }
 
