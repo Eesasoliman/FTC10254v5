@@ -413,4 +413,16 @@ public class DriveOpMode extends LinearOpMode {
         }
         robot.IN.setPower(0);
     }
+
+    public void startWhiteIntake() {
+        robot.IN.setPower(1);
+    }
+
+    public void stopWhiteIntake() {
+        robot.IN.setPower(-1);
+        sleep(100);
+        robot.IN.setPower(0);
+        // Set CLAW to close position
+        robot.CLAW.setPosition(0.5);
+    }
 }
