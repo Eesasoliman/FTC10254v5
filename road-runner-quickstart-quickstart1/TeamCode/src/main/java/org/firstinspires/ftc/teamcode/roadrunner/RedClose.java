@@ -92,6 +92,7 @@ public class RedClose extends DriveOpMode {
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-24, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard1, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -117,6 +118,7 @@ public class RedClose extends DriveOpMode {
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard2, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -141,6 +143,7 @@ public class RedClose extends DriveOpMode {
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard3, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))

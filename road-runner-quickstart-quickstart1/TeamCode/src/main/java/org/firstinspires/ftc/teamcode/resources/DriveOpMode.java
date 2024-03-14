@@ -133,11 +133,7 @@ public class DriveOpMode extends LinearOpMode {
                 .addProcessor(aprilTag)
                 .build();
 //        visionPortal.stopLiveView(); // Comment out when debugging
-//        visionPortal.stopStreaming();
-    }
-
-    public void startAprilTagCamera() {
-        visionPortal.resumeStreaming();
+        visionPortal.stopStreaming();
     }
 
     /**
@@ -161,8 +157,35 @@ public class DriveOpMode extends LinearOpMode {
         }
     }
 
+    public void resumeStreaming() {
+        visionPortal.resumeStreaming();
+    }
+
+    public void restartCamera() {
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_CLOSED || visionPortal.getCameraState() == VisionPortal.CameraState.CLOSING_CAMERA_DEVICE || visionPortal.getCameraState() == VisionPortal.CameraState.ERROR) {
+            aprilTag = null;
+            visionPortal = null;
+            initAprilTagProcessor();
+            while (visionPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_READY) {
+                sleep(10);
+            }
+        }
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_READY) {
+            visionPortal.resumeStreaming();
+        }
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addLine("Waiting for camera to start streaming...");
+            telemetry.update();
+            while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+                sleep(10);
+            }
+        }
+    }
+
     public Pose2d relocalize(boolean isBlueSide)
     {
+        restartCamera();
+
         int ID = (isBlueSide) ? 2 : 5;
         boolean targetFound = false;
         AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -179,13 +202,7 @@ public class DriveOpMode extends LinearOpMode {
                         targetFound = true;
                         desiredTag = detection;
                         break;  // don't look any further.
-                    } else {
-                        // This tag is in the library, but we do not want to track it right now.
-                        telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
                     }
-                } else {
-                    // This tag is NOT in the library, so we don't have enough information to track to it.
-                    telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
                 }
             }
             sleep(10);
@@ -228,6 +245,8 @@ public class DriveOpMode extends LinearOpMode {
     }
 
     public boolean detectRobot(boolean isBlueSide) {
+        restartCamera();
+
         int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};
         boolean[] targetsFound = new boolean[]{false, false, false};
 
