@@ -15,7 +15,6 @@ public class RedClose extends DriveOpMode {
     int imageNum;
     double parkY;
     double liftHeight = 7.8;
-    double dropdownHeight = 0;
     double backboardX = 50;
     double slowVel = DriveConstants.MAX_VEL / 1.35;
     double slowAcc = DriveConstants.MAX_ACCEL;
@@ -87,10 +86,13 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(1)
 
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
+
                 // Return
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-24, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard1, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -98,25 +100,53 @@ public class RedClose extends DriveOpMode {
                 .build();
         TrajectorySequence white2 = drive.trajectorySequenceBuilder(backboard2)
                 // Get
+                .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .lineToConstantHeading(new Vector2d(-48, -7))
                 .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(1)
+
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
 
                 // Return
+                .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(backboard2, Math.toRadians(270))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
+                .splineToSplineHeading(backboard2, Math.toRadians(270),
+                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .build();
         TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard3)
                 // Get
+                .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .lineToConstantHeading(new Vector2d(-48, -7))
                 .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
+                .setConstraints(
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(1)
+
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
 
                 // Return
+                .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(backboard3, Math.toRadians(270))
+                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
+                .splineToSplineHeading(backboard3, Math.toRadians(270),
+                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .build();
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
                 .back(0.1)
@@ -188,14 +218,17 @@ public class RedClose extends DriveOpMode {
                             .build());
             if (driveVariables[2]) {
                 // Follow White Twice
+                setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(relocalize(false))
                                 .splineToSplineHeading(backboardPose, Math.toRadians(0))
                                 .build());
+                setTargetDropdownHeight(3);
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once
+                setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
             }
         }
