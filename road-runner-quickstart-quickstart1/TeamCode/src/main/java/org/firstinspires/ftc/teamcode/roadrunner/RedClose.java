@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-@Autonomous(name = "Close", group = "RED")
+@Autonomous
 public class RedClose extends DriveOpMode {
     int imageNum;
     double parkY;
