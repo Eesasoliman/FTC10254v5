@@ -33,45 +33,47 @@ public class RedClose extends DriveOpMode {
             parkY = -60;
         }
 
+        Pose2d backboard1 = new Pose2d(backboardX, -28.5, Math.toRadians(0));
+        Pose2d backboard2 = new Pose2d(backboardX, -35, Math.toRadians(0));
+        Pose2d backboard3 = new Pose2d(backboardX, -41.5, Math.toRadians(0));
+
         telemetry.addLine("Building Trajectories");
         telemetry.update();
         // Build all potential Trajectory Sequences
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(17,-34))
-                .lineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
-                .forward(5)
+                .splineToConstantHeading(new Vector2d(17,-34), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)), Math.toRadians(180))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(14, -34))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .forward(5)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)))
+                .splineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
-                .forward(10)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
                 .build();
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .lineToLinearHeading(new Pose2d(backboardX, -28.5, Math.toRadians(0)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
                 .waitSeconds(1)
                 .build();
         TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .lineToLinearHeading(new Pose2d(backboardX, -35, Math.toRadians(0)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
                 .waitSeconds(1)
                 .build();
         TrajectorySequence yellow3 = drive.trajectorySequenceBuilder(purple3.end())
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
                 .lineToLinearHeading(new Pose2d(backboardX, -41.5, Math.toRadians(0)))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
                 .waitSeconds(1)
                 .build();
-        TrajectorySequence white1 = drive.trajectorySequenceBuilder(new Pose2d(backboardX, -28.5, Math.toRadians(0)))
+        TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
                 // Get
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
@@ -89,12 +91,12 @@ public class RedClose extends DriveOpMode {
                 .strafeLeft(0.1)
                 .splineToConstantHeading(new Vector2d(-24, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToConstantHeading(new Vector2d(backboardX, -28.5), Math.toRadians(270),
+                .splineToSplineHeading(backboard1, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .waitSeconds(1)
                 .build();
-        TrajectorySequence white2 = drive.trajectorySequenceBuilder(yellow2.end())
+        TrajectorySequence white2 = drive.trajectorySequenceBuilder(backboard2)
                 // Get
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
                 .lineToConstantHeading(new Vector2d(-48, -7))
@@ -103,9 +105,9 @@ public class RedClose extends DriveOpMode {
                 // Return
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToConstantHeading(new Vector2d(backboardX, -35), Math.toRadians(270))
+                .splineToSplineHeading(backboard2, Math.toRadians(270))
                 .build();
-        TrajectorySequence white3 = drive.trajectorySequenceBuilder(yellow3.end())
+        TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard3)
                 // Get
                 .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
                 .lineToConstantHeading(new Vector2d(-48, -7))
@@ -114,40 +116,40 @@ public class RedClose extends DriveOpMode {
                 // Return
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToConstantHeading(new Vector2d(backboardX, -41.5), Math.toRadians(270))
+                .splineToSplineHeading(backboard3, Math.toRadians(270))
                 .build();
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-          //      .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
                 .forward(10)
                 .build();
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-              //  .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
                 .forward(10)
                 .build();
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-      //          .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
                 .forward(10)
                 .build();
 
-//        initAprilTagProcessor();
-//        BlueColorPipeline pipeline = startBlueCamera();
-//        while (!isStopRequested() && opModeInInit()) {
-//            sleep(500);
-//            imageNum = pipeline.getImageNum();
-//            telemetry.addData("imageNum", imageNum);
-//            telemetry.update();
-//        }
-        imageNum = 1;
-        telemetry.addData("imageNum", imageNum);
+        telemetry.addLine("Starting Camera");
         telemetry.update();
+        initAprilTagProcessor();
 
-        setDropdown(0);
+        BlueColorPipeline pipeline = startBlueCamera();
+        while (!isStopRequested() && opModeInInit()) {
+            sleep(500);
+            imageNum = pipeline.getImageNum();
+            telemetry.addData("imageNum", imageNum);
+            telemetry.update();
+        }
+
+        setDropdown(5);
         waitForStart();
         drive.setPoseEstimate(startPose);
 
@@ -155,32 +157,42 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence yellow = null;
         TrajectorySequence white = null;
         TrajectorySequence park = null;
+        Pose2d backboardPose = null;
 
         if (imageNum == 1) {
             purple = purple1;
             yellow = yellow1;
             white = white1;
             park = park1;
+            backboardPose = backboard1;
         } else if (imageNum == 2 || imageNum == 3 || imageNum == 4) {
             purple = purple2;
             yellow = yellow2;
             white = white2;
             park = park2;
+            backboardPose = backboard2;
         } else if (imageNum == 5) {
             purple = purple3;
             yellow = yellow3;
             white = white3;
             park = park3;
+            backboardPose = backboard3;
         }
 
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
             drive.followTrajectorySequence(yellow);
- //           drive.followTrajectorySequence(relocalize(yellow.end(), 0));
+            drive.followTrajectorySequence(
+                    drive.trajectorySequenceBuilder(relocalize(false))
+                            .splineToSplineHeading(backboardPose, Math.toRadians(0))
+                            .build());
             if (driveVariables[2]) {
                 // Follow White Twice
                 drive.followTrajectorySequence(white);
-//                drive.followTrajectorySequence(relocalize(white.end(), 0));
+                drive.followTrajectorySequence(
+                        drive.trajectorySequenceBuilder(relocalize(false))
+                                .splineToSplineHeading(backboardPose, Math.toRadians(0))
+                                .build());
                 drive.followTrajectorySequence(white);
             } else if (driveVariables[1]) {
                 // Follow White Once
