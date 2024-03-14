@@ -24,7 +24,7 @@ public class RedTruss extends DriveOpMode {
     double backboardAcc = DriveConstants.MAX_ACCEL / 2;
     double backVel=DriveConstants.MAX_VEL/4;
 
-    Pose2d startPose = new Pose2d(-36, -65.25, Math.toRadians(0));
+    Pose2d startPose = new Pose2d(-36, -65.25, Math.toRadians(270));
 
     @Override
     public void runOpMode() {
@@ -33,20 +33,20 @@ public class RedTruss extends DriveOpMode {
 
         boolean[] driveVariables = initWithController(true);
         if (driveVariables[3]) {
-            parkY = 8;
+            parkY = -8;
         } else {
-            parkY = 60;
+            parkY = -60;
         }
 
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .strafeRight(3)
-                .lineToLinearHeading(new Pose2d(-38, -29, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-36, -36, Math.toRadians(0)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     purpleIntake();
                 })
                 .waitSeconds(0.5)
                 .forward(2)
-                .lineToConstantHeading(new Vector2d(-38, -8))
+//                .lineToConstantHeading(new Vector2d(-38, -8))
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(-35, -12))
@@ -202,6 +202,7 @@ public class RedTruss extends DriveOpMode {
         TrajectorySequence yellow = null;
         TrajectorySequence white = null;
         TrajectorySequence park = null;
+        imageNum = 1;
 
         if (imageNum == 1) {
             purple = purple1;
