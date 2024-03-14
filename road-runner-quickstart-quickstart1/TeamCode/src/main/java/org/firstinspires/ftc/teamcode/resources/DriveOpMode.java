@@ -42,6 +42,8 @@ public class DriveOpMode extends LinearOpMode {
     public static final double dropLOffset = 0.02;
     public static final double dropROffset = 0;
 
+    public int targetDropdownHeight = 4;
+
     /**
      * LinearOpMode requires a runOpMode function, but this method should be overridden in all other scripts that use DriveOpMode.
      */
@@ -337,6 +339,10 @@ public class DriveOpMode extends LinearOpMode {
         }
     }
 
+    public void setTargetDropdownHeight(int targetLevel) {
+        targetDropdownHeight = targetLevel;
+    }
+
     public void prepareScoring(double moveLiftByInches)
     {
         // Swivel in
@@ -414,15 +420,30 @@ public class DriveOpMode extends LinearOpMode {
         robot.IN.setPower(0);
     }
 
-    public void startWhiteIntake() {
+    public void intakeTwoWhite() {
+        setDropdown(targetDropdownHeight);
         robot.IN.setPower(1);
-    }
-
-    public void stopWhiteIntake() {
-        robot.IN.setPower(-1);
-        sleep(100);
-        robot.IN.setPower(0);
+        sleep(500);
+        targetDropdownHeight--;
+        setDropdown(targetDropdownHeight);
+        sleep(500);
         // Set CLAW to close position
         robot.CLAW.setPosition(0.5);
+        setDropdown(5);
+        robot.IN.setPower(-1);
+        sleep(150);
+        robot.IN.setPower(0);
+    }
+
+    public void intakeOneWhite() {
+        setDropdown(targetDropdownHeight);
+        robot.IN.setPower(1);
+        sleep(500);
+        // Set CLAW to close position
+        robot.CLAW.setPosition(0.5);
+        setDropdown(5);
+        robot.IN.setPower(-1);
+        sleep(150);
+        robot.IN.setPower(0);
     }
 }
