@@ -173,7 +173,7 @@ public class RedClose extends DriveOpMode {
 
         RedColorPipeline pipeline = startRedCamera();
         while (!isStopRequested() && opModeInInit()) {
-            sleep(500);
+            sleep(1000);
             imageNum = pipeline.getImageNum();
             telemetry.addData("imageNum", imageNum);
             telemetry.update();
