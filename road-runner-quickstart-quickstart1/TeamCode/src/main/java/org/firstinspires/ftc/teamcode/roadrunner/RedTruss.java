@@ -81,7 +81,7 @@ public class RedTruss extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(backboardY-5, -26))
                 .splineToConstantHeading(new Vector2d(backboardY+7, -28), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scorePixelsOnBackboard(liftHeight);
+                    scorePixelsOnBackboard();
                 })
                 .build();
         TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
@@ -100,7 +100,7 @@ public class RedTruss extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(backVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scorePixelsOnBackboard(liftHeight);
+                    scorePixelsOnBackboard();
                 })
                 .waitSeconds(afterdrop)
                 .build();
@@ -121,7 +121,7 @@ public class RedTruss extends DriveOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     // Drop Pixels
-                    scorePixelsOnBackboard(liftHeight);
+                    scorePixelsOnBackboard();
                 })
                 .waitSeconds(afterdrop)
                 .build();

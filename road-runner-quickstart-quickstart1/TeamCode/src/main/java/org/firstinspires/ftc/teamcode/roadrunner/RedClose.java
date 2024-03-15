@@ -16,6 +16,8 @@ public class RedClose extends DriveOpMode {
     double parkY;
     double liftHeight = 7.8;
     double backboardX = 50;
+
+    double Stacky =14;
     double slowVel = DriveConstants.MAX_VEL / 1.35;
     double slowAcc = DriveConstants.MAX_ACCEL;
     Pose2d startPose = new Pose2d(12, -63, Math.toRadians(270));
@@ -45,51 +47,17 @@ public class RedClose extends DriveOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(14, -34))
+                .setTangent(Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(20, -22.5,Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .forward(5)
+                .forward(2)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
                 .splineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
-        TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    // Swivel out
-                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                })
-                .lineToLinearHeading(new Pose2d(backboardX, -28.5, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
-                .waitSeconds(1)
-                .build();
-        TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    // Swivel out
-                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                })
-                .lineToLinearHeading(new Pose2d(backboardX, -35, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
-                .waitSeconds(1)
-                .build();
-        TrajectorySequence yellow3 = drive.trajectorySequenceBuilder(purple3.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                    // Swivel out
-                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                })
-                .lineToLinearHeading(new Pose2d(backboardX, -41.5, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
-                .waitSeconds(1)
-                .build();
+
         TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
                 // Get
                 .strafeLeft(0.1)
@@ -102,10 +70,10 @@ public class RedClose extends DriveOpMode {
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(1)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+                .waitSeconds(1)
 
                 // Return
                 .strafeLeft(0.1)
@@ -130,10 +98,10 @@ public class RedClose extends DriveOpMode {
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(1)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+                .waitSeconds(1)
 
                 // Return
                 .strafeLeft(0.1)
@@ -157,10 +125,10 @@ public class RedClose extends DriveOpMode {
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(1)
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+                .waitSeconds(1)
 
                 // Return
                 .strafeLeft(0.1)
@@ -193,7 +161,6 @@ public class RedClose extends DriveOpMode {
 
         telemetry.addLine("Starting Camera");
         telemetry.update();
-        initAprilTagProcessor();
 
         RedColorPipeline pipeline = startRedCamera();
         while (!isStopRequested() && opModeInInit()) {
@@ -205,6 +172,11 @@ public class RedClose extends DriveOpMode {
 
         setDropdown(5);
         waitForStart();
+        waitToCloseCamera();
+        telemetry.addLine("Starting April Tag Processor...");
+        telemetry.update();
+        initAprilTagProcessor();
+
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence purple = null;
@@ -233,20 +205,44 @@ public class RedClose extends DriveOpMode {
             backboardPose = backboard3;
         }
 
+        waitForCamera();
+
+        telemetry.addLine("Trajectory Started.");
+        telemetry.update();
         drive.followTrajectorySequence(purple);
         if (driveVariables[0]) {
-            drive.followTrajectorySequence(yellow);
             drive.followTrajectorySequence(
                     drive.trajectorySequenceBuilder(relocalize(false))
-                            .splineToSplineHeading(backboardPose, Math.toRadians(0))
+                            .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                // Swivel out
+                                robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                                robot.RFS.setPosition(0.40); // To swivel out more, increase this
+                            })
+                            .lineToLinearHeading(backboardPose)
+                            .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                robot.LFS.setPosition(0.95); // To swivel out more, decrease this
+                                robot.RFS.setPosition(0.05); // To swivel out more, increase this
+                                         })
+                            .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
+//            drive.followTrajectorySequence(yellow);
             if (driveVariables[2]) {
                 // Follow White Twice
                 setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(relocalize(false))
-                                .splineToSplineHeading(backboardPose, Math.toRadians(0))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                    // Swivel out
+                                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+                                })
+                                .lineToLinearHeading(backboardPose)
+                                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(-liftHeight))
                                 .build());
                 setTargetDropdownHeight(3);
                 drive.followTrajectorySequence(white);

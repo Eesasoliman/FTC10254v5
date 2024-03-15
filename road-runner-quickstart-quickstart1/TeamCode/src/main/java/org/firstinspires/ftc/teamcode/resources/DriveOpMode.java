@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Disabled
 @Autonomous
 public class DriveOpMode extends LinearOpMode {
-    public static double DESIRED_DISTANCE = 6.0; //  this is how close the camera should get to the target (inches)
+    private OpenCvWebcam CAM;
     final OpenCvCameraRotation CAMERA_ROTATION = OpenCvCameraRotation.UPSIDE_DOWN;
     public HardwarePushBot robot = new HardwarePushBot();
     public SampleMecanumDrive drive = null;
@@ -92,7 +92,6 @@ public class DriveOpMode extends LinearOpMode {
     public RedColorPipeline startRedCamera()
     {
         RedColorPipeline pipeline = new RedColorPipeline();
-        OpenCvWebcam CAM;
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -110,6 +109,11 @@ public class DriveOpMode extends LinearOpMode {
         });
 
         return pipeline;
+    }
+
+    public void waitToCloseCamera() {
+        hardwareMap.get(WebcamName.class, "Webcam 1").close();
+        CAM.closeCameraDevice();
     }
 
     /**
@@ -133,7 +137,6 @@ public class DriveOpMode extends LinearOpMode {
                 .addProcessor(aprilTag)
                 .build();
 //        visionPortal.stopLiveView(); // Comment out when debugging
-        visionPortal.stopStreaming();
     }
 
     /**
@@ -162,14 +165,14 @@ public class DriveOpMode extends LinearOpMode {
     }
 
     public void waitForCamera() {
-        if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_CLOSED || visionPortal.getCameraState() == VisionPortal.CameraState.CLOSING_CAMERA_DEVICE || visionPortal.getCameraState() == VisionPortal.CameraState.ERROR) {
-            aprilTag = null;
-            visionPortal = null;
-            initAprilTagProcessor();
-            while (visionPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_READY) {
-                sleep(10);
-            }
-        }
+//        if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_CLOSED || visionPortal.getCameraState() == VisionPortal.CameraState.CLOSING_CAMERA_DEVICE || visionPortal.getCameraState() == VisionPortal.CameraState.ERROR) {
+//            aprilTag = null;
+//            visionPortal = null;
+//            initAprilTagProcessor();
+//            while (visionPortal.getCameraState() != VisionPortal.CameraState.CAMERA_DEVICE_READY) {
+//                sleep(10);
+//            }
+//        }
         if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_READY) {
             visionPortal.resumeStreaming();
         }
@@ -250,6 +253,7 @@ public class DriveOpMode extends LinearOpMode {
      */
     public boolean detectRobot(boolean isBlueSide) {
         waitForCamera();
+        telemetry.setAutoClear(false);
 
         int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};
 
@@ -265,17 +269,16 @@ public class DriveOpMode extends LinearOpMode {
 
                         if (targetsFound[0] && targetsFound[1] && targetsFound[2]) {
                             visionPortal.stopStreaming();
-                            return true;
+                            return false;
                         }
-                        break;
                     }
                 }
             }
-            sleep(10);
+            sleep(100);
         }
 
         visionPortal.stopStreaming();
-        return false;
+        return true;
     }
 
     public boolean[] initWithController(boolean park)
@@ -375,8 +378,8 @@ public class DriveOpMode extends LinearOpMode {
 
     public void scorePixelsOnBackboard()
     {
-        // Set CLAW to open position
-        robot.CLAW.setPosition(0);
+        // Set CLAW to closed position
+        robot.CLAW.setPosition(0.5);
 
         // WAIT 750 MS
         // LIFT 5 IN
