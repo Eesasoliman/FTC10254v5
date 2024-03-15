@@ -161,7 +161,7 @@ public class DriveOpMode extends LinearOpMode {
         visionPortal.resumeStreaming();
     }
 
-    public void restartCamera() {
+    public void waitForCamera() {
         if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_CLOSED || visionPortal.getCameraState() == VisionPortal.CameraState.CLOSING_CAMERA_DEVICE || visionPortal.getCameraState() == VisionPortal.CameraState.ERROR) {
             aprilTag = null;
             visionPortal = null;
@@ -184,7 +184,7 @@ public class DriveOpMode extends LinearOpMode {
 
     public Pose2d relocalize(boolean isBlueSide)
     {
-        restartCamera();
+        waitForCamera();
 
         int ID = (isBlueSide) ? 2 : 5;
         boolean targetFound = false;
@@ -244,41 +244,38 @@ public class DriveOpMode extends LinearOpMode {
         );
     }
 
+    /**
+     *
+     * @return True if one of the april tags weren't detected, meaning there is a robot there. False if all april tags were detected.
+     */
     public boolean detectRobot(boolean isBlueSide) {
-        restartCamera();
+        waitForCamera();
 
         int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};
-        boolean[] targetsFound = new boolean[]{false, false, false};
 
         double start = getRuntime();
-        while (getRuntime() < start + 5 && !targetsFound[0] && !targetsFound[1] && !targetsFound[2]) {
-            // Step through the list of detected tags and look for a matching tag
+        while (getRuntime() < start + 5) {
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-            targetsFound = new boolean[]{false, false, false};
+
+            boolean[] targetsFound = new boolean[]{false, false, false};
             for (AprilTagDetection detection : currentDetections) {
-                // Look to see if we have size info on this tag.
                 if (detection.metadata != null) {
-                    //  Check to see if we this is one of the target tags.
                     if (detection.id == idArr[0] || detection.id == idArr[1] || detection.id == idArr[2]) {
-                        // Yes, this is one of the tags we need.
                         targetsFound[(detection.id - 1) % 3] = true;
-                        break;  // don't look any further.
-                    } else {
-                        // This tag is in the library, but we do not want to track it right now.
-                        telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+
+                        if (targetsFound[0] && targetsFound[1] && targetsFound[2]) {
+                            visionPortal.stopStreaming();
+                            return true;
+                        }
+                        break;
                     }
-                } else {
-                    // This tag is NOT in the library, so we don't have enough information to track to it.
-                    telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
                 }
             }
             sleep(10);
         }
 
         visionPortal.stopStreaming();
-
-        // Returns true if one of the April Tags was not found, meaning there is a robot there.
-         return (!targetsFound[0] || !targetsFound[1] || !targetsFound[2]);
+        return false;
     }
 
     public boolean[] initWithController(boolean park)
@@ -371,22 +368,18 @@ public class DriveOpMode extends LinearOpMode {
         robot.CLAW.setPosition(0.5);
         // Lift upward
         lift(moveLiftByInches);
-        // Keep lifting until desired height is reached or 500 milliseconds have passed
-        double start = getRuntime();
-        while (getRuntime() < start + 0.5 && robot.RL.isBusy()) {
-            sleep(1);
-        }
-        // Swivel out
-        robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-        robot.RFS.setPosition(0.40); // To swivel out more, increase this
+
+        // WAIT 500 MS
+        // SWIVEL OUT
     }
 
-    public void scorePixelsOnBackboard(double liftEndPositionInches)
+    public void scorePixelsOnBackboard()
     {
         // Set CLAW to open position
         robot.CLAW.setPosition(0);
-        sleep(750);
-        lift(5);
+
+        // WAIT 750 MS
+        // LIFT 5 IN
     }
 
     public void resetForTeleOp(double dist)
@@ -439,30 +432,25 @@ public class DriveOpMode extends LinearOpMode {
         robot.IN.setPower(0);
     }
 
-    public void intakeTwoWhite() {
+    public void intakeWhite1() {
         setDropdown(targetDropdownHeight);
         robot.IN.setPower(1);
-        sleep(500);
-        targetDropdownHeight--;
-        setDropdown(targetDropdownHeight);
-        sleep(500);
-        // Set CLAW to close position
-        robot.CLAW.setPosition(0.5);
-        setDropdown(5);
-        robot.IN.setPower(-1);
-        sleep(150);
-        robot.IN.setPower(0);
     }
 
-    public void intakeOneWhite() {
+    // Extra step when wanting to intake a second white pixel
+    public void intakeTwoWhite2() {
+        targetDropdownHeight--;
         setDropdown(targetDropdownHeight);
-        robot.IN.setPower(1);
-        sleep(500);
+    }
+
+    public void intakeWhite3() {
         // Set CLAW to close position
         robot.CLAW.setPosition(0.5);
         setDropdown(5);
         robot.IN.setPower(-1);
-        sleep(150);
+    }
+
+    public void intakeWhite4() {
         robot.IN.setPower(0);
     }
 }

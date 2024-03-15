@@ -42,34 +42,52 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .splineToConstantHeading(new Vector2d(17,-34), Math.toRadians(90))
                 .splineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(14, -34))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .forward(5)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
                 .splineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { purpleIntake(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
         TrajectorySequence yellow1 = drive.trajectorySequenceBuilder(purple1.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    // Swivel out
+                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+                })
                 .lineToLinearHeading(new Pose2d(backboardX, -28.5, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
                 .waitSeconds(1)
                 .build();
         TrajectorySequence yellow2 = drive.trajectorySequenceBuilder(purple2.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    // Swivel out
+                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+                })
                 .lineToLinearHeading(new Pose2d(backboardX, -35, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
                 .waitSeconds(1)
                 .build();
         TrajectorySequence yellow3 = drive.trajectorySequenceBuilder(purple3.end())
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { prepareScoring(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                    // Swivel out
+                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+                })
                 .lineToLinearHeading(new Pose2d(backboardX, -41.5, Math.toRadians(0)))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> { scorePixelsOnBackboard(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(5))
                 .waitSeconds(1)
                 .build();
         TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
@@ -86,13 +104,15 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(1)
 
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
 
                 // Return
                 .strafeLeft(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
                 .splineToConstantHeading(new Vector2d(-24, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard1, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -112,13 +132,15 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(1)
 
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
 
                 // Return
                 .strafeLeft(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard2, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -137,13 +159,15 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(1)
 
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { intakeTwoWhite(); })
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
 
                 // Return
                 .strafeLeft(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .UNSTABLE_addTemporalMarkerOffset(0,() -> { resumeStreaming(); })
                 .splineToSplineHeading(backboard3, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
@@ -151,19 +175,19 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                 .forward(10)
                 .build();
         TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                 .forward(10)
                 .build();
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> { resetForTeleOp(liftHeight); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                 .forward(10)
                 .build();
 
