@@ -171,7 +171,7 @@ public class RedClose extends DriveOpMode {
         telemetry.update();
         initAprilTagProcessor();
 
-        BlueColorPipeline pipeline = startBlueCamera();
+        RedColorPipeline pipeline = startRedCamera();
         while (!isStopRequested() && opModeInInit()) {
             sleep(500);
             imageNum = pipeline.getImageNum();
