@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.resources.BlueColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.ColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -62,8 +63,7 @@ public class Template extends DriveOpMode {
         TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
                 .build();
 
-        initAprilTagProcessor();
-        BlueColorPipeline pipeline = startBlueCamera();
+        ColorPipeline pipeline = startCameras(true);
         while (!isStopRequested() && opModeInInit()) {
             sleep(500);
             imageNum = pipeline.getImageNum();
