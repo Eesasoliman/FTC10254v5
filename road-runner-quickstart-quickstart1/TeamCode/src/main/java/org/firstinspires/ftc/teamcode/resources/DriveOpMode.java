@@ -68,14 +68,7 @@ public class DriveOpMode extends LinearOpMode {
     {
         ColorPipeline pipeline = (isBlueSide) ? (new BlueColorPipeline()) : (new RedColorPipeline());
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
-                .splitLayoutForMultipleViewports(
-                        cameraMonitorViewId, // The container we are splitting
-                        2, // The number of sub-containers to create
-                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY); // Whether to split the container vertically or horizontally
-
-        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
+        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         CAM.setMillisecondsPermissionTimeout(2500);
 
         CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -102,11 +95,10 @@ public class DriveOpMode extends LinearOpMode {
         aprilTag.setDecimation(1);
 
         visionPortal = new VisionPortal.Builder()
-                .setLiveViewContainerId(viewportContainerIds[1])
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
                 .build();
-//        visionPortal.stopLiveView(); // Comment out when debugging
+        visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something
 
         return pipeline;
     }
