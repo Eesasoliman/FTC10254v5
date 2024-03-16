@@ -36,8 +36,8 @@ public class DriveOpMode extends LinearOpMode {
     final OpenCvCameraRotation CAMERA_ROTATION = OpenCvCameraRotation.UPSIDE_DOWN;
     public HardwarePushBot robot = new HardwarePushBot();
     public SampleMecanumDrive drive = null;
-    private VisionPortal visionPortal;               // Used to manage the video source.
-    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    private VisionPortal visionPortal; // Used to manage the video source.
+    private AprilTagProcessor aprilTag; // Used for managing the AprilTag detection process.
     public static final double pixelHeightOffset = 0.027; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
     public static final double dropLOffset = 0.02;
     public static final double dropROffset = 0;
@@ -61,15 +61,21 @@ public class DriveOpMode extends LinearOpMode {
     }
 
     /**
-     * To access the pipeline returned from this function, use: BlueColorPipeline pipeline = startBlueCamera();
+     * To access the pipeline returned from this function, use: ColorPipeline pipeline = startCameras(true/false);
+     * @param isBlueSide True if the pipeline looks for the color blue. False if it looks for the color red.
      */
-    public BlueColorPipeline startBlueCamera()
+    public ColorPipeline startCameras(boolean isBlueSide)
     {
-        BlueColorPipeline pipeline = new BlueColorPipeline();
-        OpenCvWebcam CAM;
+        ColorPipeline pipeline = (isBlueSide) ? (new BlueColorPipeline()) : (new RedColorPipeline());
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        int[] viewportContainerIds = OpenCvCameraFactory.getInstance()
+                .splitLayoutForMultipleViewports(
+                        cameraMonitorViewId, // The container we are splitting
+                        2, // The number of sub-containers to create
+                        OpenCvCameraFactory.ViewportSplitMethod.VERTICALLY); // Whether to split the container vertically or horizontally
+
+        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), viewportContainerIds[0]);
         CAM.setMillisecondsPermissionTimeout(2500);
 
         CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -83,43 +89,6 @@ public class DriveOpMode extends LinearOpMode {
             public void onError(int errorCode) {}
         });
 
-        return pipeline;
-    }
-
-    /**
-     * To access the pipeline returned from this function, use: RedColorPipeline pipeline = startRedCamera();
-     */
-    public RedColorPipeline startRedCamera()
-    {
-        RedColorPipeline pipeline = new RedColorPipeline();
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        CAM.setMillisecondsPermissionTimeout(2500);
-
-        CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                CAM.setPipeline(pipeline);
-                CAM.startStreaming(1280, 720, CAMERA_ROTATION);
-            }
-
-            @Override
-            public void onError(int errorCode) {}
-        });
-
-        return pipeline;
-    }
-
-    public void waitToCloseCamera() {
-        hardwareMap.get(WebcamName.class, "Webcam 1").close();
-        CAM.closeCameraDevice();
-    }
-
-    /**
-     * Initialize the AprilTag processor.
-     */
-    public void initAprilTagProcessor() {
         // Create the AprilTag processor by using a builder.
         aprilTag = new AprilTagProcessor.Builder().build();
 
@@ -133,10 +102,18 @@ public class DriveOpMode extends LinearOpMode {
         aprilTag.setDecimation(1);
 
         visionPortal = new VisionPortal.Builder()
+                .setLiveViewContainerId(viewportContainerIds[1])
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
                 .build();
 //        visionPortal.stopLiveView(); // Comment out when debugging
+
+        return pipeline;
+    }
+
+    public void closeColorPipelineCamera() {
+        hardwareMap.get(WebcamName.class, "Webcam 1").close();
+        CAM.closeCameraDevice();
     }
 
     /**
@@ -164,7 +141,7 @@ public class DriveOpMode extends LinearOpMode {
         visionPortal.resumeStreaming();
     }
 
-    public void waitForCamera() {
+    public void waitForAprilTagCamera() {
 //        if (visionPortal.getCameraState() == VisionPortal.CameraState.CAMERA_DEVICE_CLOSED || visionPortal.getCameraState() == VisionPortal.CameraState.CLOSING_CAMERA_DEVICE || visionPortal.getCameraState() == VisionPortal.CameraState.ERROR) {
 //            aprilTag = null;
 //            visionPortal = null;
@@ -187,7 +164,7 @@ public class DriveOpMode extends LinearOpMode {
 
     public Pose2d relocalize(boolean isBlueSide)
     {
-        waitForCamera();
+        waitForAprilTagCamera();
 
         int ID = (isBlueSide) ? 2 : 5;
         boolean targetFound = false;
@@ -252,7 +229,7 @@ public class DriveOpMode extends LinearOpMode {
      * @return True if one of the april tags weren't detected, meaning there is a robot there. False if all april tags were detected.
      */
     public boolean detectRobot(boolean isBlueSide) {
-        waitForCamera();
+        waitForAprilTagCamera();
         telemetry.setAutoClear(false);
 
         int[] idArr = (isBlueSide) ? new int[]{1, 2, 3} : new int[]{4, 5, 6};

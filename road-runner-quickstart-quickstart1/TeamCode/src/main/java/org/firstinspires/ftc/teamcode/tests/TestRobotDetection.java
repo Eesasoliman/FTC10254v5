@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.tests;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 public class TestRobotDetection extends DriveOpMode {
@@ -16,14 +13,9 @@ public class TestRobotDetection extends DriveOpMode {
         boolean isBlueSide = false;
 
         telemetry.addLine("DO NOT CLICK START.");
-        telemetry.addLine("Building camera processor...");
-        telemetry.update();
-        initAprilTagProcessor();
-
-        telemetry.addLine("DO NOT CLICK START.");
         telemetry.addLine("Waiting for camera processor to start streaming...");
         telemetry.update();
-        waitForCamera();
+        waitForAprilTagCamera();
 
         telemetry.addLine("DO NOT CLICK START.");
         telemetry.addLine("Starting detection (5 seconds max).");

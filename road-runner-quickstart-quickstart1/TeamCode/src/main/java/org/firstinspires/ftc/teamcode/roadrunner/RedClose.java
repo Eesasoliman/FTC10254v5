@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.resources.RedColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.ColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -159,10 +159,10 @@ public class RedClose extends DriveOpMode {
                 .forward(10)
                 .build();
 
-        telemetry.addLine("Starting Camera");
+        telemetry.addLine("Starting Cameras...");
         telemetry.update();
 
-        RedColorPipeline pipeline = startRedCamera();
+        ColorPipeline pipeline = startCameras(false);
         while (!isStopRequested() && opModeInInit()) {
             sleep(1000);
             imageNum = pipeline.getImageNum();
@@ -172,10 +172,7 @@ public class RedClose extends DriveOpMode {
 
         setDropdown(5);
         waitForStart();
-        waitToCloseCamera();
-        telemetry.addLine("Starting April Tag Processor...");
-        telemetry.update();
-        initAprilTagProcessor();
+        closeColorPipelineCamera();
 
         drive.setPoseEstimate(startPose);
 
@@ -187,25 +184,22 @@ public class RedClose extends DriveOpMode {
 
         if (imageNum == 1) {
             purple = purple1;
-            yellow = yellow1;
             white = white1;
             park = park1;
             backboardPose = backboard1;
         } else if (imageNum == 2 || imageNum == 3 || imageNum == 4) {
             purple = purple2;
-            yellow = yellow2;
             white = white2;
             park = park2;
             backboardPose = backboard2;
         } else if (imageNum == 5) {
             purple = purple3;
-            yellow = yellow3;
             white = white3;
             park = park3;
             backboardPose = backboard3;
         }
 
-        waitForCamera();
+        waitForAprilTagCamera();
 
         telemetry.addLine("Trajectory Started.");
         telemetry.update();

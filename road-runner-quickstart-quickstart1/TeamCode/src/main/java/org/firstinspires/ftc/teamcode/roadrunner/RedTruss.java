@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.resources.RedColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.ColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -184,7 +184,7 @@ public class RedTruss extends DriveOpMode {
                 .build();
 
 //        initAprilTagProcessor();
-        RedColorPipeline pipeline = startRedCamera();
+        ColorPipeline pipeline = startCameras(false);
         while (!isStopRequested() && opModeInInit()) {
             sleep(1000);
             imageNum = pipeline.getImageNum();
