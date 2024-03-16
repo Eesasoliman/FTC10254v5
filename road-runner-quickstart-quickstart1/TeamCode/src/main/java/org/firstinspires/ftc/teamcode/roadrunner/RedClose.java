@@ -14,16 +14,17 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedClose extends DriveOpMode {
     int imageNum;
     double parkY;
-    double liftHeight = 7.8;
-    double backboardX = 50;
+    double liftHeight = 5.5;
+    double backboardX = 51.5;
 
-    double Stacky =14;
+    double Stacky =-14;
     double slowVel = DriveConstants.MAX_VEL / 1.35;
     double slowAcc = DriveConstants.MAX_ACCEL;
     Pose2d startPose = new Pose2d(12, -63, Math.toRadians(270));
 
     @Override
     public void runOpMode() {
+
         telemetry.setMsTransmissionInterval(50);
         SampleMecanumDrive drive = initDriveOpMode();
 
@@ -33,7 +34,7 @@ public class RedClose extends DriveOpMode {
         } else {
             parkY = -60;
         }
-
+        robot.CLAW.setPosition(0.5);
         Pose2d backboard1 = new Pose2d(backboardX, -28.5, Math.toRadians(0));
         Pose2d backboard2 = new Pose2d(backboardX, -35, Math.toRadians(0));
         Pose2d backboard3 = new Pose2d(backboardX, -41.5, Math.toRadians(0));
@@ -48,13 +49,13 @@ public class RedClose extends DriveOpMode {
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(20, -22.5,Math.toRadians(0)), Math.toRadians(90))
-                .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .forward(2)
+                .splineToLinearHeading(new Pose2d(18, -22.5,Math.toRadians(0)), Math.toRadians(120))
+                .UNSTABLE_addTemporalMarkerOffset(-.1, this::purpleIntake)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
+                .setTangent(Math.toRadians(80))
                 .splineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(37, -28), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(34, -28), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
 
@@ -94,22 +95,24 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .lineToConstantHeading(new Vector2d(-48, -7))
-                .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-60, Stacky), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+//                .back(.7)
+                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+                .forward(1.3)
                 .waitSeconds(1)
 
                 // Return
-                .strafeLeft(0.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(backboard2, Math.toRadians(270),
+                .splineToSplineHeading(new Pose2d(backboardX-15, -28.5, Math.toRadians(0)), Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .build();
@@ -121,22 +124,24 @@ public class RedClose extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .lineToConstantHeading(new Vector2d(-48, -7))
-                .splineToConstantHeading(new Vector2d(-60, -36), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-60, Stacky+5), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+                .back(.7)
+                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+                .forward(1.3)
                 .waitSeconds(1)
 
                 // Return
-                .strafeLeft(0.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
                 .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(backboard3, Math.toRadians(270),
+                .splineToSplineHeading(new Pose2d(backboardX-15, -41.5, Math.toRadians(0)), Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .build();
@@ -184,25 +189,26 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence white = null;
         TrajectorySequence park = null;
         Pose2d backboardPose = null;
-
+        Pose2d wbackboardPose = null;
+        imageNum=5;
         if (imageNum == 1) {
             purple = purple1;
-            yellow = yellow1;
             white = white1;
             park = park1;
             backboardPose = backboard1;
+            wbackboardPose = backboard3;
         } else if (imageNum == 2 || imageNum == 3 || imageNum == 4) {
             purple = purple2;
-            yellow = yellow2;
             white = white2;
             park = park2;
             backboardPose = backboard2;
+            wbackboardPose = backboard1;
         } else if (imageNum == 5) {
             purple = purple3;
-            yellow = yellow3;
             white = white3;
             park = park3;
             backboardPose = backboard3;
+            wbackboardPose = backboard1;
         }
 
         waitForCamera();
@@ -220,16 +226,17 @@ public class RedClose extends DriveOpMode {
                                 robot.RFS.setPosition(0.40); // To swivel out more, increase this
                             })
                             .lineToLinearHeading(backboardPose)
-                            .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
+                            .UNSTABLE_addTemporalMarkerOffset(0, ()->scorePixelsOnBackboard(false))
+                            .waitSeconds(.5)
                             .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                robot.LFS.setPosition(0.95); // To swivel out more, decrease this
-                                robot.RFS.setPosition(0.05); // To swivel out more, increase this
+                                resetForTeleOp(liftHeight);
                                          })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
 //            drive.followTrajectorySequence(yellow);
-            if (driveVariables[2]) {
-                // Follow White Twice
+
+            if (driveVariables[1] || driveVariables[2]) {
+                // Follow White Once
                 setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
                 drive.followTrajectorySequence(
@@ -240,17 +247,14 @@ public class RedClose extends DriveOpMode {
                                     robot.LFS.setPosition(0.60); // To swivel out more, decrease this
                                     robot.RFS.setPosition(0.40); // To swivel out more, increase this
                                 })
-                                .lineToLinearHeading(backboardPose)
-                                .UNSTABLE_addTemporalMarkerOffset(0, this::scorePixelsOnBackboard)
-                                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> lift(-liftHeight))
-                                .build());
-                setTargetDropdownHeight(3);
-                drive.followTrajectorySequence(white);
-            } else if (driveVariables[1]) {
-                // Follow White Once
-                setTargetDropdownHeight(4);
-                drive.followTrajectorySequence(white);
-            }
+                                .lineToLinearHeading(wbackboardPose)
+                                .UNSTABLE_addTemporalMarkerOffset(0, ()->scorePixelsOnBackboard(true))
+                                .waitSeconds(.5)
+                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                                    resetForTeleOp(liftHeight);
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+                                .build());            }
         }
         drive.followTrajectorySequence(park);
     }
