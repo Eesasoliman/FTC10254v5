@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.HardwarePushBot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -214,6 +215,8 @@ public class DriveOpMode extends LinearOpMode {
 //        telemetry.addData("cX", centerOffsetX);
 //        telemetry.addData("cY", centerOffsetY);
         telemetry.setAutoClear(false);
+        telemetry.addData("qX", desiredTag.metadata.fieldOrientation.x);
+        telemetry.addData("qY", desiredTag.metadata.fieldOrientation.y);
         telemetry.addData("fX", stageX);
         telemetry.addData("fY", stageY);
         telemetry.addData("heading", stageHeading);
