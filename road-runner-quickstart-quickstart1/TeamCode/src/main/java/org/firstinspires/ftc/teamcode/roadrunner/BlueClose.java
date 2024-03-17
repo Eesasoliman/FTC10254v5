@@ -6,12 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.resources.ColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.RedColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-public class RedClose extends DriveOpMode {
+public class BlueClose extends DriveOpMode {
     int imageNum;
     double parkY;
     double liftHeight = 5.5;
@@ -20,7 +20,7 @@ public class RedClose extends DriveOpMode {
     double Stacky =-14;
     double slowVel = DriveConstants.MAX_VEL / 1.35;
     double slowAcc = DriveConstants.MAX_ACCEL;
-    Pose2d startPose = new Pose2d(12, -63, Math.toRadians(270));
+    Pose2d startPose = new Pose2d(12, 63, Math.toRadians(90));
 
     @Override
     public void runOpMode() {
@@ -35,66 +35,67 @@ public class RedClose extends DriveOpMode {
             parkY = -60;
         }
         robot.CLAW.setPosition(0.5);
-        Pose2d backboard1 = new Pose2d(backboardX, -28.5, Math.toRadians(0));
-        Pose2d backboard2 = new Pose2d(backboardX, -35, Math.toRadians(0));
-        Pose2d backboard3 = new Pose2d(backboardX, -41.5, Math.toRadians(0));
+        Pose2d backboard1 = new Pose2d(backboardX, 28.5, Math.toRadians(0));
+        Pose2d backboard2 = new Pose2d(backboardX, 35, Math.toRadians(0));
+        Pose2d backboard3 = new Pose2d(backboardX, 41.5, Math.toRadians(0));
 
         telemetry.addLine("Building Trajectories");
         telemetry.update();
         // Build all potential Trajectory Sequences
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
-                .splineToConstantHeading(new Vector2d(17,-34), Math.toRadians(90))
-                .splineToSplineHeading(new Pose2d(14.5, -30, Math.toRadians(0)), Math.toRadians(180))
+                .setTangent(Math.toRadians(80))
+                .splineToSplineHeading(new Pose2d(30, 45, Math.toRadians(0)), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(34, 28), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(18, -22.5,Math.toRadians(0)), Math.toRadians(120))
+                .splineToLinearHeading(new Pose2d(18, 22.5,Math.toRadians(0)), Math.toRadians(120))
                 .UNSTABLE_addTemporalMarkerOffset(-.1, this::purpleIntake)
                 .build();
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
-                .setTangent(Math.toRadians(80))
-                .splineToSplineHeading(new Pose2d(30, -45, Math.toRadians(0)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(34, -28), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(17,34), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(14.5, 30, Math.toRadians(0)), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
 
-        TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
+        TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard3)
                 // Get
                 .strafeLeft(0.1)
-                .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(24, 2), Math.toRadians(180))
                 .setConstraints(
-                    SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                    SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-24,-7))
-                .splineToConstantHeading(new Vector2d(-53, -14), Math.toRadians(270))
+                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+                .lineToConstantHeading(new Vector2d(-48, 2))
+                .splineToConstantHeading(new Vector2d(-55, Stacky5), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
+                .back(.7)
+                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+                .forward(1.3)
                 .waitSeconds(1)
 
                 // Return
-                .strafeLeft(0.1)
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
-                .splineToConstantHeading(new Vector2d(-24, -7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
+                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
                 .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(backboard1, Math.toRadians(270),
+                .splineToSplineHeading(new Pose2d(backboardX-15, 41.5, Math.toRadians(0)), Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .waitSeconds(1)
                 .build();
         TrajectorySequence white2 = drive.trajectorySequenceBuilder(backboard2)
                 // Get
                 .strafeLeft(0.1)
-                .splineToConstantHeading(new Vector2d(24, -7), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(24, 7), Math.toRadians(180))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-48, -7))
+                .lineToConstantHeading(new Vector2d(-48, 7))
                 .splineToConstantHeading(new Vector2d(-60, Stacky), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -108,44 +109,44 @@ public class RedClose extends DriveOpMode {
 
                 // Return
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
-                .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
-                .lineToConstantHeading(new Vector2d(24, -7))
+                .lineToConstantHeading(new Vector2d(24, 7))
                 .splineToSplineHeading(new Pose2d(backboardX-15, -28.5, Math.toRadians(0)), Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .build();
-        TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard3)
+        TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard1)
                 // Get
                 .strafeLeft(0.1)
-                .splineToConstantHeading(new Vector2d(24, -2), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(24, 7), Math.toRadians(180))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-48, -2))
-                .splineToConstantHeading(new Vector2d(-55, Stacky+5), Math.toRadians(270))
+                .lineToConstantHeading(new Vector2d(-24,7))
+                .splineToConstantHeading(new Vector2d(-53, 14), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .back(.7)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
-                .forward(1.3)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeTwoWhite2)
                 .waitSeconds(1)
 
                 // Return
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
-                .splineToConstantHeading(new Vector2d(-48, -7), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
+                .strafeLeft(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite3)
+                .splineToConstantHeading(new Vector2d(-24, 7), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
-                .lineToConstantHeading(new Vector2d(24, -7))
-                .splineToSplineHeading(new Pose2d(backboardX-15, -41.5, Math.toRadians(0)), Math.toRadians(270),
+                .lineToConstantHeading(new Vector2d(24, 7))
+                .splineToSplineHeading(backboard1, Math.toRadians(270),
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+                .waitSeconds(1)
                 .build();
-        TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
+
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(white3.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
@@ -157,17 +158,17 @@ public class RedClose extends DriveOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                 .forward(10)
                 .build();
-        TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(white1.end())
                 .back(0.1)
                 .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                 .forward(10)
                 .build();
 
-        telemetry.addLine("Starting Cameras...");
+        telemetry.addLine("Starting Camera");
         telemetry.update();
 
-        ColorPipeline pipeline = startCameras(false);
+        RedColorPipeline pipeline = startRedCamera();
         while (!isStopRequested() && opModeInInit()) {
             sleep(1000);
             imageNum = pipeline.getImageNum();
@@ -177,7 +178,10 @@ public class RedClose extends DriveOpMode {
 
         setDropdown(5);
         waitForStart();
-        closeColorPipelineCamera();
+        waitToCloseCamera();
+        telemetry.addLine("Starting April Tag Processor...");
+        telemetry.update();
+        initAprilTagProcessor();
 
         drive.setPoseEstimate(startPose);
 
@@ -208,7 +212,7 @@ public class RedClose extends DriveOpMode {
             wbackboardPose = backboard1;
         }
 
-        waitForAprilTagCamera();
+        waitForCamera();
 
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
@@ -227,7 +231,7 @@ public class RedClose extends DriveOpMode {
                             .waitSeconds(.5)
                             .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                                 resetForTeleOp(liftHeight);
-                                         })
+                            })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
 //            drive.followTrajectorySequence(yellow);

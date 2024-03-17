@@ -345,10 +345,12 @@ public class DriveOpMode extends LinearOpMode {
         // SWIVEL OUT
     }
 
-    public void scorePixelsOnBackboard()
+    public void scorePixelsOnBackboard(boolean wrist)
     {
         // Set CLAW to closed position
-        robot.CLAW.setPosition(0.5);
+        if (wrist){
+        robot.WRIST.setPosition(0.73);}
+        robot.CLAW.setPosition(0);
 
         // WAIT 750 MS
         // LIFT 5 IN
@@ -356,11 +358,12 @@ public class DriveOpMode extends LinearOpMode {
 
     public void resetForTeleOp(double dist)
     {
+        lift(4);
         robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
         robot.CLAW.setPosition(0); // Set CLAW to open position
         robot.LFS.setPosition(0.95); // To swivel in more, increase this
         robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-        lift(-dist-4);
+        lift(-(dist+4));
     }
 
 
@@ -397,7 +400,6 @@ public class DriveOpMode extends LinearOpMode {
         setDropdown(5);
         robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
         while (robot.IN.getCurrentPosition() > -33) {
             robot.IN.setPower(-0.2);
         }
@@ -411,18 +413,18 @@ public class DriveOpMode extends LinearOpMode {
 
     // Extra step when wanting to intake a second white pixel
     public void intakeTwoWhite2() {
-        targetDropdownHeight--;
+        targetDropdownHeight-=2;
         setDropdown(targetDropdownHeight);
     }
 
     public void intakeWhite3() {
         // Set CLAW to close position
-        robot.CLAW.setPosition(0.5);
-        setDropdown(5);
+        setDropdown(0);
         robot.IN.setPower(-1);
     }
 
     public void intakeWhite4() {
+        setDropdown(5);
         robot.IN.setPower(0);
     }
 }
