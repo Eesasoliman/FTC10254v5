@@ -13,7 +13,8 @@ public class TestDriveToBackboard extends DriveOpMode {
     public void runOpMode() {
         telemetry.setMsTransmissionInterval(50);
         SampleMecanumDrive drive = initDriveOpMode();
-        initAprilTagProcessor();
+        startCameras(false);
+        closeColorPipelineCamera();
 
         sleep(1000);
         Pose2d back = new Pose2d(50, -36, Math.toRadians(0));

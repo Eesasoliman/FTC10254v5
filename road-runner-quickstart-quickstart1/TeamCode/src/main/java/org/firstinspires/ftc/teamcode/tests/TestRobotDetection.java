@@ -15,6 +15,8 @@ public class TestRobotDetection extends DriveOpMode {
         telemetry.addLine("DO NOT CLICK START.");
         telemetry.addLine("Waiting for camera processor to start streaming...");
         telemetry.update();
+        startCameras(isBlueSide);
+        closeColorPipelineCamera();
         waitForAprilTagCamera();
 
         telemetry.addLine("DO NOT CLICK START.");

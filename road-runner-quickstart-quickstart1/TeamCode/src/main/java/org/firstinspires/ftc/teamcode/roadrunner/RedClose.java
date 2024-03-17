@@ -187,7 +187,8 @@ public class RedClose extends DriveOpMode {
         TrajectorySequence park = null;
         Pose2d backboardPose = null;
         Pose2d wbackboardPose = null;
-        imageNum=5;
+
+//        imageNum=5;
         if (imageNum == 1) {
             purple = purple1;
             white = white1;
@@ -208,7 +209,8 @@ public class RedClose extends DriveOpMode {
             wbackboardPose = backboard1;
         }
 
-        waitForAprilTagCamera();
+//        waitForAprilTagCamera();
+        resumeStreaming();
 
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
@@ -223,14 +225,13 @@ public class RedClose extends DriveOpMode {
                                 robot.RFS.setPosition(0.40); // To swivel out more, increase this
                             })
                             .lineToLinearHeading(backboardPose)
-                            .UNSTABLE_addTemporalMarkerOffset(0, ()->scorePixelsOnBackboard(false))
+                            .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(false))
                             .waitSeconds(.5)
                             .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                                 resetForTeleOp(liftHeight);
                                          })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
-//            drive.followTrajectorySequence(yellow);
 
             if (driveVariables[1] || driveVariables[2]) {
                 // Follow White Once

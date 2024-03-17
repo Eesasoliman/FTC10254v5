@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.resources.RedColorPipeline;
+import org.firstinspires.ftc.teamcode.resources.ColorPipeline;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -67,7 +67,7 @@ public class BlueClose extends DriveOpMode {
                         SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(slowAcc))
                 .lineToConstantHeading(new Vector2d(-48, 2))
-                .splineToConstantHeading(new Vector2d(-55, Stacky5), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(-55, Stacky+5), Math.toRadians(270))
                 .setConstraints(
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -168,7 +168,7 @@ public class BlueClose extends DriveOpMode {
         telemetry.addLine("Starting Camera");
         telemetry.update();
 
-        RedColorPipeline pipeline = startRedCamera();
+        ColorPipeline pipeline = startCameras(true);
         while (!isStopRequested() && opModeInInit()) {
             sleep(1000);
             imageNum = pipeline.getImageNum();
@@ -178,10 +178,7 @@ public class BlueClose extends DriveOpMode {
 
         setDropdown(5);
         waitForStart();
-        waitToCloseCamera();
-        telemetry.addLine("Starting April Tag Processor...");
-        telemetry.update();
-        initAprilTagProcessor();
+        closeColorPipelineCamera();
 
         drive.setPoseEstimate(startPose);
 
@@ -191,7 +188,8 @@ public class BlueClose extends DriveOpMode {
         TrajectorySequence park = null;
         Pose2d backboardPose = null;
         Pose2d wbackboardPose = null;
-        imageNum=5;
+
+//        imageNum=5;
         if (imageNum == 1) {
             purple = purple1;
             white = white1;
@@ -212,7 +210,7 @@ public class BlueClose extends DriveOpMode {
             wbackboardPose = backboard1;
         }
 
-        waitForCamera();
+        waitForAprilTagCamera();
 
         telemetry.addLine("Trajectory Started.");
         telemetry.update();

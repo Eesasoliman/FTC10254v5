@@ -16,6 +16,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -66,7 +67,13 @@ public class DriveOpMode extends LinearOpMode {
      */
     public ColorPipeline startCameras(boolean isBlueSide)
     {
-        ColorPipeline pipeline = (isBlueSide) ? (new BlueColorPipeline()) : (new RedColorPipeline());
+        ColorPipeline pipeline = (isBlueSide) ?
+                (new ColorPipeline( // Blue Lower and Upper Boundaries
+                        new Scalar(179 * (200/360d), 255 * (70/100d), 255*(20/100d)),
+                        new Scalar(179 * (240/360d), 255 * (100/100d), 255*(70/100d)))):
+                (new ColorPipeline( // Red Lower and Upper Boundaries
+                        new Scalar(179 * (0/360d), 255 * (85/100d), 255*(30/100d)),
+                        new Scalar(179 * (355/360d), 255 * (95/100d), 255*(95/100d))));
 
         CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         CAM.setMillisecondsPermissionTimeout(2500);
@@ -99,6 +106,7 @@ public class DriveOpMode extends LinearOpMode {
                 .addProcessor(aprilTag)
                 .build();
         visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something
+        visionPortal.stopStreaming();
 
         return pipeline;
     }
@@ -149,7 +157,7 @@ public class DriveOpMode extends LinearOpMode {
             telemetry.addLine("Waiting for camera to start streaming...");
             telemetry.update();
             while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-                sleep(10);
+                sleep(5);
             }
         }
     }
@@ -205,9 +213,11 @@ public class DriveOpMode extends LinearOpMode {
 //        telemetry.addData("Y", tagOffsetY);
 //        telemetry.addData("cX", centerOffsetX);
 //        telemetry.addData("cY", centerOffsetY);
-//        telemetry.addData("fX", stageX);
-//        telemetry.addData("fY", stageY);
-//        telemetry.addData("heading", stageHeading);
+        telemetry.setAutoClear(false);
+        telemetry.addData("fX", stageX);
+        telemetry.addData("fY", stageY);
+        telemetry.addData("heading", stageHeading);
+        telemetry.update();
 
         return new Pose2d(
             stageX,
@@ -347,10 +357,10 @@ public class DriveOpMode extends LinearOpMode {
 
     public void scorePixelsOnBackboard(boolean wrist)
     {
-        // Set CLAW to closed position
-        if (wrist){
-        robot.WRIST.setPosition(0.73);}
-        robot.CLAW.setPosition(0);
+        if (wrist) {
+            robot.WRIST.setPosition(0.73);
+        }
+        robot.CLAW.setPosition(0); // Set CLAW to closed position
 
         // WAIT 750 MS
         // LIFT 5 IN
