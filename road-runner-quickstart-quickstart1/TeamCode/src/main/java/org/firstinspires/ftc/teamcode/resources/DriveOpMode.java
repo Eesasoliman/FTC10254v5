@@ -214,13 +214,10 @@ public class DriveOpMode extends LinearOpMode {
 //        telemetry.addData("Y", tagOffsetY);
 //        telemetry.addData("cX", centerOffsetX);
 //        telemetry.addData("cY", centerOffsetY);
-        telemetry.setAutoClear(false);
-        telemetry.addData("qX", desiredTag.metadata.fieldOrientation.x);
-        telemetry.addData("qY", desiredTag.metadata.fieldOrientation.y);
-        telemetry.addData("fX", stageX);
-        telemetry.addData("fY", stageY);
-        telemetry.addData("heading", stageHeading);
-        telemetry.update();
+//        telemetry.addData("fX", stageX);
+//        telemetry.addData("fY", stageY);
+//        telemetry.addData("heading", stageHeading);
+//        telemetry.update();
 
         return new Pose2d(
             stageX,
@@ -347,10 +344,16 @@ public class DriveOpMode extends LinearOpMode {
     public void prepareScoring(double moveLiftByInches)
     {
         // Swivel in
-        robot.LFS.setPosition(0.95); // To swivel in more, increase this
-        robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+        lift(-.4);
+        robot.CLAW.setPosition(0);
+        robot.LFS.setPosition(0.97); // To swivel in more, increase this
+        robot.RFS.setPosition(0.03);// To swivel in more, decrease this
         // Set CLAW to close position
+//        robot.CLAW.setPosition(0.5);
+        lift(-.4);
         robot.CLAW.setPosition(0.5);
+
+
         // Lift upward
         lift(moveLiftByInches);
 
@@ -371,12 +374,26 @@ public class DriveOpMode extends LinearOpMode {
 
     public void resetForTeleOp(double dist)
     {
-        lift(4);
         robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
+        lift(8);
         robot.CLAW.setPosition(0); // Set CLAW to open position
         robot.LFS.setPosition(0.95); // To swivel in more, increase this
         robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-        lift(-(dist+4));
+        lift(-(dist+8));
+    }
+    public void resetForTeleOp1(double dist)
+    {
+        robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
+        lift(8);
+        robot.CLAW.setPosition(0); // Set CLAW to open position
+
+    }
+    public void resetForTeleOp2(double dist)
+    {
+
+        robot.LFS.setPosition(0.95); // To swivel in more, increase this
+        robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+        lift(-(dist+8));
     }
 
 
@@ -423,13 +440,20 @@ public class DriveOpMode extends LinearOpMode {
         setDropdown(targetDropdownHeight);
         robot.IN.setPower(1);
     }
+    public void intake1White1(int t) {
+        setDropdown(t);
+        robot.IN.setPower(1);
+    }
 
     // Extra step when wanting to intake a second white pixel
     public void intakeTwoWhite2() {
         targetDropdownHeight-=2;
         setDropdown(targetDropdownHeight);
     }
-
+    public void intakeWhite2() {
+        targetDropdownHeight--;
+        setDropdown(targetDropdownHeight);
+    }
     public void intakeWhite3() {
         // Set CLAW to close position
         setDropdown(0);
