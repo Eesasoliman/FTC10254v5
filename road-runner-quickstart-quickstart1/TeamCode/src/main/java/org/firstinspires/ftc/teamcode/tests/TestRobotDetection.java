@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 
 @Autonomous
+@Disabled
 public class TestRobotDetection extends DriveOpMode {
     @Override
     public void runOpMode() {
