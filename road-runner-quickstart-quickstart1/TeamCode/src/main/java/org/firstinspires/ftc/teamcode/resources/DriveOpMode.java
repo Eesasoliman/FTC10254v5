@@ -263,56 +263,41 @@ public class DriveOpMode extends LinearOpMode {
     public boolean[] initWithController(boolean park)
     {
         long nextTimestamp = 0;
-        boolean dropYellowPixel = true;
-        boolean easyWhite = true;
-        boolean riskyWhite = false;
+        boolean regular = true;
+        boolean extra = true;
         boolean parkInside = park;
 
         while (!gamepad1.right_bumper)
         {
             if (gamepad1.x && gamepad1.timestamp > nextTimestamp) {
                 nextTimestamp = gamepad1.timestamp + 300;
-                dropYellowPixel = !dropYellowPixel;
-            }
-
-            if (gamepad1.a && gamepad1.timestamp > nextTimestamp) {
-                nextTimestamp = gamepad1.timestamp + 300;
-                easyWhite = !easyWhite;
-
-                if (easyWhite)
-                {
-                    dropYellowPixel = true;
-                    riskyWhite = false;
-                }
-            }
-
-            if (gamepad1.b && gamepad1.timestamp > nextTimestamp) {
-                nextTimestamp = gamepad1.timestamp + 300;
-                riskyWhite = !riskyWhite;
-
-                if (riskyWhite) {
-                    dropYellowPixel = true;
-                    easyWhite = false;
-                }
+                regular = true;
+                extra = false;
             }
 
             if (gamepad1.y && gamepad1.timestamp > nextTimestamp) {
                 nextTimestamp = gamepad1.timestamp + 300;
+                regular = false;
+                extra = true;
+            }
+
+            if (gamepad1.a && gamepad1.timestamp > nextTimestamp) {
+                nextTimestamp = gamepad1.timestamp + 300;
                 parkInside = !parkInside;
             }
 
-            // Press right bumper when you are done initializing.
-            telemetry.addData("2+0 (x)", dropYellowPixel);
-            telemetry.addData("CLOSE 2+1 | TRUSS 2+2 (a)", easyWhite);
-            telemetry.addData("CLOSE 2+3 | TRUSS 2+4 (b)", riskyWhite);
-            telemetry.addData("parkInside (y)", parkInside);
+            telemetry.addLine("Press right bumper when you are done initializing.");
+            telemetry.addData("CLOSE 2+0 | TRUSS 2+1 (x)", regular);
+            telemetry.addData("CLOSE 2+2 | TRUSS 2+3 (y)", extra);
+            telemetry.addData("parkInside (a)", parkInside);
             telemetry.update();
             sleep(10);
         }
 
         telemetry.addLine("Initialization Complete");
         telemetry.update();
-        return new boolean[]{dropYellowPixel, easyWhite, riskyWhite, parkInside};
+
+        return new boolean[]{regular, extra, parkInside};
     }
 
     public void setDropdown(int dropdownPos) {
@@ -436,6 +421,8 @@ public class DriveOpMode extends LinearOpMode {
 //        }
 //        robot.IN.setPower(0);
 
+
+        // New function based on run to position
         robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robot.IN.setTargetPosition(-33 * 2);

@@ -29,7 +29,7 @@ public class BlueClose extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        if (driveVariables[3]) {
+        if (driveVariables[2]) {
             parkY = 8;
         } else {
             parkY = 60;
@@ -221,7 +221,7 @@ public class BlueClose extends DriveOpMode {
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
         drive.followTrajectorySequence(purple);
-        if (driveVariables[0]) {
+        if (driveVariables[0] || driveVariables[1]) {
             Pose2d correctPose = relocalize(true);
             drive.followTrajectorySequence(
                     drive.trajectorySequenceBuilder(correctPose)
@@ -236,15 +236,15 @@ public class BlueClose extends DriveOpMode {
                             .waitSeconds(.5)
                             .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
                                 resetForTeleOp(liftHeight);
-                                         })
+                            })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
-
-            if (driveVariables[1] || driveVariables[2]) {
+        }
+            if (driveVariables[1]) {
                 // Follow White Once
                 setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
-                correctPose = relocalize(true);
+                Pose2d correctPose = relocalize(true);
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(correctPose)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
@@ -261,7 +261,7 @@ public class BlueClose extends DriveOpMode {
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                                 .build());
-            }
+
         }
         drive.followTrajectorySequence(park);
     }

@@ -29,7 +29,7 @@ public class BlueTruss extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-        if (driveVariables[3]) {
+        if (driveVariables[2]) {
             parkY = 8;
         } else {
             parkY = 60;
@@ -302,8 +302,8 @@ public class BlueTruss extends DriveOpMode {
             purple = purple1;
             white = white1;
 //            park = park1;
-            backboardPose = new Pose2d(backboardX, -24.5, Math.toRadians(0));
-            wbackboardPose =  new Pose2d(backboardX, -36, Math.toRadians(0));
+            backboardPose = new Pose2d(backboardX, 24.5, Math.toRadians(0));
+            wbackboardPose =  new Pose2d(backboardX, 36, Math.toRadians(0));
         }
 
 //        waitForAprilTagCamera();
@@ -312,7 +312,7 @@ public class BlueTruss extends DriveOpMode {
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
         drive.followTrajectorySequence(purple);
-        if (driveVariables[0]) {
+        if (driveVariables[0] || driveVariables[1]) {
             Pose2d correctPose = relocalize(true);
             drive.followTrajectorySequence(
                     drive.trajectorySequenceBuilder(correctPose)
@@ -333,12 +333,12 @@ public class BlueTruss extends DriveOpMode {
                             })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
-
-            if (driveVariables[1] || driveVariables[2]) {
+        }
+            if (driveVariables[1]) {
                 // Follow White Once
                 setTargetDropdownHeight(4);
                 drive.followTrajectorySequence(white);
-                correctPose = relocalize(true);
+                Pose2d correctPose = relocalize(true);
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(correctPose)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight+5))
@@ -356,7 +356,7 @@ public class BlueTruss extends DriveOpMode {
                                 .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                                 .build());
             }
-        }
+
 //        drive.followTrajectorySequence(park);
     }}
 
