@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ import java.util.Objects;
  */
 
 @Config
+    @Disabled
 @Autonomous(group = "drive")
 public class MaxAngularVeloTuner extends LinearOpMode {
     public static double RUNTIME = 4.0;
