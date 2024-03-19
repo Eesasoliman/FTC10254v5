@@ -59,6 +59,8 @@ public class ColorPipeline extends OpenCvPipeline {
             }
         }
 
+        Core.bitwise_not(colorMat, colorMat);
+
         return colorMat;
     }
 
