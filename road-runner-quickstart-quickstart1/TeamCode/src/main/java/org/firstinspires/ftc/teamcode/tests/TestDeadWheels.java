@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.resources.HardwarePushBot;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 
 @TeleOp
+@Disabled
 public class TestDeadWheels extends DriveOpMode {
     HardwarePushBot robot = new HardwarePushBot();
     @Override
