@@ -13,12 +13,20 @@ public class TestDriveToBackboard extends DriveOpMode {
     public void runOpMode() {
         telemetry.setMsTransmissionInterval(50);
         SampleMecanumDrive drive = initDriveOpMode();
+        telemetry.addLine("Cameras...");
+        telemetry.update();
         startCameras(false);
         closeColorPipelineCamera();
 
+        telemetry.addLine("Starting...");
+        telemetry.update();
         sleep(1000);
+        telemetry.addLine("Localizing...");
+        telemetry.update();
         Pose2d back = new Pose2d(50, -36, Math.toRadians(0));
         Pose2d currentPose = relocalize(false);
+        telemetry.addLine("Position Returned...");
+        telemetry.update();
         telemetry.addData("pose",currentPose);
         TrajectorySequence Test = drive.trajectorySequenceBuilder(currentPose)
                 .lineToLinearHeading(back)

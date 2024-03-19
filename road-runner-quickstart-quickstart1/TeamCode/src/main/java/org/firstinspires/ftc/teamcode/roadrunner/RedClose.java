@@ -217,53 +217,53 @@ public class RedClose extends DriveOpMode {
         }
 
 //        waitForAprilTagCamera();
-        resumeStreaming();
+//        resumeStreaming();
 
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
         drive.followTrajectorySequence(purple);
-        if (driveVariables[0]) {
-            Pose2d correctPose = relocalize(false);
-            drive.followTrajectorySequence(
-                    drive.trajectorySequenceBuilder(correctPose)
-                            .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                // Swivel out
-                                robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                                robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                            })
-                            .lineToLinearHeading(backboardPose)
-                            .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(false))
-                            .waitSeconds(.5)
-                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                resetForTeleOp(liftHeight);
-                                         })
-                            .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
-                            .build());
-
-            if (driveVariables[1] || driveVariables[2]) {
-                // Follow White Once
-                setTargetDropdownHeight(4);
-                drive.followTrajectorySequence(white);
-                correctPose = relocalize(false);
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(correctPose)
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    // Swivel out
-                                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                                })
-                                .lineToLinearHeading(wbackboardPose)
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(true))
-                                .waitSeconds(.5)
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    resetForTeleOp(liftHeight);
-                                })
-                                .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
-                                .build());
-            }
-        }
-        drive.followTrajectorySequence(park);
+//        if (driveVariables[0]) {
+//            Pose2d correctPose = relocalize(false);
+//            drive.followTrajectorySequence(
+//                    drive.trajectorySequenceBuilder(correctPose)
+//                            .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+//                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                // Swivel out
+//                                robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+//                                robot.RFS.setPosition(0.40); // To swivel out more, increase this
+//                            })
+//                            .lineToLinearHeading(backboardPose)
+//                            .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(false))
+//                            .waitSeconds(.5)
+//                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                resetForTeleOp(liftHeight);
+//                                         })
+//                            .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+//                            .build());
+//
+//            if (driveVariables[1] || driveVariables[2]) {
+//                // Follow White Once
+//                setTargetDropdownHeight(4);
+//                drive.followTrajectorySequence(white);
+//                correctPose = relocalize(false);
+//                drive.followTrajectorySequence(
+//                        drive.trajectorySequenceBuilder(correctPose)
+//                                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                    // Swivel out
+//                                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+//                                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+//                                })
+//                                .lineToLinearHeading(wbackboardPose)
+//                                .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(true))
+//                                .waitSeconds(.5)
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                    resetForTeleOp(liftHeight);
+//                                })
+//                                .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+//                                .build());
+//            }
+//        }
+//        drive.followTrajectorySequence(park);
     }
 }

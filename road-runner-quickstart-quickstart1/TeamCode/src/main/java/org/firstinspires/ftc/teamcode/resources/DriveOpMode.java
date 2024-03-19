@@ -165,7 +165,7 @@ public class DriveOpMode extends LinearOpMode {
 
     public Pose2d relocalize(boolean isBlueSide)
     {
-        waitForAprilTagCamera();
+//        waitForAprilTagCamera();
 
         int ID = (isBlueSide) ? 2 : 5;
         boolean targetFound = false;
@@ -189,7 +189,7 @@ public class DriveOpMode extends LinearOpMode {
             sleep(10);
         }
 
-        visionPortal.stopStreaming();
+//        visionPortal.stopStreaming();
 
         double yaw = desiredTag.ftcPose.yaw;
         double range = desiredTag.ftcPose.range;
@@ -214,10 +214,10 @@ public class DriveOpMode extends LinearOpMode {
 //        telemetry.addData("Y", tagOffsetY);
 //        telemetry.addData("cX", centerOffsetX);
 //        telemetry.addData("cY", centerOffsetY);
-//        telemetry.addData("fX", stageX);
-//        telemetry.addData("fY", stageY);
-//        telemetry.addData("heading", stageHeading);
-//        telemetry.update();
+        telemetry.addData("fX", stageX);
+        telemetry.addData("fY", stageY);
+        telemetry.addData("heading", stageHeading);
+        telemetry.update();
 
         return new Pose2d(
             stageX,
@@ -393,6 +393,7 @@ public class DriveOpMode extends LinearOpMode {
 
         robot.LFS.setPosition(0.95); // To swivel in more, increase this
         robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+        sleep(50);
         lift(-(dist+8));
     }
 
@@ -428,39 +429,52 @@ public class DriveOpMode extends LinearOpMode {
 
         // New function based on encoder
         setDropdown(5);
-        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        while (robot.IN.getCurrentPosition() > -33) {
+//            robot.IN.setPower(-0.2);
+//        }
+//        robot.IN.setPower(0);
+
         robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        while (robot.IN.getCurrentPosition() > -33) {
-            robot.IN.setPower(-0.2);
-        }
-        robot.IN.setPower(0);
+        robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robot.IN.setTargetPosition(-33 * 2);
+        robot.IN.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.IN.setPower(-1);
+
     }
 
     public void intakeWhite1() {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         setDropdown(targetDropdownHeight);
         robot.IN.setPower(1);
     }
     public void intake1White1(int t) {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         setDropdown(t);
         robot.IN.setPower(1);
     }
 
     // Extra step when wanting to intake a second white pixel
     public void intakeTwoWhite2() {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         targetDropdownHeight-=2;
         setDropdown(targetDropdownHeight);
     }
     public void intakeWhite2() {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         targetDropdownHeight--;
         setDropdown(targetDropdownHeight);
     }
     public void intakeWhite3() {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         // Set CLAW to close position
         setDropdown(0);
         robot.IN.setPower(-1);
     }
 
     public void intakeWhite4() {
+        robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         setDropdown(5);
         robot.IN.setPower(0);
     }
