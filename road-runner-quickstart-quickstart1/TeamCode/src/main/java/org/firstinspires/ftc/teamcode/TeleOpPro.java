@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.resources.HardwarePushBot;
 
-@TeleOp(name = "TeleOpPro", group = "Drive")
+@TeleOp
 public class TeleOpPro extends LinearOpMode {
 
     // Class Gamepad Documentation:
