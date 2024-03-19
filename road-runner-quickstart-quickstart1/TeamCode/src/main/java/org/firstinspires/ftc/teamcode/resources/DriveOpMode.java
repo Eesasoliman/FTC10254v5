@@ -74,7 +74,10 @@ public class DriveOpMode extends LinearOpMode {
                         new Scalar(179 * (0/360d), 255 * (85/100d), 255*(30/100d)),
                         new Scalar(179 * (355/360d), 255 * (95/100d), 255*(95/100d))));
 
-        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        // Enable live view for this webcam
+        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),  hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+        // Disable live view for this webcam
+        // CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         CAM.setMillisecondsPermissionTimeout(2500);
 
         CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -103,8 +106,9 @@ public class DriveOpMode extends LinearOpMode {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
+                .enableLiveView(false) // Use when live view is off for this camera
                 .build();
-        visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something
+        // visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something or when live view is off for this camera
         visionPortal.stopStreaming();
 
         return pipeline;
