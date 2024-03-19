@@ -49,9 +49,9 @@ public class RedTruss extends DriveOpMode {
                 .splineToConstantHeading(new Vector2d(-47.5, -33), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .waitSeconds(0.001)
+                .lineToConstantHeading(new Vector2d(-55,-45))
                 .setTangent(Math.toRadians(270))
-                .forward(18)
-                .splineToSplineHeading(new Pose2d(-59, -25, Math.toRadians(0)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(-59, -26, Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
                 .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
@@ -84,8 +84,9 @@ public class RedTruss extends DriveOpMode {
                 .lineToConstantHeading(new Vector2d(-36, -33.5))
                 .waitSeconds(0.001)
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .splineToConstantHeading(new Vector2d(-45, -36), Math.toRadians(180))
-                .splineToSplineHeading(new Pose2d(-59, -25, Math.toRadians(0)), Math.toRadians(90))
+//                .splineToSplineHeading(new Pose2d(-36,-42,Math.toRadians(315)),Math.toRadians(315))
+                .splineToSplineHeading(new Pose2d(-45, -45), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-59, -26, Math.toRadians(0)), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
                 .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
