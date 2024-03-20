@@ -106,9 +106,8 @@ public class DriveOpMode extends LinearOpMode {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .addProcessor(aprilTag)
-                .enableLiveView(false) // Use when live view is off for this camera
                 .build();
-        // visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something or when live view is off for this camera
+         visionPortal.stopLiveView(); // Comment out when you need the april tag camera stream to debug something or when live view is off for this camera
         visionPortal.stopStreaming();
 
         return pipeline;

@@ -324,7 +324,7 @@ public class RedTruss extends DriveOpMode {
         telemetry.addLine("Trajectory Started.");
         telemetry.update();
         drive.followTrajectorySequence(purple);
-        if (driveVariables[0] || driveVariables[1]) {
+        if (driveVariables[0] || driveVariables[1]) { 
             Pose2d correctPose = relocalize(false);
             drive.followTrajectorySequence(
                     drive.trajectorySequenceBuilder(correctPose)
