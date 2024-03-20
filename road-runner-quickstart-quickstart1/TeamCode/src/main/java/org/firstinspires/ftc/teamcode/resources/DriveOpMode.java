@@ -71,13 +71,14 @@ public class DriveOpMode extends LinearOpMode {
                         new Scalar(179 * (200/360d), 255 * (70/100d), 255*(20/100d)),
                         new Scalar(179 * (240/360d), 255 * (100/100d), 255*(70/100d)))):
                 (new ColorPipeline( // Red Lower and Upper Boundaries
+//                        new Scalar(179 * (0/360d), 255 * (85/100d), 255*(30/100d)),
                         new Scalar(179 * (0/360d), 255 * (50/100d), 255*(30/100d)),
                         new Scalar(179 * (355/360d), 255 * (95/100d), 255*(95/100d))));
 
         // Enable live view for this webcam
-        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),  hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
+//        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),  hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         // Disable live view for this webcam
-        // CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+         CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         CAM.setMillisecondsPermissionTimeout(2500);
 
         CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -289,7 +290,7 @@ public class DriveOpMode extends LinearOpMode {
 
             telemetry.addLine("Press right bumper when you are done initializing.");
             telemetry.addData("CLOSE 2+0 | TRUSS 2+1 (x)", regular);
-            telemetry.addData("CLOSE 2+2 | TRUSS 2+3 (y)", extra);
+            telemetry.addData("TRUSS 2+3 (y)", extra);
             telemetry.addData("parkInside (a)", parkInside);
             telemetry.update();
             sleep(10);
@@ -330,16 +331,11 @@ public class DriveOpMode extends LinearOpMode {
     public void prepareScoring(double moveLiftByInches)
     {
         // Swivel in
-        lift(-.4);
         robot.CLAW.setPosition(0);
         robot.LFS.setPosition(0.97); // To swivel in more, increase this
-        robot.RFS.setPosition(0.03);// To swivel in more, decrease this
+        robot.RFS.setPosition(0.03); // To swivel in more, decrease this
         // Set CLAW to close position
-//        robot.CLAW.setPosition(0.5);
-        lift(-.4);
         robot.CLAW.setPosition(0.5);
-
-
         // Lift upward
         lift(moveLiftByInches);
 
@@ -361,11 +357,7 @@ public class DriveOpMode extends LinearOpMode {
     public void resetForTeleOp(double dist)
     {
         robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
-        lift(8);
         robot.CLAW.setPosition(0); // Set CLAW to open position
-        robot.LFS.setPosition(0.95); // To swivel in more, increase this
-        robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-        lift(-(dist+8));
     }
     public void resetForTeleOp1(double dist)
     {

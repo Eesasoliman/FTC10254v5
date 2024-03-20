@@ -62,114 +62,96 @@ public class BlueClose extends DriveOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .build();
 
-        TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
-                // Get
-                .strafeRight(0.1)
-                .splineToConstantHeading(new Vector2d(24, 2), Math.toRadians(180))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-48, 2))
-                .splineToConstantHeading(new Vector2d(-55, stackY +5), Math.toRadians(-270))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .back(.7)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
-                .forward(1.3)
-                .waitSeconds(1)
-
-                // Return
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
-                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
-                .lineToConstantHeading(new Vector2d(24, 7))
-                .splineToSplineHeading(new Pose2d(backboardX-20, 41.5, Math.toRadians(0)), Math.toRadians(-270),
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .build();
-        TrajectorySequence white2 = drive.trajectorySequenceBuilder(backboard2)
-                // Get
-                .strafeRight(0.1)
-                .splineToConstantHeading(new Vector2d(24, 7), Math.toRadians(180))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-48, 7))
-                .splineToConstantHeading(new Vector2d(-60, stackY), Math.toRadians(-270))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+//        TrajectorySequence white1 = drive.trajectorySequenceBuilder(backboard1)
+//                // Get
+//                .strafeRight(0.1)
+//                .splineToConstantHeading(new Vector2d(24, 2), Math.toRadians(180))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .lineToConstantHeading(new Vector2d(-48, 2))
+//                .splineToConstantHeading(new Vector2d(-55, stackY +5), Math.toRadians(-270))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
 //                .back(.7)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
-                .forward(.5)
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
-
-                .strafeLeft(1)
-                .strafeRight(2)
+//                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+//                .forward(1.3)
 //                .waitSeconds(1)
-
-                // Return
-                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
-                .lineToConstantHeading(new Vector2d(24, 7))
-                .splineToSplineHeading(new Pose2d(backboardX-0, 28.5, Math.toRadians(0)), Math.toRadians(-270),
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .build();
-        TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard3)
-                // Get
-                .strafeRight(0.1)
-                .splineToConstantHeading(new Vector2d(24, 2), Math.toRadians(180))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .lineToConstantHeading(new Vector2d(-48, 2))
-                .splineToConstantHeading(new Vector2d(-55, stackY +5), Math.toRadians(-270))
-                .setConstraints(
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
-                .back(.7)
-                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
-                .forward(1.3)
-                .waitSeconds(1)
-
-                // Return
-                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
-                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
-                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
-                .lineToConstantHeading(new Vector2d(24, 7))
-                .splineToSplineHeading(new Pose2d(backboardX-20, 41.5, Math.toRadians(0)), Math.toRadians(-270),
-                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
-                .build();
-        TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
-                .back(0.1)
-                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
-//                .forward(10)
-                .build();
-        TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
-                .back(0.1)
-                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
-//                .forward(10)
-                .build();
-        TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
-                .back(0.1)
-                .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
-                .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
-//                .forward(10)
-                .build();
+//
+//                // Return
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
+//                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
+//                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
+//                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
+//                .lineToConstantHeading(new Vector2d(24, 7))
+//                .splineToSplineHeading(new Pose2d(backboardX-20, 41.5, Math.toRadians(0)), Math.toRadians(-270),
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .build();
+//        TrajectorySequence white2 = drive.trajectorySequenceBuilder(backboard2)
+//                // Get
+//                .strafeRight(0.1)
+//                .splineToConstantHeading(new Vector2d(24, 7), Math.toRadians(180))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .lineToConstantHeading(new Vector2d(-48, 7))
+//                .splineToConstantHeading(new Vector2d(-60, stackY), Math.toRadians(-270))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+////                .back(.7)
+//                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+//                .forward(.5)
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
+//
+//                .strafeLeft(1)
+//                .strafeRight(2)
+////                .waitSeconds(1)
+//
+//                // Return
+//                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
+//                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
+//                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
+//                .lineToConstantHeading(new Vector2d(24, 7))
+//                .splineToSplineHeading(new Pose2d(backboardX-0, 28.5, Math.toRadians(0)), Math.toRadians(-270),
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .build();
+//        TrajectorySequence white3 = drive.trajectorySequenceBuilder(backboard3)
+//                // Get
+//                .strafeRight(0.1)
+//                .splineToConstantHeading(new Vector2d(24, 2), Math.toRadians(180))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .lineToConstantHeading(new Vector2d(-48, 2))
+//                .splineToConstantHeading(new Vector2d(-55, stackY +5), Math.toRadians(-270))
+//                .setConstraints(
+//                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite1)
+//                .back(.7)
+//                .UNSTABLE_addTemporalMarkerOffset(0.3, this::intakeTwoWhite2)
+//                .forward(1.3)
+//                .waitSeconds(1)
+//
+//                // Return
+//                .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite3)
+//                .splineToConstantHeading(new Vector2d(-48, 7), Math.toRadians(0))
+//                .UNSTABLE_addTemporalMarkerOffset(0.2,()->{robot.CLAW.setPosition(0.5);})
+//                .UNSTABLE_addTemporalMarkerOffset(0.5, this::intakeWhite4)
+//                .lineToConstantHeading(new Vector2d(24, 7))
+//                .splineToSplineHeading(new Pose2d(backboardX-20, 41.5, Math.toRadians(0)), Math.toRadians(-270),
+//                        SampleMecanumDrive.getVelocityConstraint(slowVel, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        SampleMecanumDrive.getAccelerationConstraint(slowAcc))
+//                .build();
 
         telemetry.addLine("Starting Cameras...");
         telemetry.update();
@@ -197,20 +179,20 @@ public class BlueClose extends DriveOpMode {
 
         if (imageNum == 1) {
             purple = purple3;
-            white = white3;
-            park = park3;
+//            white = white3;
+//            park = park3;
             backboardPose = backboard3;
             wbackboardPose = backboard1;
         } else if (imageNum == 2 || imageNum == 3 || imageNum == 4) {
             purple = purple2;
-            white = white2;
-            park = park2;
+//            white = white2;
+//            park = park2;
             backboardPose = backboard2;
             wbackboardPose = backboard1;
         } else if (imageNum == 5) {
             purple = purple1;
-            white = white1;
-            park = park1;
+//            white = white1;
+//            park = park1;
             backboardPose = backboard1;
             wbackboardPose = backboard3;
         }
@@ -238,31 +220,34 @@ public class BlueClose extends DriveOpMode {
                                 resetForTeleOp(liftHeight);
                             })
                             .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+                            .back(0.1)
+                            .splineToConstantHeading(new Vector2d(52, parkY), Math.toRadians(180))
+                            .UNSTABLE_addTemporalMarkerOffset(-0.2,() -> resetForTeleOp(liftHeight))
                             .build());
         }
-            if (driveVariables[1]) {
-                // Follow White Once
-                setTargetDropdownHeight(4);
-                drive.followTrajectorySequence(white);
-                Pose2d correctPose = relocalize(true);
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(correctPose)
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    // Swivel out
-                                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
-                                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
-                                })
-                                .lineToLinearHeading(wbackboardPose)
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(true))
-                                .waitSeconds(.5)
-                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    resetForTeleOp(liftHeight);
-                                })
-                                .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
-                                .build());
-
-        }
+//            if (driveVariables[1]) {
+//                // Follow White Once
+//                setTargetDropdownHeight(4);
+//                drive.followTrajectorySequence(white);
+//                Pose2d correctPose = relocalize(true);
+//                drive.followTrajectorySequence(
+//                        drive.trajectorySequenceBuilder(correctPose)
+//                                .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                    // Swivel out
+//                                    robot.LFS.setPosition(0.60); // To swivel out more, decrease this
+//                                    robot.RFS.setPosition(0.40); // To swivel out more, increase this
+//                                })
+//                                .lineToLinearHeading(wbackboardPose)
+//                                .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(true))
+//                                .waitSeconds(.5)
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+//                                    resetForTeleOp(liftHeight);
+//                                })
+//                                .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+//                                .build());
+//
+//        }
         drive.followTrajectorySequence(park);
     }
 }

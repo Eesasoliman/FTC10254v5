@@ -363,7 +363,10 @@ public class RedTruss extends DriveOpMode {
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(false))
                                 .waitSeconds(.5)
                                 .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
-                                    resetForTeleOp(liftHeight);
+                                    resetForTeleOp1(liftHeight);
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.7, () -> {
+                                    resetForTeleOp2(liftHeight);
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                                 .build());
