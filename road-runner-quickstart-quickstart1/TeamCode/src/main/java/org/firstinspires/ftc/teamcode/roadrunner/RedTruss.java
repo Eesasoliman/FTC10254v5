@@ -85,7 +85,7 @@ public class RedTruss extends DriveOpMode {
                 .waitSeconds(0.001)
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
 //                .splineToSplineHeading(new Pose2d(-36,-42,Math.toRadians(315)),Math.toRadians(315))
-                .splineToSplineHeading(new Pose2d(-45, -45), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-50, -45), Math.toRadians(180))
                 .splineToSplineHeading(new Pose2d(-59, -26, Math.toRadians(0)), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
@@ -183,7 +183,7 @@ public class RedTruss extends DriveOpMode {
                     robot.RFS.setPosition(0.03);// To swivel in more, decrease this
                     lift(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> intake1White1(3))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> intake1White1(2))
                 .UNSTABLE_addTemporalMarkerOffset(.6, this::intakeTwoWhite2)
                 .UNSTABLE_addTemporalMarkerOffset(1.4, () -> {
                     robot.LFS.setPosition(.95); // To swivel in more, increase this

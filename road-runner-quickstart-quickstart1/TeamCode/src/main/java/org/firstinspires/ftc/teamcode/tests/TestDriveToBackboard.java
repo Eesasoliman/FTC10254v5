@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous
-@Disabled
+//@Disabled
 public class TestDriveToBackboard extends DriveOpMode {
     @Override
     public void runOpMode() {

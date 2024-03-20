@@ -38,7 +38,7 @@ public class DriveOpMode extends LinearOpMode {
     public SampleMecanumDrive drive = null;
     private VisionPortal visionPortal; // Used to manage the video source.
     private AprilTagProcessor aprilTag; // Used for managing the AprilTag detection process.
-    public static final double pixelHeightOffset = 0.027; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
+    public static final double pixelHeightOffset = 0.033; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
     public static final double dropLOffset = 0.02;
     public static final double dropROffset = 0;
 
@@ -71,7 +71,7 @@ public class DriveOpMode extends LinearOpMode {
                         new Scalar(179 * (200/360d), 255 * (70/100d), 255*(20/100d)),
                         new Scalar(179 * (240/360d), 255 * (100/100d), 255*(70/100d)))):
                 (new ColorPipeline( // Red Lower and Upper Boundaries
-                        new Scalar(179 * (0/360d), 255 * (85/100d), 255*(30/100d)),
+                        new Scalar(179 * (0/360d), 255 * (50/100d), 255*(30/100d)),
                         new Scalar(179 * (355/360d), 255 * (95/100d), 255*(95/100d))));
 
         // Enable live view for this webcam

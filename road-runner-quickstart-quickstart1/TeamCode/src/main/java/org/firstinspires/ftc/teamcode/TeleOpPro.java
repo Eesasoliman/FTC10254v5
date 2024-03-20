@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.resources.DriveOpMode;
@@ -18,7 +19,10 @@ public class TeleOpPro extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
-
+        robot.LL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robot.LL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         robot.FLD.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         robot.FRD.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         robot.BLD.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -245,7 +249,8 @@ public class TeleOpPro extends LinearOpMode {
             robot.IN.setPower(intakeSpeed * intakeSpeedMultiplier);
             robot.LL.setPower(armSpeed * armPower);
             robot.RL.setPower(armSpeed * armPower);
-
+            telemetry.addData("LL", robot.LL.getCurrentPosition());
+            telemetry.addData("RL", robot.RL.getCurrentPosition());
             telemetry.update();
         }
     }

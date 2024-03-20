@@ -19,6 +19,7 @@ public class TestLiftEncoders extends DriveOpMode {
         while (opModeIsActive()) {
             telemetry.addData("LL", robot.LL.getCurrentPosition());
             telemetry.addData("RL", robot.RL.getCurrentPosition());
+//            lift(3);
             telemetry.update();
         }
     }
