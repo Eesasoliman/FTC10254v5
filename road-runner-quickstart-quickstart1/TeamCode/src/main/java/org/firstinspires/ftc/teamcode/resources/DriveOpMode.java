@@ -38,8 +38,8 @@ public class DriveOpMode extends LinearOpMode {
     public SampleMecanumDrive drive = null;
     private VisionPortal visionPortal; // Used to manage the video source.
     private AprilTagProcessor aprilTag; // Used for managing the AprilTag detection process.
-    public static final double pixelHeightOffset = 0.033; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
-    public static final double dropLOffset = 0.02;
+    public static final double pixelHeightOffset = 0.02; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
+    public static final double dropLOffset = 0.026;
     public static final double dropROffset = 0;
 
     public int targetDropdownHeight = 4;
@@ -421,7 +421,7 @@ public class DriveOpMode extends LinearOpMode {
         // New function based on run to position
         robot.IN.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robot.IN.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        robot.IN.setTargetPosition(-33 * 2);
+        robot.IN.setTargetPosition(-35 * 2);
         robot.IN.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.IN.setPower(-1);
 
@@ -435,7 +435,7 @@ public class DriveOpMode extends LinearOpMode {
     public void intake1White1(int t) {
         robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         setDropdown(t);
-        robot.IN.setPower(1);
+        robot.IN.setPower(.7);
     }
 
     // Extra step when wanting to intake a second white pixel
@@ -461,4 +461,14 @@ public class DriveOpMode extends LinearOpMode {
         setDropdown(5);
         robot.IN.setPower(0);
     }
-}
+
+    public void pushDown() {
+
+        robot.LL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        robot.RL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        robot.LL.setPower(0.2 );
+        robot.RL.setPower(0.2);
+    }
+    }
