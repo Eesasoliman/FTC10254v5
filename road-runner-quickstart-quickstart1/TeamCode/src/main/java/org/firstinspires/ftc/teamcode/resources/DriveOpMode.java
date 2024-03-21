@@ -78,7 +78,7 @@ public class DriveOpMode extends LinearOpMode {
         // Enable live view for this webcam
 //        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),  hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName()));
         // Disable live view for this webcam
-         CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        CAM = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         CAM.setMillisecondsPermissionTimeout(2500);
 
         CAM.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -175,7 +175,10 @@ public class DriveOpMode extends LinearOpMode {
 
         while (!targetFound) {
             // Step through the list of detected tags and look for a matching tag
-            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+            List<AprilTagDetection> currentDetections = aprilTag.getFreshDetections();
+            if (currentDetections == null) {
+                continue;
+            }
             for (AprilTagDetection detection : currentDetections) {
                 // Look to see if we have size info on this tag.
                 if (detection.metadata != null) {

@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
-    double liftHeight = 5;
+    double liftHeight = 9;
     double backboardX = 51.5;
 
     double stackY = -13;
@@ -28,7 +28,8 @@ public class RedTruss extends DriveOpMode {
         telemetry.setMsTransmissionInterval(50);
         SampleMecanumDrive drive = initDriveOpMode();
 
-        boolean[] driveVariables = initWithController(true);
+//        boolean[] driveVariables = initWithController(true);
+        boolean[] driveVariables = {true, false, true};
         if (driveVariables[2]) {
             parkY = -8;
         } else {
@@ -46,12 +47,12 @@ public class RedTruss extends DriveOpMode {
 
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .setTangent(Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-47.5, -33), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-47.65, -33.2), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .waitSeconds(0.001)
-                .lineToConstantHeading(new Vector2d(-55,-45))
-                .setTangent(Math.toRadians(270))
-                .splineToSplineHeading(new Pose2d(-59, -26, Math.toRadians(0)), Math.toRadians(90))
+                .waitSeconds(0.1)
+                .setTangent(270)
+                .splineToConstantHeading(new Vector2d(-48.65, -33.2 - 12), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-59.5, -24, Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
                 .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
@@ -73,20 +74,21 @@ public class RedTruss extends DriveOpMode {
                 })
                 .UNSTABLE_addTemporalMarkerOffset(.05, () -> intakeWhite4())
                 .strafeRight(2)
-                .splineToSplineHeading(new Pose2d(-36, -57.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-48, -60), Math.toRadians(0))
+                .waitSeconds(0.0001)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .splineToSplineHeading(new Pose2d(4, -55.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(15, -55, Math.toRadians(30)), Math.toRadians(30))
+                .lineToConstantHeading(new Vector2d(6, -60))
+                .splineToSplineHeading(new Pose2d(24, -48, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite4())
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
 //                .strafeRight(4)
                 .lineToConstantHeading(new Vector2d(-36, -33.5))
-                .waitSeconds(0.001)
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
+                .waitSeconds(0.1)
 //                .splineToSplineHeading(new Pose2d(-36,-42,Math.toRadians(315)),Math.toRadians(315))
-                .splineToSplineHeading(new Pose2d(-50, -45), Math.toRadians(180))
-                .splineToSplineHeading(new Pose2d(-59, -26, Math.toRadians(0)), Math.toRadians(180))
+                .forward(6)
+                .splineToSplineHeading(new Pose2d(-59.75, -24, Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
                 .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
@@ -107,18 +109,20 @@ public class RedTruss extends DriveOpMode {
                     robot.LL.setPower(0);
                     robot.RL.setPower(0);
                 })
-                .splineToSplineHeading(new Pose2d(-36, -57.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-48, -60), Math.toRadians(0))
+                .waitSeconds(0.0001)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .splineToSplineHeading(new Pose2d(4, -55.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(15, -55, Math.toRadians(30)), Math.toRadians(30))
+                .lineToConstantHeading(new Vector2d(6, -60))
+                .splineToSplineHeading(new Pose2d(24, -48, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite4())
                 .build();
         // Start Intake
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
                 .lineToSplineHeading(new Pose2d(-37.5, -40, Math.toRadians(180)))
-                .splineToConstantHeading(new Vector2d(-34, -29), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-33.5, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .splineToLinearHeading(new Pose2d(-58, -26, Math.toRadians(0)), Math.toRadians(0))
+                .waitSeconds(0.1)
+                .lineToLinearHeading(new Pose2d(-59.5, -24.1, Math.toRadians(0.1)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.2, () -> intakeTwoWhite2())
                 .UNSTABLE_addTemporalMarkerOffset(.3, () -> robot.CLAW.setPosition(0))
@@ -130,10 +134,11 @@ public class RedTruss extends DriveOpMode {
                     robot.LL.setPower(0);
                     robot.RL.setPower(0);
                 })
-                .splineToSplineHeading(new Pose2d(-36, -57.5, Math.toRadians(0)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(-48, -60), Math.toRadians(0))
+                .waitSeconds(0.0001)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .splineToSplineHeading(new Pose2d(4, -55.5, Math.toRadians(0)), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(15, -55, Math.toRadians(30)), Math.toRadians(30))
+                .lineToConstantHeading(new Vector2d(6, -60))
+                .splineToSplineHeading(new Pose2d(24, -48, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite4())
                 .build();
 

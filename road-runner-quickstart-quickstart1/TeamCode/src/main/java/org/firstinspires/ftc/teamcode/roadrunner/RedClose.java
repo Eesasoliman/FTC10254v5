@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedClose extends DriveOpMode {
     int imageNum;
     double parkY;
-    double liftHeight = 4;
+    double liftHeight = 8.5;
     double backboardX = 52.5;
 
     double stackY = -13;
