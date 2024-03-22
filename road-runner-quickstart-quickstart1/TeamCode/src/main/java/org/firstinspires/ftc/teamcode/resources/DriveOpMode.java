@@ -39,7 +39,7 @@ public class DriveOpMode extends LinearOpMode {
     private VisionPortal visionPortal; // Used to manage the video source.
     private AprilTagProcessor aprilTag; // Used for managing the AprilTag detection process.
     public static final double pixelHeightOffset = 0.02; // Make sure 0.35 - pixelHeightOffset * 5 + dropROffset is not less than 0.
-    public static final double dropLOffset = 0.026;
+    public static final double dropLOffset = 0.0275;
     public static final double dropROffset = 0;
 
     public int targetDropdownHeight = 4;
@@ -468,7 +468,7 @@ public class DriveOpMode extends LinearOpMode {
         robot.RL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
 
-        robot.LL.setPower(0.2 );
-        robot.RL.setPower(0.2);
+        robot.LL.setPower(0.3 );
+        robot.RL.setPower(0.3);
     }
     }
