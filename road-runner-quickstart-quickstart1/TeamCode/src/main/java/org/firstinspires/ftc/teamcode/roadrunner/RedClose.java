@@ -29,6 +29,7 @@ public class RedClose extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
+//        boolean[] driveVariables = {true, false, true};
         if (driveVariables[2]) {
             parkY = -8;
         } else {
@@ -219,8 +220,8 @@ public class RedClose extends DriveOpMode {
                                 robot.RFS.setPosition(0.40); // To swivel out more, increase this
                             })
                             .lineToLinearHeading(backboardPose)
-                            .UNSTABLE_addTemporalMarkerOffset(0, () -> robot.WRIST.setPosition(0.73))
-                            .UNSTABLE_addTemporalMarkerOffset(0.3, () -> scorePixelsOnBackboard(true))
+//                            .UNSTABLE_addTemporalMarkerOffset(0, () -> robot.WRIST.setPosition(0.73))
+                            .UNSTABLE_addTemporalMarkerOffset(0.3, () -> scorePixelsOnBackboard(false))
                             .waitSeconds(1.5)
                             .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                                 resetForTeleOp(liftHeight);

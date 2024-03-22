@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
-    double liftHeight = 9.5;
+    double liftHeight = 10.5;
     double backboardX = 51.5;
 
     double stackY = -13;
@@ -29,7 +29,7 @@ public class RedTruss extends DriveOpMode {
         SampleMecanumDrive drive = initDriveOpMode();
 
         boolean[] driveVariables = initWithController(true);
-//        boolean[] driveVariables = {true, false, true};
+//        boolean[] driveVariables = {true, false, false};
         if (driveVariables[2]) {
             parkY = -8;
         } else {
@@ -39,7 +39,7 @@ public class RedTruss extends DriveOpMode {
         robot.LFS.setPosition(.97); // To swivel in more, increase this
         robot.RFS.setPosition(0.03);// To swivel in more, decrease this
         Pose2d backboard1 = new Pose2d(backboardX, -20.5, Math.toRadians(0));
-        Pose2d backboard2 = new Pose2d(backboardX, -31.5, Math.toRadians(0));//35
+        Pose2d backboard2 = new Pose2d(backboardX+1, -31.5, Math.toRadians(0));//35
         Pose2d backboard3 = new Pose2d(backboardX, -39.5, Math.toRadians(0));
 
         telemetry.addLine("Building Trajectories");
@@ -48,11 +48,11 @@ public class RedTruss extends DriveOpMode {
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
                 .UNSTABLE_addTemporalMarkerOffset(0,this::pushDown)
                 .setTangent(Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-48.5, -35.2), Math.toRadians(90))
+                .lineToConstantHeading(new Vector2d(-48.5, -35.2))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .waitSeconds(0.1)
                 .setTangent(270)
-                .lineToConstantHeading(new Vector2d(-50.65, -35.2 - 12))//
+                .lineToConstantHeading(new Vector2d(-55.65, -35.2 - 16))//
                 .splineToSplineHeading(new Pose2d(-59.5, -24, Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
                 .UNSTABLE_addTemporalMarkerOffset(.5, () -> intakeTwoWhite2())
