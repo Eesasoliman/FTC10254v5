@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class RedTruss extends DriveOpMode {
     int imageNum;
     double parkY;
-    double liftHeight = 7;
+    double liftHeight = 9.5;
     double backboardX = 51.5;
 
     double stackY = -13;
@@ -38,47 +38,46 @@ public class RedTruss extends DriveOpMode {
         robot.CLAW.setPosition(0);
         robot.LFS.setPosition(.97); // To swivel in more, increase this
         robot.RFS.setPosition(0.03);// To swivel in more, decrease this
-        Pose2d backboard1 = new Pose2d(backboardX, -28.5, Math.toRadians(0));
-        Pose2d backboard2 = new Pose2d(backboardX, -33.5, Math.toRadians(0));//35
-        Pose2d backboard3 = new Pose2d(backboardX, -37.5, Math.toRadians(0));
+        Pose2d backboard1 = new Pose2d(backboardX, -20.5, Math.toRadians(0));
+        Pose2d backboard2 = new Pose2d(backboardX, -31.5, Math.toRadians(0));//35
+        Pose2d backboard3 = new Pose2d(backboardX, -39.5, Math.toRadians(0));
 
         telemetry.addLine("Building Trajectories");
         telemetry.update();
 
         TrajectorySequence purple1 = drive.trajectorySequenceBuilder(startPose)
+                .UNSTABLE_addTemporalMarkerOffset(0,this::pushDown)
                 .setTangent(Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-47.65, -33.2), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-48.5, -35.2), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
                 .waitSeconds(0.1)
                 .setTangent(270)
-                .splineToConstantHeading(new Vector2d(-48.65, -33.2 - 12), Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(-50.65, -35.2 - 12))//
                 .splineToSplineHeading(new Pose2d(-59.5, -24, Math.toRadians(0)), Math.toRadians(90))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
-                .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(.5, () -> intakeTwoWhite2())
+                .UNSTABLE_addTemporalMarkerOffset(.8, () -> {
                     robot.LFS.setPosition(.95); // To swivel in more, increase this
                     robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-                    lift(-1);
+//                    lift(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.2, () -> robot.CLAW.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> {
-                    robot.LL.setPower(.2 * -1);
-                    robot.RL.setPower(.2 * -1);
-                })
-                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> intakeWhite3())
-                .forward(1)
-                .waitSeconds(1)
-                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
-                    robot.LL.setPower(0);
-                    robot.RL.setPower(0);
-                })
-                .UNSTABLE_addTemporalMarkerOffset(.05, () -> intakeWhite4())
-                .strafeRight(2)
+                .UNSTABLE_addTemporalMarkerOffset(1.7, () -> intakeWhite3())
+                .UNSTABLE_addTemporalMarkerOffset(2, () -> intakeWhite4())
+//                .forward(1)
+                .turn(Math.toRadians(25))
+                .turn(Math.toRadians(-50))
+                .turn(Math.toRadians(25))
+//                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
+//                    robot.LL.setPower(0);
+//                    robot.RL.setPower(0);
+//                })
+//                .setConstraints()
                 .splineToConstantHeading(new Vector2d(-48, -60), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(.5, () -> robot.CLAW.setPosition(0.5))
                 .waitSeconds(0.0001)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .lineToConstantHeading(new Vector2d(6, -60))
-                .splineToSplineHeading(new Pose2d(24, -48, Math.toRadians(30)), Math.toRadians(30))
+                .splineTo(new Vector2d(6, -60),Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(24, -54, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite4())
                 .build();
         TrajectorySequence purple2 = drive.trajectorySequenceBuilder(startPose)
@@ -97,12 +96,12 @@ public class RedTruss extends DriveOpMode {
                     robot.RFS.setPosition(0.05);// To swivel in more, decrease this
 //                    lift(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> intakeWhite3())
+                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> intakeWhite3())
                 .UNSTABLE_addTemporalMarkerOffset(2, () -> intakeWhite4())
 //                .forward(1)
-                .turn(Math.toRadians(20))
-                .turn(Math.toRadians(-40))
-                .turn(Math.toRadians(20))
+                .turn(Math.toRadians(25))
+                .turn(Math.toRadians(-50))
+                .turn(Math.toRadians(25))
 //                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
 //                    robot.LL.setPower(0);
 //                    robot.RL.setPower(0);
@@ -117,28 +116,35 @@ public class RedTruss extends DriveOpMode {
                 .build();
         // Start Intake
         TrajectorySequence purple3 = drive.trajectorySequenceBuilder(startPose)
+                .UNSTABLE_addTemporalMarkerOffset(0,this::pushDown)
                 .lineToSplineHeading(new Pose2d(-37.5, -40, Math.toRadians(180)))
                 .splineToConstantHeading(new Vector2d(-33.5, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::purpleIntake)
-                .waitSeconds(0.1)
-                .lineToLinearHeading(new Pose2d(-59.5, -24.1, Math.toRadians(0.1)))
+                .waitSeconds(0.2)
+                .lineToLinearHeading(new Pose2d(-59.5, -24.1, Math.toRadians(0.01)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .UNSTABLE_addTemporalMarkerOffset(.2, () -> intakeTwoWhite2())
-                .UNSTABLE_addTemporalMarkerOffset(.3, () -> robot.CLAW.setPosition(0))
-                .UNSTABLE_addTemporalMarkerOffset(.6, () -> robot.CLAW.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeWhite4())
-                .forward(1)
-                .turn(30)
-                .turn(-60)
-                .turn(30)
-                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
-                    robot.LL.setPower(0);
-                    robot.RL.setPower(0);
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
+                .UNSTABLE_addTemporalMarkerOffset(.6, () -> intakeTwoWhite2())
+                .UNSTABLE_addTemporalMarkerOffset(.7, () -> {
+                    robot.LFS.setPosition(.95); // To swivel in more, increase this
+                    robot.RFS.setPosition(0.05);// To swivel in more, decrease this
+//                    lift(-1);
                 })
+                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> intakeWhite3())
+                .UNSTABLE_addTemporalMarkerOffset(2, () -> intakeWhite4())
+//                .forward(1)
+                .turn(Math.toRadians(25))
+                .turn(Math.toRadians(-50))
+                .turn(Math.toRadians(25))
+//                .UNSTABLE_addTemporalMarkerOffset(1.6, () -> {
+//                    robot.LL.setPower(0);
+//                    robot.RL.setPower(0);
+//                })
                 .splineToConstantHeading(new Vector2d(-48, -60), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(.5, () -> robot.CLAW.setPosition(0.5))
                 .waitSeconds(0.0001)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite1())
-                .lineToConstantHeading(new Vector2d(6, -60))
+                .splineTo(new Vector2d(6, -60),Math.toRadians(0))
                 .splineToSplineHeading(new Pose2d(24, -48, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> intakeWhite4())
                 .build();
@@ -254,30 +260,27 @@ public class RedTruss extends DriveOpMode {
                 .splineToSplineHeading(new Pose2d(15, -55, Math.toRadians(30)), Math.toRadians(30))
                 .UNSTABLE_addTemporalMarkerOffset(0, this::intakeWhite4)
                 .build();
-//        TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
-//                .back(12)
-//                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
-//                    resetForTeleOp(liftHeight);
-//                })
-//                .lineToConstantHeading(new Vector2d(52, parkY))
-//                .forward(10)
-//                .build();
-//        TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
-//                .back(12)
-//                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
-//                    resetForTeleOp(liftHeight);
-//                })
-//                .lineToConstantHeading(new Vector2d(52, parkY))
-//                .forward(10)
-//                .build();
-//        TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
-//                .back(12)
-//                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
-//                    resetForTeleOp(liftHeight);
-//                })
-//                .lineToConstantHeading(new Vector2d(52, parkY))
-//                .forward(10)
-//                .build();
+        TrajectorySequence park1 = drive.trajectorySequenceBuilder(white1.end())
+                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
+                    resetForTeleOp(liftHeight);
+                })
+                .lineToConstantHeading(new Vector2d(52, parkY))
+//                .forward(5)
+                .build();
+        TrajectorySequence park2 = drive.trajectorySequenceBuilder(white2.end())
+                .lineToConstantHeading(new Vector2d(52, parkY))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
+                    resetForTeleOp(liftHeight);
+                })
+//                .forward(5)
+                .build();
+        TrajectorySequence park3 = drive.trajectorySequenceBuilder(white3.end())
+                .lineToConstantHeading(new Vector2d(52, parkY))
+                .UNSTABLE_addTemporalMarkerOffset(-0.2, () -> {
+                    resetForTeleOp(liftHeight);
+                })
+//                .forward(5)
+                .build();
 
         telemetry.addLine("Starting Cameras...");
         telemetry.update();
@@ -310,19 +313,19 @@ public class RedTruss extends DriveOpMode {
         if (imageNum == 1) {
             purple = purple1;
             white = white1;
-//            park = park1;
-            backboardPose = new Pose2d(backboardX, -24.5, Math.toRadians(0));
-            wbackboardPose = new Pose2d(backboardX, -36, Math.toRadians(0));
+            park = park1;
+            backboardPose = backboard1;
+            wbackboardPose = backboard3;
         } else if (imageNum == 2 || imageNum == 3 || imageNum == 4) {
             purple = purple2;
             white = white2;
-//            park = park2;
+            park = park2;
             backboardPose = backboard2;
             wbackboardPose = backboard3;
         } else if (imageNum == 5) {
             purple = purple3;
             white = white3;
-//            park = park3;
+            park = park3;
             backboardPose = backboard3;
             wbackboardPose = backboard2;
         }
@@ -337,7 +340,7 @@ public class RedTruss extends DriveOpMode {
             drive.followTrajectorySequence(
                     drive.trajectorySequenceBuilder(relocalize(false))
                             .UNSTABLE_addTemporalMarkerOffset(0, () -> prepareScoring(liftHeight))
-                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                            .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
                                 // Swivel out
                                 robot.LFS.setPosition(0.60); // To swivel out more, decrease this
                                 robot.RFS.setPosition(0.40); // To swivel out more, increase this
@@ -345,13 +348,14 @@ public class RedTruss extends DriveOpMode {
                             .lineToLinearHeading(backboardPose)
                             .UNSTABLE_addTemporalMarkerOffset(0, () -> scorePixelsOnBackboard(true))
                             .waitSeconds(.5)
-                            .UNSTABLE_addTemporalMarkerOffset(0.5, () -> {
+                            .UNSTABLE_addTemporalMarkerOffset(0.3, () -> {
                                 resetForTeleOp1(liftHeight);
                             })
-                            .UNSTABLE_addTemporalMarkerOffset(0.7, () -> {
+                            .waitSeconds(1)
+                            .UNSTABLE_addTemporalMarkerOffset(1, () -> {
                                 resetForTeleOp2(liftHeight);
                             })
-                            .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
+//                            .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                             .build());
         }
             if (driveVariables[1]) {
@@ -378,8 +382,9 @@ public class RedTruss extends DriveOpMode {
                                 })
                                 .UNSTABLE_addTemporalMarkerOffset(1, () -> lift(-liftHeight))
                                 .build());
-            }
-//        drive.followTrajectorySequence(park);
+            } else {
+        drive.followTrajectorySequence(park);
+        }
     }
 }
 

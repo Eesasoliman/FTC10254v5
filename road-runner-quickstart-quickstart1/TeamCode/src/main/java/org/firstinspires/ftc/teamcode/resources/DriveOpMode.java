@@ -269,7 +269,7 @@ public class DriveOpMode extends LinearOpMode {
     {
         long nextTimestamp = 0;
         boolean regular = true;
-        boolean extra = true;
+        boolean extra = false;
         boolean parkInside = park;
 
         while (!gamepad1.right_bumper)
@@ -349,9 +349,10 @@ public class DriveOpMode extends LinearOpMode {
     public void scorePixelsOnBackboard(boolean wrist)
     {
         if (wrist) {
-            robot.WRIST.setPosition(0.73);
+            robot.WRIST.setPosition(0.79);
         }
-        robot.CLAW.setPosition(0); // Set CLAW to closed position
+        sleep(100);
+        robot.CLAW.setPosition(0); // Set CLAW to open position
 
         // WAIT 750 MS
         // LIFT 5 IN
@@ -365,7 +366,7 @@ public class DriveOpMode extends LinearOpMode {
     public void resetForTeleOp1(double dist)
     {
         robot.WRIST.setPosition(0.38); // Set WRIST to vertical position
-        lift(8);
+        lift(10);
         robot.CLAW.setPosition(0); // Set CLAW to open position
 
     }
@@ -374,7 +375,7 @@ public class DriveOpMode extends LinearOpMode {
 
         robot.LFS.setPosition(0.95); // To swivel in more, increase this
         robot.RFS.setPosition(0.05);// To swivel in more, decrease this
-        sleep(50);
+//        sleep(50);
         lift(-(dist+8));
     }
 
@@ -435,7 +436,7 @@ public class DriveOpMode extends LinearOpMode {
     public void intake1White1(int t) {
         robot.IN.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         setDropdown(t);
-        robot.IN.setPower(.7);
+        robot.IN.setPower(1);
     }
 
     // Extra step when wanting to intake a second white pixel
